@@ -1,21 +1,20 @@
 #!/usr/bin/env bash
 #################################################################################
 #                                                                               #
-#  overdeep-tools - Official installer for OverDeep OS and others Linux systems #
+#  overdeep-installer - Official installer for OverDeep OS and others Linux's   #
 #                                                                               #
 #  By                                                                           #
 #  Whitedon - ayrtonarantes0987654321ayrt008@gmail.com                          #
 #                                                                               #
 #################################################################################
 
-# overdeep-tools version
+# overdeep-installer version
 VERSION='0.0.1'
 
 # actual path
 BASEDIR="$(dirname "$0")"
 
-# path to overdeep-tools
-#OVERDEEP_PATH='/usr/share/overdeep'
+# path to overdeep-installer
 OVERDEEP_PATH="$BASEDIR"
 
 # directory of /mnt to work
@@ -223,7 +222,7 @@ err()
 banner()
 {
     columns="$(tput cols)"
-    str="--==[ overdeep-tools v$VERSION ]==--"
+    str="--==[ overdeep-installer v$VERSION ]==--"
 
     printf "${MAGENTAB}%*s${NC}\n" "${COLUMNS:-$(tput cols)}" | tr ' ' '-'
 
@@ -320,7 +319,7 @@ check_uid()
 {
     if [ "$(id -u)" != '0' ]
     then
-        err 'You must be root to run overdeep-tools!'
+        err 'You must be root to run overdeep-installer!'
         exit $FAILURE
     fi
 
@@ -423,7 +422,7 @@ self_updater()
             exit $FAILURE
         fi
         # apply permission of execution
-        chmod +x overdeep-tools.sh
+        chmod +x overdeep-installer.sh
         exit $SUCCESS
     else
         okay 'You already have the latest version of the Overdeep OS installer ! Continuing...'
