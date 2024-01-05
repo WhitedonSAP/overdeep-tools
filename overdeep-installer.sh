@@ -452,7 +452,7 @@ check_firstrun()
 # welcome msg
 welcome()
 {
-    title 'Welcome to the Overdeep-Tools!'
+    title 'Welcome to the Overdeep-Installer!'
     read -p "Press 'Enter' to continue"
 
     return $SUCCESS
