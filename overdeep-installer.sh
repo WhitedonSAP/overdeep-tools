@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 #################################################################################
 #                                                                               #
-#  overdeep-installer - Official installer for OverDeep OS and others Linux's   #
+#  overdeep-installer - Official installer for Overdeep OS and others Linux's   #
 #                                                                               #
 #  By                                                                           #
 #  Whitedon - ayrtonarantes0987654321ayrt008@gmail.com                          #
@@ -127,8 +127,8 @@ BTRFS_SUBVOL=$TRUE
 # current system opts
 CUR_INIT_SYSTEM=''
 
-# X (display + window managers ) setup - default: false
-X_SETUP=$FALSE
+# xorg/wayland (display + de/wm ) setup - default: false
+DISPLAY_SERVER_SETUP=$FALSE
 
 # vms opts
 # virtualBox setup - default: false
@@ -140,7 +140,7 @@ VMWARE_SETUP=$FALSE
 # normal system user
 NORMAL_USER=''
 
-# default OverDeep OS repository URL
+# default Overdeep OS repository URL
 ARCHLINUX_REPO_URL=''
 
 # exit on ctrl + c
@@ -394,23 +394,23 @@ self_updater()
     woutput '[+] Checking for a new version of myself...'
     printf "\n\n"
 
-    repo="$(timeout -s SIGTERM 20 curl https://raw.githubusercontent.com/Whitedon/overdeep-os/main/version.txt 2> /dev/null)"
+    repo="$(timeout -s SIGTERM 20 curl https://raw.githubusercontent.com/WhitedonSAP/overdeep-tools/main/version.txt 2> /dev/null)"
     this="$(cat version.txt)"
 
     if [[ "$repo" != "$this" ]]
     then
         warn 'A new version is available! Going update myself...'
         # remove old directory if exist
-        if [[ -d "../$BASEDIR/overdeep-os-*.old" ]]
+        if [[ -d "../$BASEDIR/overdeep-tools-*.old" ]]
         then
-            rm -rf "../$BASEDIR/overdeep-os-*.old"
+            rm -rf "../$BASEDIR/overdeep-tools-*.old"
         fi
         # move the files to create .old directory
         cd ..
-        mkdir "overdeep-os-$VERSION.old"
-        mv overdeep-os/* "overdeep-os-$VERSION.old/"
+        mkdir "overdeep-tools-$VERSION.old"
+        mv overdeep-tools/* "overdeep-tools-$VERSION.old/"
         # restore options and download the new files to replace
-        cd overdeep-os
+        cd overdeep-tools
         git restore .
         git pull
         # check status
@@ -425,7 +425,7 @@ self_updater()
         chmod +x overdeep-installer.sh
         exit $SUCCESS
     else
-        okay 'You already have the latest version of the Overdeep OS installer ! Continuing...'
+        okay 'You already have the latest version of the Overdeep-Installer ! Continuing...'
     fi
 
     sleep_clear 0
@@ -510,7 +510,7 @@ select_distros()
         title 'Select Distros'
         woutput '[+] Choose an available distro:'
         printf "\n
-      1. OverDeep OS
+      1. Overdeep OS
       2. Archlinux
       3. Blackarch
       4. Gentoo
@@ -525,7 +525,7 @@ select_distros()
         then
             if [ "$INSTALL_MODE" = 1 ]
             then
-                DISTRO_NAME='OverDeep OS'
+                DISTRO_NAME='Overdeep OS'
             elif [ "$INSTALL_MODE" = 2 ]
             then
                 DISTRO_NAME='Archlinux'
@@ -940,7 +940,7 @@ ask_dualboot()
     while [ "$DUALBOOT" = '' ]
     do
         if confirm_title 'Hard Drive Setup > DualBoot' \
-        '[?] Install OverDeep OS with Windows/Other OS [y/n]: '
+        '[?] Install Overdeep OS with Windows/Other OS [y/n]: '
         then
             DUALBOOT=$TRUE
         else
@@ -1825,10 +1825,10 @@ setup_bootloader()
         warn 'Installing grub on EFI partition...'
         if [ "$usbgrub" = 'y' ] || [ "$usbgrub" = 'Y' ]
         then
-            chroot $CHROOT grub-install --target=x86_64-efi --efi-directory=/boot/efi --bootloader-id="OverDeep OS" --removable
+            chroot $CHROOT grub-install --target=x86_64-efi --efi-directory=/boot/efi --bootloader-id="Overdeep OS" --removable
         elif [ "$usbgrub" = 'n' ] || [ "$usbgrub" = 'N' ]
         then
-            chroot $CHROOT grub-install --target=x86_64-efi --efi-directory=/boot/efi --bootloader-id="OverDeep OS"
+            chroot $CHROOT grub-install --target=x86_64-efi --efi-directory=/boot/efi --bootloader-id="Overdeep OS"
         fi
     elif [ "$BOOT_MODE" = 'uefi' ] && [ $DUALBOOT = $FALSE ]
     then
@@ -1837,10 +1837,10 @@ setup_bootloader()
         warn 'Installing grub on EFI partition...'
         if [ "$usbgrub" = 'y' ] || [ "$usbgrub" = 'Y' ]
         then
-            chroot $CHROOT grub-install --target=x86_64-efi --efi-directory=/boot/efi --bootloader-id="OverDeep OS" --removable --recheck
+            chroot $CHROOT grub-install --target=x86_64-efi --efi-directory=/boot/efi --bootloader-id="Overdeep OS" --removable --recheck
         elif [ "$usbgrub" = 'n' ] || [ "$usbgrub" = 'N' ]
         then
-            chroot $CHROOT grub-install --target=x86_64-efi --efi-directory=/boot/efi --bootloader-id="OverDeep OS" --recheck
+            chroot $CHROOT grub-install --target=x86_64-efi --efi-directory=/boot/efi --bootloader-id="Overdeep OS" --recheck
         fi
     elif [ "$BOOT_MODE" = 'legacy' ] && [ $DUALBOOT = $TRUE ]
     then
@@ -2101,7 +2101,7 @@ setup_base_system()
 # enable systemd-networkd services
 enable_iwd_networkd()
 {
-    title 'OverDeep OS Setup > Network'
+    title 'Overdeep OS Setup > Network'
 
     woutput '[+] Enabling Iwd and Networkd'
     printf "\n\n"
@@ -2115,7 +2115,7 @@ enable_iwd_networkd()
 # update /etc files and set up iptables
 update_etc()
 {
-    title 'OverDeep OS Setup > Etc files'
+    title 'Overdeep OS Setup > Etc files'
 
     woutput '[+] Updating /etc files'
     printf "\n\n"
@@ -2131,7 +2131,7 @@ update_etc()
 # ask for overdeep linux mirror
 ask_mirror()
 {
-    title 'OverDeep OS Setup > BlackArch Mirror'
+    title 'Overdeep OS Setup > BlackArch Mirror'
 
     local IFS='|'
     count=1
@@ -2219,51 +2219,22 @@ pass_mirror_conf()
 }
 
 
-# ask user for X (display + window manager) setup
-ask_x_setup()
+# ask user for display server
+ask_display_server()
 {
-    if confirm_title 'OverDeep OS Setup > X11' '[?] Setup X11 + window managers [y/n]: '
+    if confirm_title 'Display Server Setup' '[?] Install a Display Server (Xorg/Wayland) [y/n]: '
     then
-        X_SETUP=$TRUE
-        printf "\n"
-        printf "%s\n\n" "${BLINK}NOOB! NOOB! NOOB! NOOB! NOOB! NOOB! NOOB!${NC}"
+        DISPLAY_SERVER_SETUP=$TRUE
     fi
 
     return $SUCCESS
 }
 
 
-# setup display manager
-setup_display_manager()
+# setup display server
+setup_display_server()
 {
-    title 'OverDeep OS Setup > Display Manager'
-
-    woutput '[+] Setting up LXDM'
-    printf "\n\n"
-
-    # install lxdm packages
-    chroot $CHROOT pacman -S lxdm --needed --overwrite='*' --noconfirm \
-        > $VERBOSE 2>&1
-
-    # config files
-    cp -r "$OVERDEEP_PATH/data/etc/X11" "$CHROOT/etc/."
-    cp -r "$OVERDEEP_PATH/data/etc/xprofile" "$CHROOT/etc/."
-    cp -r "$OVERDEEP_PATH/data/etc/lxdm/." "$CHROOT/etc/lxdm/."
-    cp -r "$OVERDEEP_PATH/data/usr/share/lxdm/." "$CHROOT/usr/share/lxdm/."
-    cp -r "$OVERDEEP_PATH/data/usr/share/gtk-2.0/." "$CHROOT/usr/share/gtk-2.0/."
-    mkdir -p "$CHROOT/usr/share/xsessions"
-
-    # enable in systemd
-    chroot $CHROOT systemctl enable lxdm > $VERBOSE 2>&1
-
-    return $SUCCESS
-}
-
-
-# setup window managers
-setup_full_desktop()
-{
-    title 'OverDeep OS Setup > Desktop'
+    title 'Overdeep OS Setup > Desktop'
 
     woutput '[+] Setting up window managers'
     printf "\n\n"
@@ -2290,44 +2261,18 @@ setup_full_desktop()
         echo
         case $choice in
             1)
-                chroot $CHROOT pacman -S awesome --needed --overwrite='*' --noconfirm \
-                    > $VERBOSE 2>&1
-                cp -r "$OVERDEEP_PATH/data/etc/xdg/awesome/." "$CHROOT/etc/xdg/awesome/."
-                cp -r "$OVERDEEP_PATH/data/usr/share/awesome/." "$CHROOT/usr/share/awesome/."
-                # fix bullshit exit() issue
-                sed -i 's|local visible, action = cmd(item, self)|local visible, action = cmd(0, 0)|' \
-                    "$CHROOT/usr/share/awesome/lib/awful/menu.lua"
-                cp -r "$OVERDEEP_PATH/data/usr/share/xsessions/awesome.desktop" "$CHROOT/usr/share/xsessions"
                 break
                 ;;
             2)
-                chroot $CHROOT pacman -S fluxbox --needed --overwrite='*' --noconfirm \
-                    > $VERBOSE 2>&1
-                cp -r "$OVERDEEP_PATH/data/usr/share/fluxbox/." "$CHROOT/usr/share/fluxbox/."
-                cp -r "$OVERDEEP_PATH/data/usr/share/xsessions/fluxbox.desktop" "$CHROOT/usr/share/xsessions"
                 break
                 ;;
             3)
-                chroot $CHROOT pacman -S i3 dmenu rofi --needed --overwrite='*' \
-                    --noconfirm > $VERBOSE 2>&1
-                cp -r "$OVERDEEP_PATH/data/root/"{.config,.i3status.conf} "$CHROOT/root/."
-                cp -r "$OVERDEEP_PATH/data/usr/share/xsessions/i3.desktop" "$CHROOT/usr/share/xsessions"
                 break
                 ;;
             4)
-                chroot $CHROOT pacman -S openbox --needed --overwrite='*' --noconfirm \
-                    > $VERBOSE 2>&1
-                cp -r "$OVERDEEP_PATH/data/etc/xdg/openbox/." "$CHROOT/etc/xdg/openbox/."
-                cp -r "$OVERDEEP_PATH/data/usr/share/themes/blackarch" \
-                    "$CHROOT/usr/share/themes/i3lock/."
-                cp -r "$OVERDEEP_PATH/data/usr/share/xsessions/openbox.desktop" "$CHROOT/usr/share/xsessions"
                 break
                 ;;
             5)
-                chroot $CHROOT pacman -S spectrwm --needed --overwrite='*' --noconfirm \
-                    > $VERBOSE 2>&1
-                cp -r "$OVERDEEP_PATH/data/etc/spectrwm.conf" "$CHROOT/etc/spectrwm.conf"
-                cp -r "$OVERDEEP_PATH/data/usr/share/xsessions/spectrwm.desktop" "$CHROOT/usr/share/xsessions"
                 break
                 ;;
         esac
@@ -2336,9 +2281,32 @@ setup_full_desktop()
     # wallpaper
     cp -r "$OVERDEEP_PATH/data/usr/share/blackarch" "$CHROOT/usr/share/blackarch"
 
-    # remove wrong xsession entries
-    chroot $CHROOT rm /usr/share/xsessions/openbox-kde.desktop > $VERBOSE 2>&1
-    chroot $CHROOT rm /usr/share/xsessions/i3-with-shmlog.desktop > $VERBOSE 2>&1
+    return $SUCCESS
+}
+
+
+# setup display manager
+setup_display_manager()
+{
+    title 'Overdeep OS Setup > Display Manager'
+
+    woutput '[+] Setting up LXDM'
+    printf "\n\n"
+
+    # install lxdm packages
+    chroot $CHROOT pacman -S lxdm --needed --overwrite='*' --noconfirm \
+        > $VERBOSE 2>&1
+
+    # config files
+    cp -r "$OVERDEEP_PATH/data/etc/X11" "$CHROOT/etc/."
+    cp -r "$OVERDEEP_PATH/data/etc/xprofile" "$CHROOT/etc/."
+    cp -r "$OVERDEEP_PATH/data/etc/lxdm/." "$CHROOT/etc/lxdm/."
+    cp -r "$OVERDEEP_PATH/data/usr/share/lxdm/." "$CHROOT/usr/share/lxdm/."
+    cp -r "$OVERDEEP_PATH/data/usr/share/gtk-2.0/." "$CHROOT/usr/share/gtk-2.0/."
+    mkdir -p "$CHROOT/usr/share/xsessions"
+
+    # enable in systemd
+    chroot $CHROOT systemctl enable lxdm > $VERBOSE 2>&1
 
     return $SUCCESS
 }
@@ -2347,7 +2315,7 @@ setup_full_desktop()
 # ask user for VirtualBox modules+utils setup
 ask_vbox_setup()
 {
-    if confirm_title 'OverDeep OS Setup > VirtualBox' '[?] Setup VirtualBox modules [y/n]: '
+    if confirm_title 'Overdeep OS Setup > VirtualBox' '[?] Setup VirtualBox modules [y/n]: '
     then
         VBOX_SETUP=$TRUE
     fi
@@ -2359,7 +2327,7 @@ ask_vbox_setup()
 # setup virtualbox utils
 setup_vbox_utils()
 {
-    title 'OverDeep OS Setup > VirtualBox'
+    title 'Overdeep OS Setup > VirtualBox'
 
     woutput '[+] Setting up VirtualBox utils'
     printf "\n\n"
@@ -2382,7 +2350,7 @@ setup_vbox_utils()
 # ask user for VirtualBox modules+utils setup
 ask_vmware_setup()
 {
-    if confirm_title 'OverDeep OS Setup > VMware' '[?] Setup VMware modules [y/n]: '
+    if confirm_title 'Overdeep OS Setup > VMware' '[?] Setup VMware modules [y/n]: '
     then
         VMWARE_SETUP=$TRUE
     fi
@@ -2394,7 +2362,7 @@ ask_vmware_setup()
 # setup vmware utils
 setup_vmware_utils()
 {
-    title 'OverDeep OS Setup > VMware'
+    title 'Overdeep OS Setup > VMware'
 
     woutput '[+] Setting up VMware utils'
     printf "\n\n"
@@ -2412,7 +2380,7 @@ setup_vmware_utils()
 # ask user for  tools setup
 ask_overdeep_tools_setup()
 {
-    if confirm_title 'OverDeep OS Setup > Tools' '[?] Setup OverDeep OS tools [y/n]: '
+    if confirm_title 'Overdeep OS Setup > Tools' '[?] Setup Overdeep OS tools [y/n]: '
     then
         OVERDEEP_TOOLS_SETUP=$TRUE
     fi
@@ -2431,9 +2399,9 @@ setup_overdeep_tools()
         noconfirm='--noconfirm'
     fi
 
-    title 'OverDeep OS Setup > Tools'
+    title 'Overdeep OS Setup > Tools'
 
-    woutput '[+] Installing OverDeep OS packages (grab a coffee)'
+    woutput '[+] Installing Overdeep OS packages (grab a coffee)'
     printf "\n\n"
 
     if [ "$INSTALL_MODE" = $INSTALL_STAGE ]
@@ -2489,7 +2457,7 @@ setup_overdeep_tools()
 # add user to newly created groups
 update_user_groups()
 {
-    title 'OverDeep OS Setup > User'
+    title 'Overdeep OS Setup > User'
 
     woutput "[+] Adding user $user to groups and sudoers"
     printf "\n\n"
@@ -2513,7 +2481,7 @@ dump_full_iso()
     full_dirs='/bin /sbin /etc /home /lib /lib64 /opt /root /srv /usr /var /tmp'
     total_size=0 # no cheat
 
-    title 'OverDeep OS Setup'
+    title 'Overdeep OS Setup'
 
     woutput '[+] Dumping data from Full-ISO. Grab a coffee and pop shells!'
     printf "\n\n"
@@ -2573,7 +2541,7 @@ setup_overdeep()
     ask_x_setup
     sleep_clear 3
 
-    if [ $X_SETUP -eq $TRUE ]
+    if [ $DISPLAY_SERVER_SETUP -eq $TRUE ]
     then
         setup_display_manager
         sleep_clear 1
@@ -2633,7 +2601,7 @@ easter_backdoor()
 
     title 'Game Over'
 
-    woutput '[+] OverDeep installation successfull!'
+    woutput '[+] Overdeep installation successfull!'
     printf "\n\n"
 
     woutput 'Yo n00b, b4ckd00r1ng y0ur sy5t3m n0w '
