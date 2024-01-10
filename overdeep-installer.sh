@@ -1326,8 +1326,7 @@ confirm_all()
                 ask_partitions
             else
                 err 'Hard Drive Setup aborted. Cancelling...'
-                echo
-                warn 'Run this script anytime to try install again...'
+                warn 'Run this script anytime for try again...'
                 exit $FAILURE
             fi
         fi
@@ -1371,19 +1370,43 @@ open_luks_partition()
 }
 
 
-# create swap partition
-make_swap_partition()
+# make/set the efi partition
+make_efi_partition()
 {
-    title 'Hard Drive Setup > Partition Creation (swap)'
-
-    woutput '[+] Creating SWAP partition'
-    printf "\n\n"
-    if [[ "$(df | grep -o $SWAP_PART)" != '' ]]
+    if [ $DUALBOOT = $TRUE ]
     then
-        swapoff $SWAP_PART
+        return $SUCCESS
     fi
-    mkswap -c -L "SWAP" "$SWAP_PART" > $VERBOSE 2>&1 ||
+
+    title 'Hard Drive Setup > Partition Creation (efi)'
+
+    woutput '[+] Creating EFI partition'
+    printf "\n\n"
+
+    mkfs.fat -c -n "EFI" -F 32 "$EFI_PART" > $VERBOSE 2>&1 ||
         { err 'Could not create filesystem'; exit $FAILURE; }
+
+    return $SUCCESS
+}
+
+
+# make and format boot partition
+make_boot_partition()
+{
+    title 'Hard Drive Setup > Partition Creation (boot)'
+
+    woutput '[+] Creating BOOT partition'
+    printf "\n\n"
+
+    if [ "$BOOT_FS_TYPE" = 'ext2' ] || [ "$BOOT_FS_TYPE" = 'ext4' ]
+    then
+        mkfs.$BOOT_FS_TYPE -L "BOOT" -F "$BOOT_PART" > $VERBOSE 2>&1 ||
+            { err 'Could not create filesystem'; exit $FAILURE; }
+    elif [ "$BOOT_FS_TYPE" = 'btrfs' ]
+    then
+        mkfs.$BOOT_FS_TYPE -L "BOOT" -f "$BOOT_PART" > $VERBOSE 2>&1 ||
+            { err 'Could not create filesystem'; exit $FAILURE; }
+    fi
 
     return $SUCCESS
 }
@@ -1453,48 +1476,6 @@ make_root_partition()
 }
 
 
-# make/set the efi partition
-make_efi_partition()
-{
-    if [ $DUALBOOT = $TRUE ]
-    then
-        return $SUCCESS
-    fi
-
-    title 'Hard Drive Setup > Partition Creation (efi)'
-
-    woutput '[+] Creating EFI partition'
-    printf "\n\n"
-
-    mkfs.fat -c -n "EFI" -F 32 "$EFI_PART" > $VERBOSE 2>&1 ||
-        { err 'Could not create filesystem'; exit $FAILURE; }
-
-    return $SUCCESS
-}
-
-
-# make and format boot partition
-make_boot_partition()
-{
-    title 'Hard Drive Setup > Partition Creation (boot)'
-
-    woutput '[+] Creating BOOT partition'
-    printf "\n\n"
-
-    if [ "$BOOT_FS_TYPE" = 'ext2' ] || [ "$BOOT_FS_TYPE" = 'ext4' ]
-    then
-        mkfs.$BOOT_FS_TYPE -L "BOOT" -F "$BOOT_PART" > $VERBOSE 2>&1 ||
-            { err 'Could not create filesystem'; exit $FAILURE; }
-    elif [ "$BOOT_FS_TYPE" = 'btrfs' ]
-    then
-        mkfs.$BOOT_FS_TYPE -L "BOOT" -f "$BOOT_PART" > $VERBOSE 2>&1 ||
-            { err 'Could not create filesystem'; exit $FAILURE; }
-    fi
-
-    return $SUCCESS
-}
-
-
 # make and format partitions
 make_partitions()
 {
@@ -1523,6 +1504,24 @@ make_partitions()
 }
 
 
+# create swap partition
+make_swap_partition()
+{
+    title 'Hard Drive Setup > Partition Creation (swap)'
+
+    woutput '[+] Creating SWAP partition'
+    printf "\n\n"
+    if [[ "$(df | grep -o $SWAP_PART)" != '' ]]
+    then
+        swapoff $SWAP_PART
+    fi
+    mkswap -c -L "SWAP" "$SWAP_PART" > $VERBOSE 2>&1 ||
+        { err 'Could not create filesystem'; exit $FAILURE; }
+
+    return $SUCCESS
+}
+
+
 # mount filesystems
 mount_filesystems()
 {
@@ -1534,10 +1533,10 @@ mount_filesystems()
     # Check
     if [[ $(find $CHROOT > /dev/null 2>&1) != "$CHROOT" ]]
     then
-        warn 'Directory /mnt/overdeep not detected! Creating it...'
+        warn "Directory $CHROOT not detected! Creating it..."
         mkdir -p $CHROOT
     else
-        warn 'Directory /mnt/overdeep detected! Continuing...'
+        warn "Directory $CHROOT detected! Continuing..."
     fi
 
     echo
@@ -1699,10 +1698,12 @@ setup_resolvconf()
 # setup fstab
 setup_fstab()
 {
-    title 'Base System Setup > fstab'
+    title 'Base System Setup > Fstab'
 
     woutput '[+] Setting up /etc/fstab'
     printf "\n\n"
+
+    echo -e "## File generated automatically by genfstab\n" > "$CHROOT/etc/fstab"
 
     if [ "$PART_LABEL" = "gpt" ]
     then
@@ -1724,23 +1725,38 @@ setup_fstab()
 }
 
 
-# setup locale and keymap
+# setup locale
 setup_locale()
 {
     title 'Base System Setup > Locale'
-
     woutput "[+] Setting up $LOCALE locale"
     printf "\n\n"
 
-    sed -i "s/^#en_US.UTF-8/en_US.UTF-8/" "$CHROOT/etc/locale.gen"
+    echo -e "## File generated automatically by overdeep-installer\nen_US.UTF-8 UTF-8" > "$CHROOT/etc/locale.gen"
     echo ''"$LOCALE"' UTF-8' >> "$CHROOT/etc/locale.gen"
-    chroot $CHROOT locale-gen
-    chroot $CHROOT echo "LANG=$LOCALE"
+    chroot $CHROOT locale-gen > $VERBOSE 2>&1
+    if [ "$INIT_SYSTEM" = 'openrc' ]
+    then
+        echo -e 'LANG='"$LOCALE"'\nLC_COLLATE='"C.UTF-8"'' > "$CHROOT/etc/env.d/02locale"
+    elif [ "$INIT_SYSTEM" = 'systemd' ]
+    then
+        echo 'LANG='"$LOCALE"'' > "$CHROOT/etc/locale.conf"
+    fi
 
     return $SUCCESS
 }
 
 
+# setup keymap
+setup_keymap()
+{
+    title 'Base System Setup > Keymap'
+    woutput "[+] Setting up $KEYMAP keymap"
+    printf "\n\n"
+
+    if [ "$INIT_SYSTEM" = 'openrc' ]
+        sed "$CHROOT/etc/conf.d/keymaps"
+}
 # setup timezone
 setup_time()
 {
