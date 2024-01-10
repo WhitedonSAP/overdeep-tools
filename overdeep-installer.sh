@@ -60,8 +60,12 @@ DISTRO_NAME=''
 INIT_SYSTEM=''
 # verbose mode
 VERBOSE=''
+# default locale
+DEF_LOCALE='en_US.UTF-8'
 # chosen locale
 LOCALE=''
+# default keymap
+DEF_KEYMAP='us'
 # chosen keymap
 KEYMAP=''
 # hostname
@@ -624,12 +628,12 @@ set_locale()
         # default locale
         if [ -z "$LOCALE" ]
         then
-            warn "Setting 'en_US.UTF-8' as default"
-            LOCALE='en_US.UTF-8'
+            warn "Setting $DEF_LOCALE as default locale"
+            LOCALE=$DEF_LOCALE
             break
-        elif [ "$LOCALE" = "$(cat locale.gen | grep -w $LOCALE)" ]
+        elif [ "$LOCALE" = "$(cat locales.txt | grep -w $LOCALE)" ]
         then
-            warn "Setting $LOCALE as default"
+            warn "Setting $LOCALE as default locale and $DEF_LOCALE as fallback"
             break
         else
             err 'The locale is incorrect! Try again...'
@@ -642,7 +646,7 @@ set_locale()
 }
 
 
-# ask to set locale for the current system
+# ask to set locale for the current system (systemd only for now)
 set_current_locale()
 {
     if confirm_title 'Environment > Current Locale Setup' \
@@ -702,12 +706,12 @@ set_keymap()
         # default keymap
         if [ -z "$KEYMAP" ]
         then
-            warn "Setting 'us' as default"
-            KEYMAP='us'
+            warn "Setting $DEF_KEYMAP as default keymap"
+            KEYMAP=$DEF_KEYMAP
             break
         elif [ "$KEYMAP" = "$(cat keymap.txt | grep -w $KEYMAP)" ]
         then
-            warn "Setting $KEYMAP as default"
+            warn "Setting $KEYMAP as default keymap"
             break
         else
             err 'The keymap is incorrect! Try again...'
@@ -720,7 +724,7 @@ set_keymap()
 }
 
 
-# ask to set keymap for the current system
+# ask to set keymap for the current system (systemd only for now)
 set_current_keymap()
 {
     if confirm_title 'Environment > Current Keymap Setup' \
@@ -986,8 +990,7 @@ ask_hd_dev()
 {
     while true
     do
-        title 'Hard Drive Setup'
-
+        title 'Hard Drive Setup > Device'
         woutput '[+] Available hard drives for installation:'
         printf "\n\n"
 
@@ -996,6 +999,7 @@ ask_hd_dev()
             echo "    > ${i}"
         done
         echo
+
         woutput '[?] Please choose a device: '
         read -r HD_DEV
         if echo "$HD_DEVS" | grep "\<$HD_DEV\>" > /dev/null
@@ -1105,7 +1109,7 @@ get_partition_label()
 # get partitions
 ask_partitions()
 {
-    title 'Hard Drive Setup > Partitions'
+    title 'Hard Drive Setup > Filesystems'
     woutput '[+] Created partitions:'
     printf "\n\n"
 
@@ -1207,7 +1211,7 @@ ask_partitions()
 # create subvols on btrfs
 ask_btrfs_subvol()
 {
-    if confirm_title 'Hard Drive Setup > Btrfs subvols' '[?] Create subvols to have system snapshots? [y/n]: '
+    if confirm_title 'Hard Drive Setup > Btrfs Subvols' '[?] Create subvols to have system snapshots? [y/n]: '
     then
         return $SUCCESS
     else
@@ -1225,7 +1229,7 @@ confirm_all()
 {
     while true
     do
-        title 'Hard Drive Setup > Confirm settings'
+        title 'Hard Drive Setup > Confirm Settings'
         woutput '[+] Check that all information is correct:'
         printf "\n
       Hostname: $HOST_NAME
@@ -1303,11 +1307,18 @@ confirm_all()
             if confirm '[?] Setup the hard drive again [y/n]: '
             then
                 clear
-                if [ "$BOOT_MODE" = 'legacy' ]
+                if [ "$BOOT_MODE" = 'uefi' ]
+                then
+                    EFI_PART=''
+                elif [ "$BOOT_MODE" = 'legacy' ]
                 then
                     BOOT_PART=''
+                    BOOT_FS_TYPE=''
                 fi
                 ROOT_PART=''
+                ROOT_FS_TYPE=''
+                SWAP_PART=''
+                BTRFS_SUBVOL=$FALSE
                 sleep_clear 0
                 ask_partitions
             else
