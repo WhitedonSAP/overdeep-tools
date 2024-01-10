@@ -4,7 +4,10 @@
 #  overdeep-installer - Official installer for Overdeep OS and others Linux's   #
 #                                                                               #
 #  By                                                                           #
-#  Whitedon - ayrtonarantes0987654321ayrt008@gmail.com                          #
+#  WhitedonSAP                                                                  #
+#                                                                               #
+#  E-mail - ayrtonarantes0987654321ayrt008@gmail.com                            #
+#  Telegram - https://t.me/WhitedonSAP                                          #
 #                                                                               #
 #################################################################################
 
