@@ -517,7 +517,7 @@ select_distros()
         title 'Select Distros'
         woutput '[+] Choose an available distro:'
         printf "\n
-      1. Overdeep OS
+      1. Overdeep OS (Default)
       2. Archlinux
       3. Blackarch
       4. Gentoo
@@ -1136,7 +1136,7 @@ ask_partitions()
         done
         while true
         do
-            woutput '[?] Choose a filesystem to use in your boot partition (ext2, ext4, btrfs)? (default: ext4): '
+            woutput '[?] Choose a filesystem (ext2/ext4/btrfs) to use in your boot partition (Default - ext4): '
             read -r $BOOT_FS_TYPE
             if [ -z "$BOOT_FS_TYPE" ]
             then
@@ -1170,7 +1170,7 @@ ask_partitions()
     done
     while true
     do
-        woutput '[?] Choose a filesystem to use in your root partition (ext4, xfs, jfs, f2fs, btrfs)? (default: ext4): '
+        woutput '[?] Choose a filesystem (ext4/xfs/jfs/f2fs/btrfs) to use in your root partition (Default - ext4): '
         read -r ROOT_FS_TYPE
         if [ -z "$ROOT_FS_TYPE" ]
         then
