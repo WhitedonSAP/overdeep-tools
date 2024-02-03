@@ -517,7 +517,7 @@ select_distros()
         title 'Select Distros'
         woutput '[+] Choose an available distro:'
         printf "\n
-      1. Overdeep OS (Default)
+      1. Overdeep OS
       2. Archlinux
       3. Blackarch
       4. Gentoo
