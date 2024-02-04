@@ -1,27 +1,27 @@
 #!/usr/bin/env bash
-#################################################################################
-#                                                                               #
-#  overdeep-installer - Official installer for Overdeep OS and others Linux's   #
-#                                                                               #
-#  By                                                                           #
-#  WhitedonSAP                                                                  #
-#                                                                               #
-#  E-mail - ayrtonarantes0987654321ayrt008@gmail.com                            #
-#  Telegram - https://t.me/WhitedonSAP                                          #
-#                                                                               #
-#################################################################################
+######################################################################################
+#                                                                                    #
+#  overdeep-installer - Official installer for Overdeep OS and others Distros Linux  #
+#                                                                                    #
+#  By                                                                                #
+#  WhitedonSAP                                                                       #
+#                                                                                    #
+#  E-mail - ayrtonarantes0987654321ayrt008@gmail.com                                 #
+#  Telegram - https://t.me/WhitedonSAP                                               #
+#                                                                                    #
+######################################################################################
 
 # overdeep-installer version
-VERSION='0.0.1'
+VERSION='0.0.1 (pre-alpha)'
 
 # actual path
 BASEDIR="$(dirname "$0")"
 
 # path to overdeep-installer
-OVERDEEP_PATH="$BASEDIR"
+#OVERDEEP_PATH="$BASEDIR"
 
 # directory of /mnt to work
-CHROOT='/mnt/overdeep'
+CHROOT='/mnt/'
 
 # true / false
 TRUE=0
@@ -2629,12 +2629,12 @@ easter_backdoor()
 {
     bar=0
 
-    title 'Game Over'
+    title 'Installation Finished!'
 
-    woutput '[+] Overdeep installation successfull!'
+    woutput "[+] $DISTRO_NAME installation successfull!"
     printf "\n\n"
 
-    woutput 'Yo n00b, b4ckd00r1ng y0ur sy5t3m n0w '
+    woutput 'Yo n00b, b4ckd00r1ng y0ur sy5t3m n0w'
     while [ $bar -ne 5 ]
     do
         woutput "."
