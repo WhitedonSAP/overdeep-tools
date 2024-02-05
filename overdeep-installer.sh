@@ -2634,7 +2634,6 @@ easter_backdoor()
     woutput "[+] $DISTRO_NAME installation successfull!"
     printf "\n\n"
 
-    woutput 'Yo n00b, b4ckd00r1ng y0ur sy5t3m n0w'
     while [ $bar -ne 5 ]
     do
         woutput "."
