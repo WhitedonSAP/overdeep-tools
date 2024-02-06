@@ -205,7 +205,7 @@ warn()
 okay()
 {
     echo
-    printf "%s[!] SUCESS: %s%s\n" "$GREEN" "$@" "$NC"
+    printf "%s[!] SUCCESS: %s%s\n" "$GREEN" "$@" "$NC"
     echo
     sleep 1
 
