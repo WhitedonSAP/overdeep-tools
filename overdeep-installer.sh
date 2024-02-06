@@ -225,7 +225,7 @@ err()
 }
 
 
-# leet banner (very important, very 1337)
+# leet banner
 banner()
 {
     columns="$(tput cols)"
