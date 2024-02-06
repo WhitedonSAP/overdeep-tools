@@ -21,7 +21,7 @@ BASEDIR="$(dirname "$0")"
 #OVERDEEP_PATH="$BASEDIR"
 
 # directory of /mnt to work
-CHROOT='/mnt/'
+CHROOT='/mnt/overdeep'
 
 # true / false
 TRUE=0
