@@ -207,7 +207,7 @@ okay()
     echo
     printf "%s[!] SUCCESS: %s%s\n" "$GREEN" "$@" "$NC"
     echo
-    sleep 3
+    sleep 2
 
     return $SUCCESS
 }
@@ -268,7 +268,7 @@ confirm()
         case $input in
             y|Y|yes|YES|Yes) return $TRUE ;;
             n|N|no|NO|No) return $FALSE ;;
-            *) err 'Incorrect option! Try again...' ; sleep 3 ; clear ; continue ;;
+            *) err 'Incorrect option! Try again...' ; sleep 2 ; clear ; continue ;;
         esac
     done
 
@@ -290,7 +290,7 @@ confirm_title()
         case $input in
             y|Y|yes|YES|Yes) return $TRUE ;;
             n|N|no|NO|No) return $FALSE ;;
-            *) err 'Incorrect option! Try again...' ; sleep 3 ; clear ; continue ;;
+            *) err 'Incorrect option! Try again...' ; sleep 2 ; clear ; continue ;;
         esac
     done
 
@@ -321,17 +321,17 @@ check_env()
 }
 
 
-# check user id
-check_uid()
-{
-    if [ "$(id -u)" != '0' ]
-    then
-        err 'You must be root to run overdeep-installer!'
-        exit $FAILURE
-    fi
-
-    return $SUCCESS
-}
+## check user id
+#check_uid()
+#{
+#    if [ "$(id -u)" != '0' ]
+#    then
+#        err 'You must be root to run overdeep-installer!'
+#        exit $FAILURE
+#    fi
+#
+#    return $SUCCESS
+#}
 
 
 # check boot mode
@@ -2671,7 +2671,6 @@ main()
 {
     # do some ENV checks
     sleep_clear 0
-    check_env
     check_uid
     check_boot_mode
     check_init_system
