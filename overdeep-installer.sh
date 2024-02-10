@@ -12,7 +12,7 @@
 ######################################################################################
 
 # overdeep-installer version
-VERSION='0.0.1 (pre-alpha)'
+VERSION='0.0.1'
 
 # actual path
 BASEDIR="$(dirname "$0")"
