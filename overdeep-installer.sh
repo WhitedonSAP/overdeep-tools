@@ -713,7 +713,7 @@ set_keymap()
             warn "Setting $DEF_KEYMAP as default keymap"
             KEYMAP=$DEF_KEYMAP
             break
-        elif [ "$KEYMAP" = "$(cat keymap.txt | grep -w $KEYMAP)" ]
+        elif [ "$KEYMAP" = "$(cat keymaps.txt | grep -w $KEYMAP)" ]
         then
             warn "Setting $KEYMAP as default keymap"
             break
