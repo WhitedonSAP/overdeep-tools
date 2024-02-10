@@ -1757,7 +1757,10 @@ setup_keymap()
 
     if [ "$INIT_SYSTEM" = 'openrc' ]
         sed "$CHROOT/etc/conf.d/keymaps"
+    fi
 }
+
+
 # setup timezone
 setup_time()
 {
