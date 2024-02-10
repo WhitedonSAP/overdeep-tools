@@ -407,20 +407,22 @@ self_updater()
     if [[ "$repo" != "$this" ]]
     then
         warn 'A new version is available! Going update myself...'
-        # remove old directory if exist
-        if [[ -d "../$BASEDIR/overdeep-tools-*.old" ]]
-        then
-            rm -rf "../$BASEDIR/overdeep-tools-*.old"
-        fi
-        # move the files to create .old directory
-        cd ..
-        mkdir "overdeep-tools-$VERSION.old"
-        mv overdeep-tools/* "overdeep-tools-$VERSION.old/"
+        ## remove old directory if exist
+        #if [[ -d "../$BASEDIR/overdeep-tools-*.old" ]]
+        #then
+        #    rm -rf "../$BASEDIR/overdeep-tools-*.old"
+        #fi
+        ## move the files to create .old directory
+        #cd ..
+        #mkdir "overdeep-tools-$VERSION.old"
+        #mv overdeep-tools/* "overdeep-tools-$VERSION.old/"
         # restore options and download the new files to replace
-        cd overdeep-tools
-        git restore .
-        git pull
-        # check status
+        #cd overdeep-tools
+        cd ..
+        # remove old version
+        rm -rf overdeep-tools
+        # download new version
+        git clone https://github.com/WhitedonSAP/overdeep-tools.git
         if [ $? = 0 ]
         then
             okay 'Updated successfully. Please restart the installer now'
@@ -432,7 +434,7 @@ self_updater()
         chmod +x overdeep-installer.sh
         exit $SUCCESS
     else
-        okay 'You already have the latest version of the Overdeep-Installer ! Continuing...'
+        okay 'You already have the latest version of the Overdeep-Installer! Continuing...'
     fi
 
     sleep_clear 0
