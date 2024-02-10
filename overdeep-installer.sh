@@ -494,7 +494,7 @@ main_menu()
         then
             sleep_clear 0
             select_distros
-        if [ "$main_menu_option" = 2 ]
+        elif [ "$main_menu_option" = 2 ]
         then
             sleep_clear 0
         #if [ "$main_menu_option" = 3 ]
