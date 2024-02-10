@@ -2679,6 +2679,10 @@ main()
     # check for net connection
     check_internet
     sleep_clear 0
+
+    # check for updates
+    self_updater
+    sleep_clear 0
   
     # output mode
     ask_output_mode
