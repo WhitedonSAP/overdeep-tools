@@ -497,9 +497,8 @@ main_menu()
         if [ "$main_menu_option" = 2 ]
         then
             sleep_clear 0
-
-        if [ "$main_menu_option" = 3 ]
-        then
+        #if [ "$main_menu_option" = 3 ]
+        #then
         else
             err 'Incorrect option! Try again...'
             sleep_clear 0
