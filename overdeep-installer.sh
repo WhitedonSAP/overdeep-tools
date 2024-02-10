@@ -12,7 +12,7 @@
 ######################################################################################
 
 # overdeep-installer version
-VERSION='0.0.1'
+VERSION='0.0.2'
 
 # actual path
 BASEDIR="$(dirname "$0")"
@@ -195,7 +195,7 @@ warn()
     echo
     printf "%s[!] WARNING: %s%s\n" "$YELLOW" "$@" "$NC"
     echo
-    sleep 1
+    sleep 3
 
     return $SUCCESS
 }
@@ -207,7 +207,7 @@ okay()
     echo
     printf "%s[!] SUCCESS: %s%s\n" "$GREEN" "$@" "$NC"
     echo
-    sleep 1
+    sleep 3
 
     return $SUCCESS
 }
@@ -219,7 +219,7 @@ err()
     echo
     printf "%s[-] ERROR: %s%s\n" "$RED" "$@" "$NC"
     echo
-    sleep 1
+    sleep 3
 
     return $FAILURE
 }
