@@ -402,7 +402,7 @@ self_updater()
     printf "\n\n"
 
     repo="$(timeout -s SIGTERM 20 curl https://raw.githubusercontent.com/WhitedonSAP/overdeep-tools/main/version.txt 2> /dev/null)"
-    this="$(cat version.txt)"
+    this="$(echo $VERSION)"
 
     if [[ "$repo" != "$this" ]]
     then
