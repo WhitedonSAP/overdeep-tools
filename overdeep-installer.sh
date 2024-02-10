@@ -57,8 +57,8 @@ BOOT_MODE=''
 # installer opts
 # installation mode
 INSTALL_MODE=''
-# distro for install
-DISTRO_NAME=''
+# current running system
+SYSTEM_BASED=''
 # init system for install
 INIT_SYSTEM=''
 # verbose mode
@@ -157,7 +157,6 @@ ctrl_c()
     err "Keyboard Interrupt detected, leaving..."
     exit $FAILURE
 }
-
 trap ctrl_c 2
 
 
@@ -201,18 +200,6 @@ warn()
 }
 
 
-# print success
-okay()
-{
-    echo
-    printf "%s[!] SUCCESS: %s%s\n" "$GREEN" "$@" "$NC"
-    echo
-    sleep 2
-
-    return $SUCCESS
-}
-
-
 # print error and return failure
 err()
 {
@@ -222,6 +209,18 @@ err()
     sleep 3
 
     return $FAILURE
+}
+
+
+# print success
+okay()
+{
+    echo
+    printf "%s[!] SUCCESS: %s%s\n" "$GREEN" "$@" "$NC"
+    echo
+    sleep 2
+
+    return $SUCCESS
 }
 
 
@@ -369,6 +368,13 @@ check_init_system()
 }
 
 
+# check the current running system name
+check_system()
+{
+    if [ "$(cat /etc/os-release | grep -w 'ID' | awk -F '=' '{print $2}')" = 'arch' ]
+    then
+
+}
 # check for internet connection
 check_internet()
 {
@@ -427,7 +433,7 @@ self_updater()
         then
             okay 'Updated successfully. Please restart the installer now'
         else
-            err 'There was a problem updating!'
+            err 'There was a problem updating! Try again later...'
             exit $FAILURE
         fi
         # apply permission of execution
