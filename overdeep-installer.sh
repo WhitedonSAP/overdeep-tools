@@ -1756,6 +1756,7 @@ setup_keymap()
     printf "\n\n"
 
     if [ "$INIT_SYSTEM" = 'openrc' ]
+    then
         sed "$CHROOT/etc/conf.d/keymaps"
     fi
 }
