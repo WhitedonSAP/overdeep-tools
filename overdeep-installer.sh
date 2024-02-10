@@ -431,7 +431,7 @@ self_updater()
             exit $FAILURE
         fi
         # apply permission of execution
-        chmod +x overdeep-installer.sh
+        chmod +x overdeep-tools/overdeep-installer.sh
         exit $SUCCESS
     else
         okay 'You already have the latest version of the Overdeep-Installer! Continuing...'
