@@ -642,7 +642,7 @@ set_locale()
             warn "Setting $DEF_LOCALE as default locale"
             LOCALE=$DEF_LOCALE
             break
-        elif [ "$LOCALE UTF-8" = "$(cat locales.txt | grep -w $LOCALE)" ]
+        elif [ "$LOCALE" = "$(cat locales.txt | grep -w $LOCALE)" ]
         then
             warn "Setting $LOCALE as default locale and $DEF_LOCALE as fallback"
             break
