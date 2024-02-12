@@ -369,12 +369,11 @@ check_init_system()
 
 
 # check the current running system name
-check_system()
-{
-    #if [ "$(cat /etc/os-release | grep -w 'ID' | awk -F '=' '{print $2}')" = 'arch' ]
-    #then
-
-}
+#check_system()
+#{
+#    if [ "$(cat /etc/os-release | grep -w 'ID' | awk -F '=' '{print $2}')" = 'arch' ]
+#    then
+#}
 
 
 # check for internet connection
