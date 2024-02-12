@@ -765,6 +765,7 @@ ask_hostname()
 
         if [ "$HOST_NAME" != '' ]
         then
+            warn "Setting $HOST_NAME as hostname"
             break
         elif [ "$HOST_NAME" = '' ]
         then
