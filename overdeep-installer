@@ -176,30 +176,35 @@ check()
 # window default output
 deftext()
 {
-    wout="${1}"
+    # title
+    ttl="${1}"
+    # message
+    msg="${2}"
 
     shift
-    dialog --colors --msgbox "${BLACK}$wout${NC}" 0 0
+    dialog --colors --backtitle "$BKTITLE" --title "$ttl" --msgbox "${BLACK}$msg${NC}" 0 0
 
     return $SUCCESS
 }
 
 
-# windows for error/warning/success
+# windows for errors/warnings/success
 printmsg()
 {
+    # function (error/warn/okay)
     func="${1}"
-    msg="${2}"
+    ttl="${2}"
+    msg="${3}"
 
     if [ "$func" = 'error' ];
     then
-        dialog --colors --msgbox "${RED}[-] ERROR:${NC}\n\n $msg" 0 0
+        dialog --colors --backtitle "$BKTITLE" --title "$ttl" --msgbox "${RED}[-] ERROR:${NC}\n\n $msg" 0 0
     elif [ "$func" = 'warn' ];
     then
-        dialog --colors --msgbox "${YELLOW}[!] WARNING:${NC}\n\n $msg" 0 0
+        dialog --colors --backtitle "$BKTITLE" --title "$ttl" --msgbox "${YELLOW}[!] WARNING:${NC}\n\n $msg" 0 0
     elif [ "$func" = 'okay' ];
     then
-        dialog --colors --msgbox "${GREEN}[#] SUCCESS:${NC}\n\n $msg" 0 0
+        dialog --colors --backtitle "$BKTITLE" --title "$ttl" --msgbox "${GREEN}[#] SUCCESS:${NC}\n\n $msg" 0 0
     fi
     sleep 3
 
