@@ -152,7 +152,7 @@ ARCHLINUX_REPO_URL=''
 # exit on ctrl + c
 ctrl_c()
 {
-    err "Keyboard Interrupt detected, leaving..."
+    printmsg 'error' "Keyboard Interrupt detected, leaving..."
     exit $FAILURE
 }
 trap ctrl_c 2
@@ -191,7 +191,7 @@ printmsg()
     func="${1}"
     msg="${2}"
 
-    if [ "$func" = 'err' ];
+    if [ "$func" = 'error' ];
     then
         dialog --colors --msgbox "${RED}[-] ERROR:${NC}\n\n $msg" 0 0
     elif [ "$func" = 'warn' ];
