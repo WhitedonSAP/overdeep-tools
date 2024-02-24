@@ -31,25 +31,21 @@ FALSE=1
 SUCCESS=0
 FAILURE=1
 
-# colors
-#BLACK="$(tput setaf 0)"
-#BLACKB="$(tput bold ; tput setaf 0)"
-RED="$(tput setaf 1)"
-#REDB="$(tput bold ; tput setaf 1)"
-GREEN="$(tput setaf 2)"
-#GREENB="$(tput bold ; tput setaf 2)"
-YELLOW="$(tput setaf 3)"
-#YELLOWB="$(tput bold ; tput setaf 3)"
-BLUE="$(tput setaf 4)"
-BLUEB="$(tput bold ; tput setaf 4)"
-#MAGENTA="$(tput setaf 5)"
-MAGENTAB="$(tput bold ; tput setaf 5)"
-#CYAN="$(tput setaf 6)"
-#CYANB="$(tput bold ; tput setaf 6)"
-WHITE="$(tput setaf 7)"
-#WHITEB="$(tput bold ; tput setaf 7)"
-BLINK="$(tput blink)"
-NC="$(tput sgr0)"
+## colors
+BLACK='\Z0'
+RED='\Z1'
+GREEN='\Z2'
+YELLOW='\Z3'
+BLUE='\Z4'
+MAGENTA='\Z5'
+CYAN='\Z6'
+WHITE='\Z7'
+# reset color
+NC='\Zn'
+# bold text
+BD='\Zb'
+# reset bold
+NOBD='\ZB'
 
 # check boot mode
 BOOT_MODE=''
@@ -153,7 +149,6 @@ ARCHLINUX_REPO_URL=''
 # exit on ctrl + c
 ctrl_c()
 {
-    echo
     err "Keyboard Interrupt detected, leaving..."
     exit $FAILURE
 }
@@ -169,7 +164,6 @@ check()
 
     if [ "$es" -ne 0 ]
     then
-        echo
         warn "Something went wrong with $func. $info."
         sleep 5
     fi
@@ -182,7 +176,7 @@ woutput()
     wout="${1}"
 
     shift
-    printf "%s$wout%s" "$WHITE" "$@" "$NC"
+    dialog --colors --msgbox "${BLACK}$wout${NC}" 0 0
 
     return $SUCCESS
 }
@@ -191,9 +185,7 @@ woutput()
 # print warning
 warn()
 {
-    echo
-    printf "%s[!] WARNING: %s%s\n" "$YELLOW" "$@" "$NC"
-    echo
+    dialog --colors --msgbox "${YELLOW}[!] WARNING:${NC}\n\n $@" 0 0
     sleep 3
 
     return $SUCCESS
@@ -203,9 +195,7 @@ warn()
 # print error and return failure
 err()
 {
-    echo
-    printf "%s[-] ERROR: %s%s\n" "$RED" "$@" "$NC"
-    echo
+    dialog --colors --msgbox "${RED}[-] ERROR:${NC}\n\n $@" 0 0
     sleep 3
 
     return $FAILURE
@@ -215,9 +205,7 @@ err()
 # print success
 okay()
 {
-    echo
-    printf "%s[!] SUCCESS: %s%s\n" "$GREEN" "$@" "$NC"
-    echo
+    dialog --colors --msgbox "${GREEN}[!] SUCCESS:${NC}\n\n $@" 0 0
     sleep 2
 
     return $SUCCESS
@@ -225,24 +213,24 @@ okay()
 
 
 # leet banner
-banner()
-{
-    columns="$(tput cols)"
-    str="--==[ overdeep-installer v$VERSION ]==--"
-
-    printf "${MAGENTAB}%*s${NC}\n" "${COLUMNS:-$(tput cols)}" | tr ' ' '-'
-
-    echo "$str" |
-    while IFS= read -r line
-    do
-        printf "%s%*s\n%s" "$BLUEB" $(( (${#line} + columns) / 2)) \
-        "$line" "$NC"
-    done
-
-    printf "${MAGENTAB}%*s${NC}\n\n\n" "${COLUMNS:-$(tput cols)}" | tr ' ' '-'
-
-    return $SUCCESS
-}
+#banner()
+#{
+#    columns="$(tput cols)"
+#    str="--==[ overdeep-installer v$VERSION ]==--"
+#
+#    printf "${MAGENTAB}%*s${NC}\n" "${COLUMNS:-$(tput cols)}" | tr ' ' '-'
+#
+#    echo "$str" |
+#    while IFS= read -r line
+#    do
+#        printf "%s%*s\n%s" "$BLUEB" $(( (${#line} + columns) / 2)) \
+#        "$line" "$NC"
+#    done
+#
+#    printf "${MAGENTAB}%*s${NC}\n\n\n" "${COLUMNS:-$(tput cols)}" | tr ' ' '-'
+#
+#    return $SUCCESS
+#}
 
 
 # sleep and clear
