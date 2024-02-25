@@ -152,7 +152,7 @@ ARCHLINUX_REPO_URL=''
 # exit on ctrl + c
 ctrl_c()
 {
-    printmsg 'error' "Keyboard Interrupt detected, leaving..."
+    winbox 'error' "Keyboard Interrupt detected, leaving..."
     exit $FAILURE
 }
 trap ctrl_c 2
@@ -176,29 +176,53 @@ check()
 # default window for box
 winbox()
 {
-    # function (error/warn/okay)
-    func="${1}"
     # title for box
-    ttl="${2}"
+    ttl="${1}"
     # message
-    msg="${3}"
+    msg="${2}"
+    # width and height
+    wdhg="${3}"
 
-    if [ "$func" = 'error' ];
+    if [ -z "$wdhg" ];
     then
-        dialog --colors --backtitle "$BKTITLE" --title "$ttl" --msgbox "${RED}[-] ERROR:${NC}\n\n $msg" 0 0
-        return $FAILURE
-    elif [ "$func" = 'warn' ];
-    then
-        dialog --colors --backtitle "$BKTITLE" --title "$ttl" --msgbox "${YELLOW}[!] WARNING:${NC}\n\n $msg" 0 0
-    elif [ "$func" = 'okay' ];
-    then
-        dialog --colors --backtitle "$BKTITLE" --title "$ttl" --msgbox "${GREEN}[#] SUCCESS:${NC}\n\n $msg" 0 0
-    else
-        shift
-        dialog --colors --backtitle "$BKTITLE" --title "$ttl" --msgbox "${BLACK}$msg${NC}" 0 0
+        wdhg='0 0'
     fi
 
-    sleep 3
+    shift
+    dialog --colors --backtitle "$BKTITLE" --title "$ttl" --msgbox "${BLACK}$msg${NC}" "$wdhg"
+
+    return $SUCCESS
+}
+
+
+# window for function box
+funcbox()
+{
+    # title to box
+    ttl="${1}"
+    # function (okay/warn/error)
+    func="${2}"
+    # message
+    msg="${3}"
+    # width and height
+    wdhg="${4}"
+
+    if [ -z "$wdhg" ];
+    then
+        wdhg='0 0'
+    fi
+
+    if [ "$func" = 'okay' ];
+    then
+        dialog --colors --backtitle "$BKTITLE" --title "$ttl" --msgbox "${GREEN}[#] SUCCESS:${NC}\n\n $msg" "$wdhg"
+    elif [ "$func" = 'warn' ];
+    then
+        dialog --colors --backtitle "$BKTITLE" --title "$ttl" --msgbox "${YELLOW}[!] WARNING:${NC}\n\n $msg" "$wdhg"
+    elif [ "$func" = 'okay' ];
+    then
+        dialog --colors --backtitle "$BKTITLE" --title "$ttl" --msgbox "${RED}[-] ERROR:${NC}\n\n $msg" "$wdhg"
+        return $FAILURE
+    fi
 
     return $SUCCESS
 }
