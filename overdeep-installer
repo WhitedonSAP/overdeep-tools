@@ -173,75 +173,39 @@ check()
 }
 
 
-# display message
-infobox()
-{
-    # title for box
-    ttl="${1}"
-    # message
-    msg="${2}"
-    # width and height
-    wdhg="${3}"
-
-    if [ -z "$wdhg" ];
-    then
-        wdhg='0 0'
-    fi
-
-    dialog --colors --backtitle "$BKTITLE" --title "$ttl" --infobox "${BLACK}$msg${NC}" "$wdhg"
-
-    return $SUCCESS
-}
-
-
 # display message with 'ok' button
-msgbox()
+winbox()
 {
+    # function (msgbox/infobox/okay/warn/error)
+    func=$1
     # title for box
-    ttl="${1}"
+    ttl="$2"
     # message
-    msg="${2}"
+    msg="$3"
     # width and height
-    wdhg="${3}"
+    wdhg="$4"
 
-    if [ -z "$wdhg" ];
+    if [ -z "$wdhg" ]
     then
         wdhg='0 0'
     fi
 
-    shift
-    dialog --colors --backtitle "$BKTITLE" --title "$ttl" --msgbox "${BLACK}$msg${NC}" "$wdhg"
-
-    return $SUCCESS
-}
-
-
-# same msgbox, but with alerts
-msgbox_alt()
-{
-    # title to box
-    ttl="${1}"
-    # function (okay/warn/error)
-    alt="${2}"
-    # message
-    msg="${3}"
-    # width and height
-    wdhg="${4}"
-
-    if [ -z "$wdhg" ];
+    if [ "$func" = 'msgbox' ]
     then
-        wdhg='0 0'
-    fi
-
-    if [ "$alt" = 'okay' ];
+        shift
+        dialog --colors --backtitle "$BKTITLE" --title "$ttl" --msgbox "${BLACK}$msg${NC}" $wdhg
+    elif [ "$func" = 'infobox' ]
     then
-        dialog --colors --backtitle "$BKTITLE" --title "$ttl" --msgbox "${GREEN}[#] SUCCESS:${NC}\n\n$msg" "$wdhg"
-    elif [ "$alt" = 'warn' ];
+        dialog --colors --backtitle "$BKTITLE" --title "$ttl" --infobox "${BLACK}[info] $msg${NC}" $wdhg
+    elif [ "$func" = 'okay' ]
     then
-        dialog --colors --backtitle "$BKTITLE" --title "$ttl" --msgbox "${YELLOW}[!] WARNING:${NC}\n\n$msg" "$wdhg"
-    elif [ "$alt" = 'okay' ];
+        dialog --colors --backtitle "$BKTITLE" --title "$ttl" --msgbox "${GREEN}[ok]${NC}\n\n$msg" $wdhg
+    elif [ "$func" = 'warn' ]
     then
-        dialog --colors --backtitle "$BKTITLE" --title "$ttl" --msgbox "${RED}[-] ERROR:${NC}\n\n$msg" "$wdhg"
+        dialog --colors --backtitle "$BKTITLE" --title "$ttl" --msgbox "${YELLOW}[warn]${NC}\n\n$msg" $wdhg
+    elif [ "$func" = 'okay' ]
+    then
+        dialog --colors --backtitle "$BKTITLE" --title "$ttl" --msgbox "${RED}[error]${NC}\n\n$msg" $wdhg
         return $FAILURE
     fi
 
