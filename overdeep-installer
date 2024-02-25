@@ -48,7 +48,7 @@ NC='\Zn'
 # bold text
 BD='\Zb'
 # reset bold
-NOBD='\ZB'
+NB='\ZB'
 
 # check boot mode
 BOOT_MODE=''
@@ -152,7 +152,7 @@ ARCHLINUX_REPO_URL=''
 # exit on ctrl + c
 ctrl_c()
 {
-    msgbox 'error' "Keyboard Interrupt detected, leaving..."
+    winbox 'error' "Keyboard Interrupt detected, leaving..."
     exit $FAILURE
 }
 trap ctrl_c 2
@@ -173,10 +173,10 @@ check()
 }
 
 
-# display message with 'ok' button
+# display message with dialog windows
 winbox()
 {
-    # function (msgbox/infobox/okay/warn/error)
+    # function (msgbox/infobox/yesno/okay/warn/error)
     func=$1
     # title for box
     ttl="$2"
@@ -193,19 +193,22 @@ winbox()
     if [ "$func" = 'msgbox' ]
     then
         shift
-        dialog --colors --backtitle "$BKTITLE" --title "$ttl" --msgbox "${BLACK}$msg${NC}" $wdhg
+        dialog --colors --backtitle "$BKTITLE" --title "${CYAN}$ttl${NC}" --msgbox "${BLACK}[] ${BLACK}$msg${NC}" $wdhg
     elif [ "$func" = 'infobox' ]
     then
-        dialog --colors --backtitle "$BKTITLE" --title "$ttl" --infobox "${BLACK}[info] $msg${NC}" $wdhg
+        dialog --colors --backtitle "$BKTITLE" --title "${CYAN}$ttl${NC}" --infobox "${BLACK}[info] ${BLACK}$msg${NC}" $wdhg
+    elif [ "$func" = 'yesno' ]
+    then
+        dialog --colors --backtitle "$BKTITLE" --title "${CYAN}$ttl${NC}" --yesno "${BLACK}[] $msg${NC}" $wdhg
     elif [ "$func" = 'okay' ]
     then
-        dialog --colors --backtitle "$BKTITLE" --title "$ttl" --msgbox "${GREEN}[ok]${NC}\n\n$msg" $wdhg
+        dialog --colors --backtitle "$BKTITLE" --title "${CYAN}$ttl${NC}" --msgbox "${GREEN}[ok]\n\n${BLACK}$msg${NC}" $wdhg
     elif [ "$func" = 'warn' ]
     then
-        dialog --colors --backtitle "$BKTITLE" --title "$ttl" --msgbox "${YELLOW}[warn]${NC}\n\n$msg" $wdhg
+        dialog --colors --backtitle "$BKTITLE" --title "${CYAN}$ttl${NC}" --msgbox "${YELLOW}[warn]\n\n${BLACK}$msg${NC}" $wdhg
     elif [ "$func" = 'error' ]
     then
-        dialog --colors --backtitle "$BKTITLE" --title "$ttl" --msgbox "${RED}[error]${NC}\n\n$msg" $wdhg
+        dialog --colors --backtitle "$BKTITLE" --title "${CYAN}$ttl${NC}" --msgbox "${RED}[error]\n\n${BLACK}$msg${NC}" $wdhg
         return $FAILURE
     fi
 
@@ -223,30 +226,17 @@ sleep_clear()
 }
 
 
-# yes/no
-yesno()
+# check user id
+check_uid()
 {
-    ttl="${1}"
-    msg="${2}"
-    wdhg="${3}"
-
-    dialog --colors --backtitle "$BKTITLE" --title "$ttl" --yesno "${BLACK}$msg${NC}" "$wdhg"
+    if [ "$(id -u)" = '0' ]
+    then
+        winbox error 'Root detected' "Do not run $(basename "$0") as root!"
+        exit $FAILURE
+    fi
 
     return $SUCCESS
 }
-
-
-## check user id
-#check_uid()
-#{
-#    if [ "$(id -u)" != '0' ]
-#    then
-#        err 'You must be root to run overdeep-installer!'
-#        exit $FAILURE
-#    fi
-#
-#    return $SUCCESS
-#}
 
 
 # check boot mode
@@ -296,7 +286,7 @@ check_init_system()
 # check for internet connection
 check_internet()
 {
-    msgbox 'Check internet' '[+] Checking for Internet connection...'
+    winbox msgbox 'Check internet' 'Checking for Internet connection...'
     printf "\n\n"
 
     if ! curl -s http://www.yahoo.com/ > /dev/null
@@ -321,7 +311,7 @@ check_internet()
 self_updater()
 {
     title 'Self Updater'
-    msgbox '[+] Checking for a new version of myself...'
+    winbox '[+] Checking for a new version of myself...'
     printf "\n\n"
 
     repo="$(timeout -s SIGTERM 20 curl https://raw.githubusercontent.com/WhitedonSAP/overdeep-tools/main/version.txt 2> /dev/null)"
@@ -397,7 +387,7 @@ main_menu()
     while true
     do
         title 'Main Menu'
-        msgbox '[+] Available options:'
+        winbox '[+] Available options:'
         printf "\n
       1. Select Distros
       2. Internet Settings
@@ -411,7 +401,7 @@ main_menu()
       10.
       11. Self Updater
       12. Quit\n\n"
-        msgbox '[?] Make a choice: '
+        winbox '[?] Make a choice: '
         read -r main_menu_option
         if [ "$main_menu_option" = 1 ]
         then
@@ -439,14 +429,14 @@ select_distros()
     while true
     do
         title 'Select Distros'
-        msgbox '[+] Choose an available distro:'
+        winbox '[+] Choose an available distro:'
         printf "\n
       1. Overdeep OS
       2. Archlinux
       3. Blackarch
       4. Gentoo
       5. Funtoo\n\n"
-        msgbox '[?] Make a choice: '
+        winbox '[?] Make a choice: '
         read -r INSTALL_MODE
         if [ "$INSTALL_MODE" = 1 ] || \
             [ "$INSTALL_MODE" = 2 ] || \
@@ -488,11 +478,11 @@ ask_output_mode()
     while true
     do
         title 'Environment > Output Mode'
-        msgbox '[+] Available output modes:'
+        winbox '[+] Available output modes:'
         printf "\n
       1. Quiet (default)
       2. Verbose (output of system commands: mkfs, etc.)\n\n"
-        msgbox "[?] Make a choice: "
+        winbox "[?] Make a choice: "
         read -r output_mode
         if [ "$output_mode" = '' ] || [ "$output_mode" = 1 ]
         then
@@ -519,11 +509,11 @@ ask_locale()
     while true
     do
         title 'Environment > Locale Setup'
-        msgbox '[+] Available locale options:'
+        winbox '[+] Available locale options:'
         printf "\n
       1. Set a locale
       2. List available locales\n\n"
-        msgbox "[?] Make a choice: "
+        winbox "[?] Make a choice: "
         read -r locale_opt
         if [ "$locale_opt" = 1 ]
         then
@@ -550,7 +540,7 @@ set_locale()
     while true
     do
         title 'Environment > Locale Setup'
-        msgbox '[?] Set locale [default: en_US.UTF-8]: '
+        winbox '[?] Set locale [default: en_US.UTF-8]: '
         read -r LOCALE
         # default locale
         if [ -z "$LOCALE" ]
@@ -597,11 +587,11 @@ ask_keymap()
     while true
     do
         title 'Environment > Keymap Setup'
-        msgbox '[+] Available keymap options:'
+        winbox '[+] Available keymap options:'
         printf "\n
       1. Set a keymap
       2. List available keymaps\n\n"
-        msgbox '[?] Make a choice: '
+        winbox '[?] Make a choice: '
         read -r keymap_opt
         if [ "$keymap_opt" = 1 ]
         then
@@ -628,7 +618,7 @@ set_keymap()
     while true
     do
         title 'Environment > Keymap Setup'
-        msgbox '[?] Set keymap [default: us]: '
+        winbox '[?] Set keymap [default: us]: '
         read -r KEYMAP
         # default keymap
         if [ -z "$KEYMAP" ]
@@ -675,7 +665,7 @@ ask_hostname()
     while true
     do
         title 'Network Setup > Hostname'
-        msgbox '[?] Set your hostname: '
+        winbox '[?] Set your hostname: '
         read -r HOST_NAME
         printf "\n"
 
@@ -709,14 +699,14 @@ ask_net_if()
     while true
     do
         title 'Network Setup > Network Interface'
-        msgbox '[+] Available network interfaces:'
+        winbox '[+] Available network interfaces:'
         printf "\n\n"
         for i in $NET_IFS
         do
             echo "    > $i"
         done
         echo
-        msgbox '[?] Please choose a network interface: '
+        winbox '[?] Please choose a network interface: '
         read -r NET_IF
         if echo "$NET_IFS" | grep "\<$NET_IF\>" > /dev/null
         then
@@ -739,13 +729,13 @@ ask_net_conf_mode()
           [ "$NET_CONF_MODE" != "$NET_CONF_SKIP" ]
     do
         title 'Network Setup > Network Interface'
-        msgbox '[+] Network interface configuration:'
+        winbox '[+] Network interface configuration:'
         printf "\n
       1. Auto DHCP (use this for auto connect via dhcp on selected interface)
       2. WiFi WPA Setup (use if you need to connect to a wlan before)
       3. Manual (use this if you are 1337)
       4. Skip (use this if you are already connected)\n\n"
-        msgbox "[?] Please choose a mode: "
+        winbox "[?] Please choose a mode: "
         read -r NET_CONF_MODE
         clear
     done
@@ -762,22 +752,22 @@ ask_net_addr()
           [ "$BROADCAST" = "" ] || [ "$NAMESERVER" = "" ]
     do
         title 'Network Setup > Network Configuration (manual)'
-        msgbox "[+] Configuring network interface $NET_IF via USER: "
+        winbox "[+] Configuring network interface $NET_IF via USER: "
         printf "\n
       > Host ipv4
       > Gateway ipv4
       > Subnetmask
       > Broadcast
       > Nameserver\n\n"
-        msgbox '[?] Host IPv4: '
+        winbox '[?] Host IPv4: '
         read -r HOST_IPV4
-        msgbox '[?] Gateway IPv4: '
+        winbox '[?] Gateway IPv4: '
         read -r GATEWAY
-        msgbox '[?] Subnetmask: '
+        winbox '[?] Subnetmask: '
         read -r SUBNETMASK
-        msgbox '[?] Broadcast: '
+        winbox '[?] Broadcast: '
         read -r BROADCAST
-        msgbox '[?] Nameserver: '
+        winbox '[?] Nameserver: '
         read -r NAMESERVER
         clear
     done
@@ -790,7 +780,7 @@ ask_net_addr()
 net_conf_manual()
 {
     title 'Network Setup > Network Configuration (manual)'
-    msgbox "[+] Configuring network interface '$NET_IF' manually: "
+    winbox "[+] Configuring network interface '$NET_IF' manually: "
     printf "\n\n"
 
     ip addr flush dev "$NET_IF"
@@ -809,7 +799,7 @@ net_conf_auto()
     opts='-h noleak -i noleak -v ,noleak -I noleak -t 10'
 
     title 'Network Setup > Network Configuration (auto)'
-    msgbox "[+] Configuring network interface '$NET_IF' via DHCP: "
+    winbox "[+] Configuring network interface '$NET_IF' via DHCP: "
     printf "\n\n"
 
     dhcpcd "$opts" -i "$NET_IF" > $VERBOSE 2>&1
@@ -826,13 +816,13 @@ ask_wlan_data()
     while [ "$WLAN_SSID" = "" ] || [ "$WLAN_PASSPHRASE" = "" ]
     do
         title 'Network Setup > Network Configuration (WiFi)'
-        msgbox "[+] Configuring network interface $NET_IF via W-LAN + DHCP: "
+        winbox "[+] Configuring network interface $NET_IF via W-LAN + DHCP: "
         printf "\n
       > W-LAN SSID
       > WPA Passphrase (will not echo)\n\n"
-        msgbox "[?] W-LAN SSID: "
+        winbox "[?] W-LAN SSID: "
         read -r WLAN_SSID
-        msgbox "[?] WPA Passphrase: "
+        winbox "[?] WPA Passphrase: "
         read -rs WLAN_PASSPHRASE
         clear
     done
@@ -848,7 +838,7 @@ net_conf_wlan()
     dhcp_opts='-h noleak -i noleak -v ,noleak -I noleak -t 10'
 
     title 'Network Setup > Network Configuration (WiFi)'
-    msgbox "[+] Configuring network interface $NET_IF via W-LAN + DHCP: "
+    winbox "[+] Configuring network interface $NET_IF via W-LAN + DHCP: "
     printf "\n\n"
 
     wpa_passphrase "$WLAN_SSID" "$WLAN_PASSPHRASE" > "$wpasup"
@@ -919,7 +909,7 @@ ask_hd_dev()
     while true
     do
         title 'Hard Drive Setup > Device'
-        msgbox '[+] Available hard drives for installation:'
+        winbox '[+] Available hard drives for installation:'
         printf "\n\n"
 
         for i in $HD_DEVS
@@ -928,7 +918,7 @@ ask_hd_dev()
         done
         echo
 
-        msgbox '[?] Please choose a device: '
+        winbox '[?] Please choose a device: '
         read -r HD_DEV
         if echo "$HD_DEVS" | grep "\<$HD_DEV\>" > /dev/null
         then
@@ -958,7 +948,7 @@ ask_cfdisk()
     if confirm_title 'Hard Drive Setup > Partitions' \
     '[?] Create partitions with cfdisk (root and boot, optional swap) [y/n]: '
     then
-        msgbox '[+] Cfdisk Default scheme:'
+        winbox '[+] Cfdisk Default scheme:'
         if [ "$BOOT_MODE" = 'uefi' ]
         then
             printf "\n\n
@@ -1038,7 +1028,7 @@ get_partition_label()
 ask_partitions()
 {
     title 'Hard Drive Setup > Filesystems'
-    msgbox '[+] Created partitions:'
+    winbox '[+] Created partitions:'
     printf "\n\n"
 
     fdisk -l "${HD_DEV}" -o device,size,type |grep "${HD_DEV}[[:alnum:]]"
@@ -1050,18 +1040,18 @@ ask_partitions()
     then
         while [ -z "$BOOT_PART" ]
         do
-            msgbox "[?] Boot partition (${HD_DEV}X): "
+            winbox "[?] Boot partition (${HD_DEV}X): "
             read -r BOOT_PART
             until [[ "$PARTITIONS" =~ $BOOT_PART ]]
             do
-                msgbox "[?] Your partition $BOOT_PART is not in the partitions list.\n"
-                msgbox "[?] Boot partition (${HD_DEV}X): "
+                winbox "[?] Your partition $BOOT_PART is not in the partitions list.\n"
+                winbox "[?] Boot partition (${HD_DEV}X): "
                 read -r BOOT_PART
             done
         done
         while true
         do
-            msgbox '[?] Choose a filesystem (ext2/ext4/btrfs) to use in your boot partition (Default - ext4): '
+            winbox '[?] Choose a filesystem (ext2/ext4/btrfs) to use in your boot partition (Default - ext4): '
             read -r $BOOT_FS_TYPE
             if [ -z "$BOOT_FS_TYPE" ]
             then
@@ -1084,18 +1074,18 @@ ask_partitions()
     # root partition
     while [ -z "$ROOT_PART" ]
     do
-        msgbox "[?] Root partition (${HD_DEV}X): "
+        winbox "[?] Root partition (${HD_DEV}X): "
         read -r ROOT_PART
         until [[ "$PARTITIONS" =~ $ROOT_PART ]]
         do
-            msgbox "[?] Your partition $ROOT_PART is not in the partitions list.\n"
-            msgbox "[?] Root partition (${HD_DEV}X): "
+            winbox "[?] Your partition $ROOT_PART is not in the partitions list.\n"
+            winbox "[?] Root partition (${HD_DEV}X): "
             read -r ROOT_PART
         done
     done
     while true
     do
-        msgbox '[?] Choose a filesystem (ext4/xfs/jfs/f2fs/btrfs) to use in your root partition (Default - ext4): '
+        winbox '[?] Choose a filesystem (ext4/xfs/jfs/f2fs/btrfs) to use in your root partition (Default - ext4): '
         read -r ROOT_FS_TYPE
         if [ -z "$ROOT_FS_TYPE" ]
         then
@@ -1115,14 +1105,14 @@ ask_partitions()
     done
 
     # swap partition
-    msgbox "[?] Swap partition (${HD_DEV}X - empty for none): "
+    winbox "[?] Swap partition (${HD_DEV}X - empty for none): "
     read -r SWAP_PART
     if [ -n "$SWAP_PART" ]
     then
         until [[ "$PARTITIONS" =~ $SWAP_PART ]]
         do
-            msgbox "[?] Your partition $SWAP_PART is not in the partitions list.\n"
-            msgbox "[?] Swap partition (${HD_DEV}X): "
+            winbox "[?] Your partition $SWAP_PART is not in the partitions list.\n"
+            winbox "[?] Swap partition (${HD_DEV}X): "
             read -r SWAP_PART
         done
     elif [ "$SWAP_PART" = '' ]
@@ -1158,7 +1148,7 @@ confirm_all()
     while true
     do
         title 'Hard Drive Setup > yesno Settings'
-        msgbox '[+] Check that all information is correct:'
+        winbox '[+] Check that all information is correct:'
         printf "\n
       Hostname: $HOST_NAME
       Language: $LOCALE
@@ -1179,7 +1169,7 @@ confirm_all()
         if [ "$BOOT_MODE" = 'uefi' ] && [ $BTRFS_SUBVOL = $TRUE ]
         then
             EFI_PART="$(fdisk -l "$HD_DEV" | grep -i 'EFI' | awk '{print $1}')"
-            msgbox '[+] Partition table:'
+            winbox '[+] Partition table:'
             printf "\n
           > /boot/efi  :  %s (efi)
           > /          :  %s (%s) (subvols: @ and @home)
@@ -1189,7 +1179,7 @@ confirm_all()
                     "$SWAP_PART"
         elif [ "$BOOT_MODE" = 'legacy' ] && [ $BTRFS_SUBVOL = $TRUE ]
         then
-            msgbox '[+] Partition table:'
+            winbox '[+] Partition table:'
             printf "\n
           > /boot  :  %s (%s)
           > /      :  %s (%s) (subvols: @ and @home)
@@ -1200,7 +1190,7 @@ confirm_all()
         elif [ "$BOOT_MODE" = 'uefi' ] && [ $BTRFS_SUBVOL = $FALSE ]
         then
             EFI_PART="$(fdisk -l "$HD_DEV" | grep -i 'EFI' | awk '{print $1}')"
-            msgbox '[+] Partition table:'
+            winbox '[+] Partition table:'
             printf "\n
           > /boot/efi  :  %s (efi)
           > /          :  %s (%s)
@@ -1210,7 +1200,7 @@ confirm_all()
                     "$SWAP_PART"
         elif [ "$BOOT_MODE" = 'legacy' ] && [ $BTRFS_SUBVOL = $FALSE ]
         then
-            msgbox '[+] Partition table:'
+            winbox '[+] Partition table:'
             printf "\n
           > /boot  :  %s (%s)
           > /      :  %s (%s)
@@ -1268,7 +1258,7 @@ make_luks_partition()
 
     title 'Hard Drive Setup > Partition Creation (crypto)'
 
-    msgbox '[+] Creating LUKS partition'
+    winbox '[+] Creating LUKS partition'
     printf "\n\n"
 
     cryptsetup -q -y -v luksFormat "$part" > $VERBOSE 2>&1 ||
@@ -1286,7 +1276,7 @@ open_luks_partition()
 
     title 'Hard Drive Setup > Partition Creation (crypto)'
 
-    msgbox '[+] Opening LUKS partition'
+    winbox '[+] Opening LUKS partition'
     printf "\n\n"
     cryptsetup open "$part" "$name" > $VERBOSE 2>&1 ||
         { err 'Could not open LUKS device, please try again and make sure that your password is correct.'; open_luks_partition "$@"; }
@@ -1305,7 +1295,7 @@ make_efi_partition()
 
     title 'Hard Drive Setup > Partition Creation (efi)'
 
-    msgbox '[+] Creating EFI partition'
+    winbox '[+] Creating EFI partition'
     printf "\n\n"
 
     mkfs.fat -c -n "EFI" -F 32 "$EFI_PART" > $VERBOSE 2>&1 ||
@@ -1320,7 +1310,7 @@ make_boot_partition()
 {
     title 'Hard Drive Setup > Partition Creation (boot)'
 
-    msgbox '[+] Creating BOOT partition'
+    winbox '[+] Creating BOOT partition'
     printf "\n\n"
 
     if [ "$BOOT_FS_TYPE" = 'ext2' ] || [ "$BOOT_FS_TYPE" = 'ext4' ]
@@ -1347,7 +1337,7 @@ make_root_partition()
         open_luks_partition "$ROOT_PART" "$CRYPT_ROOT"
         sleep_clear 1
         title 'Hard Drive Setup > Partition Creation (root crypto)'
-        msgbox '[+] Creating encrypted ROOT partition'
+        winbox '[+] Creating encrypted ROOT partition'
         printf "\n\n"
         if [ "$ROOT_FS_TYPE" = 'ext4' ]
         then
@@ -1372,7 +1362,7 @@ make_root_partition()
         fi
     else
         title 'Hard Drive Setup > Partition Creation (root)'
-        msgbox '[+] Creating ROOT partition'
+        winbox '[+] Creating ROOT partition'
         printf "\n\n"
         if [ "$ROOT_FS_TYPE" = 'ext4' ]
         then
@@ -1434,7 +1424,7 @@ make_swap_partition()
 {
     title 'Hard Drive Setup > Partition Creation (swap)'
 
-    msgbox '[+] Creating SWAP partition'
+    winbox '[+] Creating SWAP partition'
     printf "\n\n"
     if [[ "$(df | grep -o $SWAP_PART)" != '' ]]
     then
@@ -1452,7 +1442,7 @@ mount_filesystems()
 {
     title 'Hard Drive Setup > Mount'
 
-    msgbox '[+] Mounting filesystems'
+    winbox '[+] Mounting filesystems'
     printf "\n\n"
 
     # Check
@@ -1567,7 +1557,7 @@ umount_filesystems()
     then
         title 'Hard Drive Setup > Unmount'
 
-        msgbox '[+] Unmounting filesystems'
+        winbox '[+] Unmounting filesystems'
         printf "\n\n"
 
         umount -Rf $CHROOT > /dev/null 2>&1; \
@@ -1575,7 +1565,7 @@ umount_filesystems()
     else
         title 'Game Over'
 
-        msgbox '[+] Unmounting filesystems'
+        winbox '[+] Unmounting filesystems'
         printf "\n\n"
 
         umount -Rf $CHROOT > /dev/null 2>&1
@@ -1611,7 +1601,7 @@ setup_resolvconf()
 {
     title 'Base System Setup > resolv.conf'
 
-    msgbox '[+] Setting up /etc/resolv.conf'
+    winbox '[+] Setting up /etc/resolv.conf'
     printf "\n\n"
 
     cp --dereference /etc/resolv.conf "$CHROOT/etc/"
@@ -1625,7 +1615,7 @@ setup_fstab()
 {
     title 'Base System Setup > Fstab'
 
-    msgbox '[+] Setting up /etc/fstab'
+    winbox '[+] Setting up /etc/fstab'
     printf "\n\n"
 
     echo -e "## File generated automatically by genfstab\n" > "$CHROOT/etc/fstab"
@@ -1654,7 +1644,7 @@ setup_fstab()
 setup_locale()
 {
     title 'Base System Setup > Locale'
-    msgbox "[+] Setting up $LOCALE locale"
+    winbox "[+] Setting up $LOCALE locale"
     printf "\n\n"
 
     echo -e "## File generated automatically by overdeep-installer\nen_US.UTF-8 UTF-8" > "$CHROOT/etc/locale.gen"
@@ -1676,7 +1666,7 @@ setup_locale()
 setup_keymap()
 {
     title 'Base System Setup > Keymap'
-    msgbox "[+] Setting up $KEYMAP keymap"
+    winbox "[+] Setting up $KEYMAP keymap"
     printf "\n\n"
 
     if [ "$INIT_SYSTEM" = 'openrc' ]
@@ -1698,7 +1688,7 @@ setup_time()
             echo "    > $time"
         done
 
-        msgbox "\n[?] What is your (Zone/SubZone): "
+        winbox "\n[?] What is your (Zone/SubZone): "
         read -r timezone
         chroot $CHROOT ln -sf "/usr/share/zoneinfo/$timezone" /etc/localtime \
             > $VERBOSE 2>&1
@@ -1708,7 +1698,7 @@ setup_time()
             warn 'Do you live on Mars? Setting default time zone...'
             default_time
         else
-            msgbox '[+] Time zone setup correctly'
+            winbox '[+] Time zone setup correctly'
         fi
     else
         warn 'Setting up default time and timezone to UTC'
@@ -1725,7 +1715,7 @@ setup_proc_sys_dev()
 {
     title 'Base System Setup > Proc Sys Dev'
 
-    msgbox '[+] Setting up /proc, /sys and /dev'
+    winbox '[+] Setting up /proc, /sys and /dev'
     printf "\n\n"
 
     mount --types proc /proc "$CHROOT/proc" > $VERBOSE 2>&1
@@ -1749,7 +1739,7 @@ setup_hostname()
 {
     title 'Base System Setup > Hostname'
 
-    msgbox '[+] Setting up hostname'
+    winbox '[+] Setting up hostname'
     printf "\n\n"
 
     echo "$HOST_NAME" > "$CHROOT/etc/hostname"
@@ -1767,7 +1757,7 @@ setup_bootloader()
 
     title 'Base System Setup > Boot Loader'
 
-    msgbox '[+] Setting up GRUB boot loader'
+    winbox '[+] Setting up GRUB boot loader'
     printf "\n\n"
 
     sed -i '/#GRUB_GFXMODE=/c\GRUB_GFXMODE=auto' "$CHROOT/etc/default/grub"
@@ -1779,7 +1769,7 @@ setup_bootloader()
 
     if [ "$BOOT_MODE" = 'uefi' ] && [ $DUALBOOT = $TRUE ]
     then
-        msgbox '[?] Are you installing the system on a USB flash drive [y/n]: '
+        winbox '[?] Are you installing the system on a USB flash drive [y/n]: '
         read -r usbgrub
         warn 'Installing grub on EFI partition...'
         if [ "$usbgrub" = 'y' ] || [ "$usbgrub" = 'Y' ]
@@ -1791,7 +1781,7 @@ setup_bootloader()
         fi
     elif [ "$BOOT_MODE" = 'uefi' ] && [ $DUALBOOT = $FALSE ]
     then
-        msgbox '[?] Are you installing the system on a USB flash drive [y/n]: '
+        winbox '[?] Are you installing the system on a USB flash drive [y/n]: '
         read -r usbgrub
         warn 'Installing grub on EFI partition...'
         if [ "$usbgrub" = 'y' ] || [ "$usbgrub" = 'Y' ]
@@ -1842,7 +1832,7 @@ ask_user_account()
 {
     if confirm_title 'Base System Setup > User' '[?] Setup a normal user account [y/n]: '
     then
-        msgbox '[?] User name: '
+        winbox '[?] User name: '
         read -r NORMAL_USER
     fi
 
@@ -1855,7 +1845,7 @@ setup_testuser()
 {
     title 'Base System Setup > Test User'
 
-    msgbox '[+] Setting up test user overdeep account'
+    winbox '[+] Setting up test user overdeep account'
     printf "\n\n"
     warn 'Remove this user after you added a normal system user account'
     printf "\n"
@@ -1876,7 +1866,7 @@ setup_user()
 
     title 'Base System Setup > User'
 
-    msgbox "[+] Setting up $user account"
+    winbox "[+] Setting up $user account"
     printf "\n\n"
 
     # normal user
@@ -1886,7 +1876,7 @@ setup_user()
         chroot $CHROOT useradd -g "$user" -d "/home/$user" -s "/bin/bash" \
             -G "$user,wheel,users,video,audio" -m "$user" > $VERBOSE 2>&1
         chroot $CHROOT chown -R "$user":"$user" "/home/$user" > $VERBOSE 2>&1
-        msgbox "[+] Added user: $user"
+        winbox "[+] Added user: $user"
         printf "\n\n"
         # environment
     elif [ -z "$NORMAL_USER" ]
@@ -1899,7 +1889,7 @@ setup_user()
 
     # password
     res=1337
-    msgbox "[?] Set password for $user: "
+    winbox "[?] Set password for $user: "
     printf "\n\n"
     while [ $res -ne 0 ]
     do
@@ -1957,7 +1947,7 @@ setup_extra_packages()
 
     title 'Base System Setup > Extra Packages'
 
-    msgbox '[+] Installing extra packages'
+    winbox '[+] Installing extra packages'
     printf "\n"
 
     printf "
@@ -2062,7 +2052,7 @@ enable_iwd_networkd()
 {
     title 'Overdeep OS Setup > Network'
 
-    msgbox '[+] Enabling Iwd and Networkd'
+    winbox '[+] Enabling Iwd and Networkd'
     printf "\n\n"
 
     chroot $CHROOT systemctl enable iwd systemd-networkd > $VERBOSE 2>&1
@@ -2076,7 +2066,7 @@ update_etc()
 {
     title 'Overdeep OS Setup > Etc files'
 
-    msgbox '[+] Updating /etc files'
+    winbox '[+] Updating /etc files'
     printf "\n\n"
 
     # /etc/*
@@ -2097,21 +2087,21 @@ ask_mirror()
     mirror_url='https://raw.githubusercontent.com/BlackArch/blackarch/master/mirror/mirror.lst'
     mirror_file='/tmp/mirror.lst'
 
-    msgbox '[+] Fetching mirror list'
+    winbox '[+] Fetching mirror list'
     printf "\n\n"
     curl -s -o $mirror_file $mirror_url > $VERBOSE
 
     while read -r country url mirror_name
     do
-        msgbox " %s. %s - %s" "$count" "$country" "$mirror_name"
+        winbox " %s. %s - %s" "$count" "$country" "$mirror_name"
         printf "\n"
-        msgbox "   * %s" "$url"
+        winbox "   * %s" "$url"
         printf "\n"
         count=$((count + 1))
     done < "$mirror_file"
 
     printf "\n"
-    msgbox '[?] Select a mirror number (enter for default): '
+    winbox '[?] Select a mirror number (enter for default): '
     read -r a
     printf "\n"
 
@@ -2120,10 +2110,10 @@ ask_mirror()
 
     if [ -z "$_a" ]
     then
-        msgbox "[+] Choosing default mirror: %s " "$BLACKARCH_REPO_URL"
+        winbox "[+] Choosing default mirror: %s " "$BLACKARCH_REPO_URL"
     else
         BLACKARCH_REPO_URL=$(sed -n "${_a}p" $mirror_file | cut -d "|" -f 2)
-        msgbox "[+] Mirror from '%s' selected" \
+        winbox "[+] Mirror from '%s' selected" \
             "$(sed -n "${_a}p" $mirror_file | cut -d "|" -f 3)"
         printf "\n\n"
     fi
@@ -2195,7 +2185,7 @@ setup_display_server()
 {
     title 'Overdeep OS Setup > Desktop'
 
-    msgbox '[+] Setting up window managers'
+    winbox '[+] Setting up window managers'
     printf "\n\n"
 
     while true
@@ -2215,7 +2205,7 @@ setup_display_server()
       4. Mate
       5. Cinnamon
       6. Enlightenment\n"
-        msgbox '[?] Choose an option [5]: '
+        winbox '[?] Choose an option [5]: '
         read -r choice
         echo
         case $choice in
@@ -2249,7 +2239,7 @@ setup_display_manager()
 {
     title 'Overdeep OS Setup > Display Manager'
 
-    msgbox '[+] Setting up LXDM'
+    winbox '[+] Setting up LXDM'
     printf "\n\n"
 
     # install lxdm packages
@@ -2288,7 +2278,7 @@ setup_vbox_utils()
 {
     title 'Overdeep OS Setup > VirtualBox'
 
-    msgbox '[+] Setting up VirtualBox utils'
+    winbox '[+] Setting up VirtualBox utils'
     printf "\n\n"
 
     chroot $CHROOT pacman -S virtualbox-guest-utils --overwrite='*' --needed \
@@ -2323,7 +2313,7 @@ setup_vmware_utils()
 {
     title 'Overdeep OS Setup > VMware'
 
-    msgbox '[+] Setting up VMware utils'
+    winbox '[+] Setting up VMware utils'
     printf "\n\n"
 
     chroot $CHROOT pacman -S open-vm-tools xf86-video-vmware \
@@ -2360,12 +2350,12 @@ setup_overdeep_tools()
 
     title 'Overdeep OS Setup > Tools'
 
-    msgbox '[+] Installing Overdeep OS packages (grab a coffee)'
+    winbox '[+] Installing Overdeep OS packages (grab a coffee)'
     printf "\n\n"
 
     if [ "$INSTALL_MODE" = $INSTALL_STAGE ]
     then
-        msgbox "[+] All available BlackArch tools groups:\n\n"
+        winbox "[+] All available BlackArch tools groups:\n\n"
         printf "    > blackarch blackarch-anti-forensic blackarch-automation
       > blackarch-backdoor blackarch-binary blackarch-bluetooth blackarch-code-audit
       > blackarch-cracker blackarch-crypto blackarch-database blackarch-debugger
@@ -2378,7 +2368,7 @@ setup_overdeep_tools()
       > blackarch-scanner blackarch-sniffer blackarch-social blackarch-spoof
       > blackarch-threat-model blackarch-tunnel blackarch-unpacker blackarch-voip
       > blackarch-webapp blackarch-windows blackarch-wireless \n\n"
-        msgbox "[?] BlackArch groups to install (space for multiple) [blackarch]: "
+        winbox "[?] BlackArch groups to install (space for multiple) [blackarch]: "
         read -r BA_GROUPS
         printf "\n"
         warn 'This can take a while, please wait...'
@@ -2396,10 +2386,10 @@ setup_overdeep_tools()
     else
         warn 'Installing all tools from source via blackman can take hours'
         printf "\n"
-        msgbox '[+] <Control-c> to abort ... '
+        winbox '[+] <Control-c> to abort ... '
         while [ $foo -gt 0 ]
         do
-            msgbox "$foo "
+            winbox "$foo "
             sleep 1
             foo=$((foo - 1))
         done
@@ -2418,7 +2408,7 @@ update_user_groups()
 {
     title 'Overdeep OS Setup > User'
 
-    msgbox "[+] Adding user $user to groups and sudoers"
+    winbox "[+] Adding user $user to groups and sudoers"
     printf "\n\n"
 
     # TODO: more to add here
@@ -2442,10 +2432,10 @@ dump_full_iso()
 
     title 'Overdeep OS Setup'
 
-    msgbox '[+] Dumping data from Full-ISO. Grab a coffee and pop shells!'
+    winbox '[+] Dumping data from Full-ISO. Grab a coffee and pop shells!'
     printf "\n\n"
 
-    msgbox '[+] Fetching total size to transfer, please wait...'
+    winbox '[+] Fetching total size to transfer, please wait...'
     printf "\n"
 
     for d in $full_dirs
@@ -2461,15 +2451,15 @@ dump_full_iso()
 
     check_space
 
-    msgbox '[+] Installing the system to /'
+    winbox '[+] Installing the system to /'
     printf "\n\n"
     warn 'This can take a while, please wait...'
     printf "\n"
     rsync -aWx --human-readable --info=progress2 / $CHROOT > $VERBOSE 2>&1
-    msgbox "[+] Installation done!\n"
+    winbox "[+] Installation done!\n"
 
     # clean up files
-    msgbox '[+] Cleaning Full Environment files, please wait...'
+    winbox '[+] Cleaning Full Environment files, please wait...'
     #sed -i 's/Storage=volatile/#Storage=auto/' ${CHROOT}/etc/systemd/journald.conf
     #rm -rf "$CHROOT/etc/udev/rules.d/81-dhcpcd.rules"
     #rm -rf "$CHROOT/etc/systemd/system/"{choose-mirror.service,pacman-init.service,etc-pacman.d-gnupg.mount,getty@tty1.service.d}
@@ -2479,7 +2469,7 @@ dump_full_iso()
     #rm -rf "$CHROOT/etc/mkinitcpio-archiso.conf"
     #rm -rf "$CHROOT/etc/initcpio"
     #rm -rf ${CHROOT}/etc/{group*,passwd*,shadow*,gshadow*}
-    msgbox "done\n"
+    winbox "done\n"
 
     return $SUCCESS
 }
@@ -2560,12 +2550,12 @@ easter_backdoor()
 
     title 'Installation Finished!'
 
-    msgbox "[+] $DISTRO_NAME installation successfull!"
+    winbox "[+] $DISTRO_NAME installation successfull!"
     printf "\n\n"
 
     while [ $bar -ne 5 ]
     do
-        msgbox "."
+        winbox "."
         sleep 1
         bar=$((bar + 1))
     done
@@ -2581,7 +2571,7 @@ sync_disk()
 {
     title 'Game Over'
 
-    msgbox '[+] Syncing disk'
+    winbox '[+] Syncing disk'
     printf "\n\n"
 
     sync
