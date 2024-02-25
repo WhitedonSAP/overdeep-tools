@@ -203,7 +203,7 @@ winbox()
     elif [ "$func" = 'warn' ]
     then
         dialog --colors --backtitle "$BKTITLE" --title "$ttl" --msgbox "${YELLOW}[warn]${NC}\n\n$msg" $wdhg
-    elif [ "$func" = 'okay' ]
+    elif [ "$func" = 'error' ]
     then
         dialog --colors --backtitle "$BKTITLE" --title "$ttl" --msgbox "${RED}[error]${NC}\n\n$msg" $wdhg
         return $FAILURE
