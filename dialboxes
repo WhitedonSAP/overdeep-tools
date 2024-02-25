@@ -18,9 +18,13 @@
 #                                                                                                 #
 ###################################################################################################
 
-## Tput
+# Tput options
 # reset
 NC="$(tput sgr0)"
+# columns
+COLS="$(tput cols)"
+# lines
+LINES="$(tput lines)"
 # bold
 BOLD="$(tput bold)"
 # blink text
@@ -145,7 +149,7 @@ DIALOG=${DIALOG:-${DIALOGS[$flag]}}
 if [ $flag -eq 0 -o "$DIALOG" == "DIALOG" ] ; then
     which dialog &>/dev/null || exec echo "dialog not found. Install this package first."
     [ -f ~/.dialogrc ] || dialog --create-rc ~/.dialogrc
-    W=$(tput cols) ; H=$(tput lines)
+    W=$COLS ; H=$LINES
 fi  
 
 [ "$DISPLAY" ] && eval $(xdpyinfo | sed -n 's|.*dimensions:[ ]*\([0-9]*\)x\([0-9]*\) .*|XW=$((\1*50/100));XH=$((\2*50/100))|p')
@@ -155,7 +159,7 @@ function sizebox {
     # box width  = take 60% of terminal width or string length + 6
      # box height = number of lines in string + 8
     type=$1 ; shift
-    W=$(tput cols) ; H=$(tput lines)
+    W=$COLS ; H=$LINES
 
     case $type in
         fileshow)  return ;;
