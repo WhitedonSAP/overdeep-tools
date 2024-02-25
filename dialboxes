@@ -18,25 +18,22 @@
 #                                                                                                 #
 ###################################################################################################
 
-# Colors
-BLACK="$(tput setaf 0)"
-BLACKB="$(tput bold ; tput setaf 0)"
-RED="$(tput setaf 1)"
-REDB="$(tput bold ; tput setaf 1)"
-GREEN="$(tput setaf 2)"
-GREENB="$(tput bold ; tput setaf 2)"
-YELLOW="$(tput setaf 3)"
-YELLOWB="$(tput bold ; tput setaf 3)"
-BLUE="$(tput setaf 4)"
-BLUEB="$(tput bold ; tput setaf 4)"
-MAGENTA="$(tput setaf 5)"
-MAGENTAB="$(tput bold ; tput setaf 5)"
-CYAN="$(tput setaf 6)"
-CYANB="$(tput bold ; tput setaf 6)"
-WHITE="$(tput setaf 7)"
-WHITEB="$(tput bold ; tput setaf 7)"
-BLINK="$(tput blink)"
+## Tput
+# reset
 NC="$(tput sgr0)"
+# bold
+BD="$(tput bold)"
+# blink text
+BLINK="$(tput blink)"
+# colors (use ${BD}${any_color} to bold text)
+BLACK="$(tput setaf 0)"
+RED="$(tput setaf 1)"
+GREEN="$(tput setaf 2)"
+YELLOW="$(tput setaf 3)"
+BLUE="$(tput setaf 4)"
+MAGENTA="$(tput setaf 5)"
+CYAN="$(tput setaf 6)"
+WHITE="$(tput setaf 7)"
 
 # You might customize the functions by changing the variables below
 
