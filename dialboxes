@@ -1,24 +1,49 @@
-#! /bin/bash
-#: Title       : popup
-#: Date Created: Tue Jan 18 03:04:36 PST 2011 
-#: Last Edit   : Thu Oct  6 00:23:40 PDT 2011 
-#: Author      : please_try_again 
-#: Version     : 1.2.1
-#: Description : a simple set of ncurses/QT/GTK dialog box functions
-#:             : usable in other scripts
-#: usage       : source /usr/local/bin/popup
-#:             : type pophelp for a full description
-#
-#: Copy and paste this text into a text file and save it in /usr/local/bin as the file popup.
-#: Import in other scripts or on the command line with: source /usr/local/bin/popup 
-#: 
-# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#!/bin/bash
+###################################################################################################
+# ----------------------------------------------------------------------------------------------- #
+# |    <Title>    | dialboxes                                                                   | #
+# |   <Created>   | Sun Feb 25 18:42:00 PST 2024                                                | #
+# |  <Last Edit>  | Sun Feb 25 00:00:00 PDT 2024                                                | #
+# |    <Author>   | WhitedonSAP                                                                 | #
+# |   <Version>   | 1.0                                                                         | #
+# | <Description> | A simple set of ncurses/QT/GTK dialog box functions                         | #
+# |---------------------------------------------------------------------------------------------| #
+# |               | Usable in other scripts                                                     | #
+# |    <Usage>    | source /usr/local/bin/dialboxes                                             | #
+# |               | Type dialhelp for a full description                                        | #
+# ----------------------------------------------------------------------------------------------- #
+#                                                                                                 #
+#  Copy and paste this text into a text file and save it in /usr/local/bin as the file dialboxes. #
+#  Import in other scripts or on the command line with: source /usr/local/bin/dialboxes           #
+#                                                                                                 #
+###################################################################################################
+
+# Colors
+BLACK="$(tput setaf 0)"
+BLACKB="$(tput bold ; tput setaf 0)"
+RED="$(tput setaf 1)"
+REDB="$(tput bold ; tput setaf 1)"
+GREEN="$(tput setaf 2)"
+GREENB="$(tput bold ; tput setaf 2)"
+YELLOW="$(tput setaf 3)"
+YELLOWB="$(tput bold ; tput setaf 3)"
+BLUE="$(tput setaf 4)"
+BLUEB="$(tput bold ; tput setaf 4)"
+MAGENTA="$(tput setaf 5)"
+MAGENTAB="$(tput bold ; tput setaf 5)"
+CYAN="$(tput setaf 6)"
+CYANB="$(tput bold ; tput setaf 6)"
+WHITE="$(tput setaf 7)"
+WHITEB="$(tput bold ; tput setaf 7)"
+BLINK="$(tput blink)"
+NC="$(tput sgr0)"
+
 # You might customize the functions by changing the variables below
 
 # Uncomment to enforce the use of zenity dialogs in KDE
 #ZENITY=1
 
-# set default editor. If unset $EDITOR will be used.
+# Set default editor. If unset $EDITOR will be used.
 # if EDITOR is not set, vi will be used :-)
 #edit=nano
 
@@ -35,7 +60,7 @@ DIALOGOPTS="--colors --shadow"
 
 prg=$(basename $0)
 
-function pophelp {
+function dialhelp {
 cat << EOFHELP
 `tput bold`
 NAME
@@ -51,10 +76,10 @@ NAME
     `tput bold`fileshow `tput sgr0;tput setaf 7`<file>`tput sgr0`
     `tput bold`fileedit `tput sgr0;tput setaf 7`<file>`tput sgr0`
     `tput bold`choose radio | check `tput sgr0;tput setaf 7`item1,item2,*item3 ...`tput sgr0`
-    `tput bold`pophelp `tput sgr0;` show this help.
+    `tput bold`dialhelp `tput sgr0;` show this help.
 
 `tput bold`DESCRIPTION`tput sgr0`
-`tput bold`popup`tput sgr0` uses the programs dialog, kdialog or zenity to create ncurses, QT or GTK
+`tput bold`dialboxes`tput sgr0` uses the programs dialog, kdialog or zenity to create ncurses, QT or GTK
 message and input boxes, according to the environment or user preferences,  so
 that Bash scripts  dialogs will have a different look & feel whether there are
 executed under KDE, Gnome, other wms or console.  You can also enforce the use
@@ -65,9 +90,9 @@ of ncurses, QT or GTK dialogs by setting the environment variable DIALOG:
     `tput bold`export DIALOG=ZENITY  `tput sgr0`(GTK)
 
 `tput bold`USAGE`tput sgr0`
-Either paste popup at top of your scripts or include (source) this file from
+Either paste dialboxes at top of your scripts or include (source) this file from
 inside your scripts - or in a bash terminal - to use its functions: 
-`tput bold`source /usr/local/bin/popup`tput sgr0`
+`tput bold`source /usr/local/bin/dialboxes`tput sgr0`
 
 `tput bold`FUNCTIONS`tput sgr0`
 `tput bold`ask `tput sgr0;tput setaf 7`"test" `tput sgr0`return 0 (yes) or 1 (no)
@@ -110,7 +135,7 @@ which zenity  &> /dev/null && flag=$((flag | 2))
 flag=${dflag:-$flag}
 
 # default title
-title="Popup 1.0"
+title="Dialboxes 1.0"
 
 # Default text editor 
 edit=${edit:-$EDITOR} ; edit=${edit:-vi}
