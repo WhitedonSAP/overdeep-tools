@@ -22,7 +22,7 @@
 # reset
 NC="$(tput sgr0)"
 # bold
-BD="$(tput bold)"
+BOLD="$(tput bold)"
 # blink text
 BLINK="$(tput blink)"
 # colors (use ${BD};${any_color} to bold text)
@@ -46,7 +46,7 @@ WHITE="$(tput setaf 7)"
 
 # uncomment one of the 3 lines below to enforce the use of text, 
 # kdialog or zenity dialogs
-#dflag=0    # dialog 
+#dflag=0      # dialog
 #dflag=1      # kdialog
 #dflag=2      # zenity
 #
@@ -59,60 +59,60 @@ prg=$(basename $0)
 
 function dialhelp {
 cat << EOFHELP
-`tput bold`
+$BOLD
 NAME
-`tput sgr0`    $prg - create ncurses, QT or GTK dialog boxes. 
+$NC    $prg - create ncurses, QT or GTK dialog boxes. 
 
-`tput bold`SYNOPSIS
-    ask `tput sgr0;tput setaf 7`"text"`tput sgr0`
-    `tput bold`entry `tput sgr0;tput setaf 7`"prompt:text"`tput sgr0`
-    `tput bold`warn  `tput sgr0;tput setaf 7`"text"`tput sgr0`
-    `tput bold`notice `tput sgr0;tput setaf 7`"text"`tput sgr0`
-    `tput bold`error `tput sgr0;tput setaf 7`"text"`tput sgr0`
-    `tput bold`fileopen `tput sgr0;tput setaf 7`<directory>`tput sgr0`
-    `tput bold`fileshow `tput sgr0;tput setaf 7`<file>`tput sgr0`
-    `tput bold`fileedit `tput sgr0;tput setaf 7`<file>`tput sgr0`
-    `tput bold`choose radio | check `tput sgr0;tput setaf 7`item1,item2,*item3 ...`tput sgr0`
-    `tput bold`dialhelp `tput sgr0;` show this help.
+${BOLD}SYNOPSIS
+    ask $NC;$WHITE"text"$NC
+    ${BOLD}entry $NC;$WHITE"prompt:text"$NC
+    ${BOLD}warn $NC;$WHITE"text"$NC
+    ${BOLD}notice $NC;$WHITE"text"$NC
+    ${BOLD}error $NC;$WHITE"text"$NC
+    ${BOLD}fileopen $NC;$WHITE<directory>$NC
+    ${BOLD}fileshow $NC;$WHITE<file>$NC
+    ${BOLD}fileedit $NC;$WHITE<file>$NC
+    ${BOLD}choose radio | check $NC;${WHITE}item1,item2,*item3 ...$NC
+    ${BOLD}dialhelp $NC show this help.
 
-`tput bold`DESCRIPTION`tput sgr0`
-`tput bold`dialboxes`tput sgr0` uses the programs dialog, kdialog or zenity to create ncurses, QT or GTK
+${BOLD}DESCRIPTION${NC}
+${BOLD}dialboxes${NC} uses the programs dialog, kdialog or zenity to create ncurses, QT or GTK
 message and input boxes, according to the environment or user preferences,  so
 that Bash scripts  dialogs will have a different look & feel whether there are
 executed under KDE, Gnome, other wms or console.  You can also enforce the use
 of ncurses, QT or GTK dialogs by setting the environment variable DIALOG:
 
-    `tput bold`export DIALOG=DIALOG  `tput sgr0`(ncurses)
-    `tput bold`export DIALOG=KDIALOG `tput sgr0`(QT)
-    `tput bold`export DIALOG=ZENITY  `tput sgr0`(GTK)
+    ${BOLD}export DIALOG=DIALOG  $NC(ncurses)
+    ${BOLD}export DIALOG=KDIALOG $NC(QT)
+    ${BOLD}export DIALOG=ZENITY  $NC(GTK)
 
-`tput bold`USAGE`tput sgr0`
+${BOLD}USAGE${NC}
 Either paste dialboxes at top of your scripts or include (source) this file from
 inside your scripts - or in a bash terminal - to use its functions: 
-`tput bold`source /usr/local/bin/dialboxes`tput sgr0`
+${BOLD}source /usr/local/bin/dialboxes${NC}
 
-`tput bold`FUNCTIONS`tput sgr0`
-`tput bold`ask `tput sgr0;tput setaf 7`"test" `tput sgr0`return 0 (yes) or 1 (no)
-example: `tput setaf 2`ask "question?" && do something`tput sgr0`    
-`tput bold`entry `tput sgr0;tput setaf 7`"prompt:string" `tput sgr0`return the modified string:
-example: `tput setaf 2`newstring=\$(prompt:string)`tput sgr0`
-`tput bold`warning `tput sgr0;tput setaf 7`"text"        `tput sgr0`display warning message    
-`tput bold`notice `tput sgr0;tput setaf 7`"text"         `tput sgr0`display info message    
-`tput bold`error `tput sgr0;tput setaf 7`"text"          `tput sgr0`display message and abort script   
-`tput bold`fileopen `tput sgr0;tput setaf 7`<directory>  `tput sgr0`select file to open   
+${BOLD}FUNCTIONS${NC}
+${BOLD}ask ${NC};${WHITE}"test" ${NC}return 0 (yes) or 1 (no)
+example: ${GREEN}ask "question?" && do something${NC}    
+${BOLD}entry ${NC};${WHITE}"prompt:string" ${NC}return the modified string:
+example: ${GREEN}newstring=\$(prompt:string)${NC}
+${BOLD}warning ${NC};${WHITE}"text"        ${NC}display warning message    
+${BOLD}notice ${NC};${WHITE}"text"         ${NC}display info message    
+${BOLD}error ${NC};${WHITE}"text"          ${NC}display message and abort script   
+${BOLD}fileopen ${NC};${WHITE}<directory>  ${NC}select file to open   
 Be careful in console mode! Pressing <Enter> immediately exits the dialog.
 Use space bar to select files and directories!
-`tput bold`fileshow `tput sgr0;tput setaf 7`<file>       `tput sgr0`display file   
-example: `tput setaf 2`fileshow \$(fileopen /etc)`tput sgr0`
-`tput bold`fileedit `tput sgr0;tput setaf 7`<file>       `tput sgr0`edit file   
-`tput bold`choose radio | check `tput sgr0;tput setaf 7`item1,item2,*item3 ...    
-`tput sgr0`display list of radio buttons or check options. Items should be separated by
+${BOLD}fileshow ${NC};${WHITE}<file>       ${NC}display file   
+example: ${GREEN}fileshow \$(fileopen /etc)${NC}
+${BOLD}fileedit ${NC};${WHITE}<file>       ${NC}edit file   
+${BOLD}choose radio | check ${NC};${WHITE}item1,item2,*item3 ...    
+${NC}display list of radio buttons or check options. Items should be separated by
 commas.  Spaces will be replaced by "~" in list boxes.  To preselet an item,
 preceed its name with "*" without space. 
-example: `tput setaf 2`options=\$(choose check item1 item2 *item3)`tput sgr0`
+example: ${GREEN}options=\$(choose check item1 item2 *item3)$NC
 
-`tput bold`CAVEATS
-`tput sgr0`- cursor keys in textmode (like in other ncurses programs) don't work in aterm,
+${BOLD}CAVEATS
+${NC}- cursor keys in textmode (like in other ncurses programs) don't work in aterm,
   wterm terminals . 
 - fileedit dialogs width and height are ignored in kdialog.
 - fileedit dialogs lose content in dialog, so we use the default editor instead.
