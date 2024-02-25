@@ -189,7 +189,7 @@ winbox()
     fi
 
     shift
-    dialog --colors --backtitle "$BKTITLE" --title "$ttl" --msgbox "${BLACK}$msg${NC}" "$wdhg"
+    dialog --colors --backtitle "$BKTITLE" --title "$ttl" --msgbox "${BLACK}$msg${NC}" $wdhg
 
     return $SUCCESS
 }
@@ -214,13 +214,13 @@ funcbox()
 
     if [ "$func" = 'okay' ];
     then
-        dialog --colors --backtitle "$BKTITLE" --title "$ttl" --msgbox "${GREEN}[#] SUCCESS:${NC}\n\n $msg" "$wdhg"
+        dialog --colors --backtitle "$BKTITLE" --title "$ttl" --msgbox "${GREEN}[#] SUCCESS:${NC}\n\n$msg" $wdhg
     elif [ "$func" = 'warn' ];
     then
-        dialog --colors --backtitle "$BKTITLE" --title "$ttl" --msgbox "${YELLOW}[!] WARNING:${NC}\n\n $msg" "$wdhg"
+        dialog --colors --backtitle "$BKTITLE" --title "$ttl" --msgbox "${YELLOW}[!] WARNING:${NC}\n\n$msg" $wdhg
     elif [ "$func" = 'okay' ];
     then
-        dialog --colors --backtitle "$BKTITLE" --title "$ttl" --msgbox "${RED}[-] ERROR:${NC}\n\n $msg" "$wdhg"
+        dialog --colors --backtitle "$BKTITLE" --title "$ttl" --msgbox "${RED}[-] ERROR:${NC}\n\n$msg" $wdhg
         return $FAILURE
     fi
 
