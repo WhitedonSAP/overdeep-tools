@@ -18,6 +18,8 @@
 #                                                                                                 #
 ###################################################################################################
 
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
 # Tput options
 # reset
 nc="$(tput sgr0)"
@@ -29,7 +31,7 @@ lines="$(tput lines)"
 bold="$(tput bold)"
 # blink text
 blink="$(tput blink)"
-# colors (use ${BD};${any_color} to bold text)
+# colors (use ${BD}${any_color} to bold text)
 black="$(tput setaf 0)"
 red="$(tput setaf 1)"
 green="$(tput setaf 2)"
