@@ -117,10 +117,10 @@ cat << EOFHELP
 # example: ${GREEN}options=\$(choose check item1 item2 *item3)${RESET}
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # ${BOLD}CAVEATS${RESET}
-#     - cursor keys in textmode (like in other ncurses programs) don't work in aterm,
-#     wterm terminals.
-#     - fileedit dialogs width and height are ignored in kdialog.
-#     - fileedit dialogs lose content in dialog, so we use the default editor instead.
+# - cursor keys in textmode (like in other ncurses programs) don't work in aterm,
+# wterm terminals.
+# - fileedit dialogs width and height are ignored in kdialog.
+# - fileedit dialogs lose content in dialog, so we use the default editor instead.
 #########################################################################################
 EOFHELP
 }
