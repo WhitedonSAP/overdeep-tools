@@ -66,11 +66,9 @@ version='1.0'
 function dialhelp {
 cat << EOFHELP
 ${BOLD}NAME${RESET}
-
-    $progname - create ncurses, QT or GTK dialog boxes. 
+$progname - create ncurses, QT or GTK dialog boxes. 
 
 ${BOLD}SYNOPSIS
-
     ask ${RESET}${WHITE}"text"${RESET}
     ${BOLD}entry ${RESET}${WHITE}"prompt:text"${RESET}
     ${BOLD}warn ${RESET}${WHITE}"text"${RESET}
@@ -83,7 +81,6 @@ ${BOLD}SYNOPSIS
     ${BOLD}dialhelp ${RESET} show this help.
 
 ${BOLD}DESCRIPTION
-
 dialbox${RESET} uses the programs dialog, kdialog or zenity to create ncurses, QT or GTK
 message and input boxes, according to the environment or user preferences,  so
 that Bash scripts  dialogs will have a different look & feel whether there are
@@ -95,13 +92,11 @@ of ncurses, QT or GTK dialogs by setting the environment variable DIALOG:
     ${BOLD}export DIALOG=ZENITY  ${RESET}(GTK)
 
 ${BOLD}USAGE${RESET}
-
 Either paste dialbox at top of your scripts or include (source) this file from
 inside your scripts - or in a bash terminal - to use its functions: 
 ${BOLD}source /usr/local/bin/dialbox${RESET}
 
 ${BOLD}FUNCTIONS
-
 ask ${RESET}${WHITE}"test" ${RESET}return 0 (yes) or 1 (no)
 example: ${GREEN}ask "question?" && do something${RESET}    
 ${BOLD}entry ${RESET}${WHITE}"prompt:string" ${RESET}return the modified string:
