@@ -60,13 +60,14 @@ DIALOGOPTS="--colors --shadow"
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-prg='dialbox'
+progname='Dialbox'
+version='1.0'
 
 function dialhelp {
 cat << EOFHELP
 $BOLD
 NAME
-$RESET    $prg - create ncurses, QT or GTK dialog boxes. 
+$RESET    $progname - create ncurses, QT or GTK dialog boxes. 
 
 ${BOLD}SYNOPSIS
     ask $RESET$WHITE"text"$RESET
@@ -137,7 +138,7 @@ which zenity  &> /dev/null && flag=$((flag | 2))
 flag=${dflag:-$flag}
 
 # default title
-title="Dialbox 1.0"
+title="$progname $version"
 
 # Default text editor 
 edit=${edit:-$EDITOR} ; edit=${edit:-vi}

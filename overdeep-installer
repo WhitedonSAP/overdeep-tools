@@ -34,27 +34,6 @@ FALSE=1
 SUCCESS=0
 FAILURE=1
 
-# tput options
-# reset
-RESET="$(tput sgr0)"
-# columns
-COLS="$(tput cols)"
-# lines
-LINES="$(tput lines)"
-# bold
-BOLD="$(tput bold)"
-# blink text
-BLINK="$(tput blink)"
-# colors (use ${BOLD}${any_color} to bold text)
-BLACK="$(tput setaf 0)"
-RED="$(tput setaf 1)"
-GREEN="$(tput setaf 2)"
-YELLOW="$(tput setaf 3)"
-BLUE="$(tput setaf 4)"
-MAGENTA="$(tput setaf 5)"
-CYAN="$(tput setaf 6)"
-WHITE="$(tput setaf 7)"
-
 # check boot mode
 BOOT_MODE=''
 
@@ -153,6 +132,9 @@ NORMAL_USER=''
 
 # default Overdeep OS repository URL
 ARCHLINUX_REPO_URL=''
+
+# load dialogs (dialog/kdialog/zenity)
+source dialbox
 
 # exit on ctrl + c
 ctrl_c()
