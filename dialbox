@@ -1,6 +1,6 @@
 #!/bin/bash
 ###################################################################################################
-# ----------------------------------------------------------------------------------------------- #
+# |---------------------------------------------------------------------------------------------| #
 # |    <Title>    | dialbox                                                                     | #
 # |   <Created>   | Sun Feb 25 18:42:00 PST 2024                                                | #
 # |  <Last Edit>  | Sun Feb 25 00:00:00 PDT 2024                                                | #
@@ -11,11 +11,11 @@
 # |               | Usable in other scripts                                                     | #
 # |    <Usage>    | source /usr/local/bin/dialbox                                               | #
 # |               | Type dialhelp for a full description                                        | #
-# ----------------------------------------------------------------------------------------------- #
-#                                                                                                 #
-#  Copy and paste this text into a text file and save it in /usr/local/bin as the file dialbox.   #
-#  Import in other scripts or on the command line with: source /usr/local/bin/dialbox             #
-#                                                                                                 #
+# |---------------------------------------------------------------------------------------------| #
+# |                                                                                             | #
+# | Copy and paste this text into a text file and save it in /usr/local/bin as the file dialbox.| #
+# | Import in other scripts or on the command line with: source /usr/local/bin/dialbox          | #
+# |---------------------------------------------------------------------------------------------| #
 ###################################################################################################
 
 # Tput options
@@ -48,7 +48,7 @@ WHITE="$(tput setaf 7)"
 # if EDITOR is not set, vi will be used :-)
 #edit=nano
 
-# uncomment one of the 3 lines below to enforce the use of text, 
+# uncomment one of the 3 lines below to enforce the use of text,
 # kdialog or zenity dialogs
 #dflag=0      # dialog
 #dflag=1      # kdialog
@@ -140,7 +140,7 @@ flag=${dflag:-$flag}
 # default title
 title="$progname $version"
 
-# Default text editor 
+# Default text editor
 edit=${edit:-$EDITOR} ; edit=${edit:-vi}
 
 DIALOGS=(DIALOG KDIALOG ZENITY)
@@ -152,14 +152,14 @@ if [ $flag -eq 0 -o "$DIALOG" == "DIALOG" ] ; then
     which dialog &>/dev/null || exec echo "dialog not found. Install this package first."
     [ -f ~/.dialogrc ] || dialog --create-rc ~/.dialogrc
     W=$COLS ; H=$LINES
-fi  
+fi
 
 [ "$DISPLAY" ] && eval $(xdpyinfo | sed -n 's|.*dimensions:[ ]*\([0-9]*\)x\([0-9]*\) .*|XW=$((\1*50/100));XH=$((\2*50/100))|p')
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 function sizebox {
     # box width  = take 60% of terminal width or string length + 6
-     # box height = number of lines in string + 8
+    # box height = number of lines in string + 8
     type=$1 ; shift
     W=$COLS ; H=$LINES
 
@@ -175,7 +175,7 @@ function sizebox {
         notice)  h=4 ;;
         ask)      h=6 ;;
         entry)   h=8 ;;
-        choose)  msgW=$(($1 + 20)) ; h=$2 ;;     
+        choose)  msgW=$(($1 + 20)) ; h=$2 ;;
     esac
 
     [ $msgW -lt $W ] && W=$(($msgW + 6))
@@ -193,8 +193,8 @@ function ask {
 YesNo=1
 case $DIALOG in
     DIALOG)  sizebox ask "$*" ; dialog --clear --title "$title" --yesno "$*" $H $W && YesNo=0 ;;
-    KDIALOG) kdialog --title "$title" --yesno "$*" && YesNo=0 ;; 
-    ZENITY)  zenity --question --title "$title" --text "$*" && YesNo=0 ;; 
+    KDIALOG) kdialog --title "$title" --yesno "$*" && YesNo=0 ;;
+    ZENITY)  zenity --question --title "$title" --text "$*" && YesNo=0 ;;
     *) return 1 ;;
 esac
 return $YesNo
@@ -306,7 +306,7 @@ items=`while [ $i -lt ${#Items
 [li]} ] ; do[/li]    let j++
     status=off
     echo ${Items[$i]} | grep -q "*" && status=on
-    printf " %s %s %s" $j ${Items[$i]} $status 
+    printf " %s %s %s" $j ${Items[$i]} $status
     let i++
 done`
 
@@ -315,10 +315,10 @@ case $DIALOG in
         sizebox choose  $(echo $* | tr "," "
 " | sed 's|^ *||;s|^\*||' | wc -L) $(echo $* | sed 's|[^,]||g' | wc -L)
         index=$(dialog --clear --stdout --title "$title" --${t}list  "Select items from the list below" $(($H+6)) $W $H $items)
-        [ "$index" == "" ] || ditems=`for i in $(echo $index | tr -d "\"") ; do let i-- ; echo ${Items[$i]} | tr "~" " " ; done` ;;    
+        [ "$index" == "" ] || ditems=`for i in $(echo $index | tr -d "\"") ; do let i-- ; echo ${Items[$i]} | tr "~" " " ; done` ;;
     KDIALOG)
         index=$(kdialog --title "$title" --separate-output --${t}list "Select items from the list below" ${items//\*/})
-        [ "$index" == "" ] || ditems=`for i in $(echo $index | tr -d "\"") ; do let i-- ; echo ${Items[$i]} | tr "~" " " ; done` ;;    
+        [ "$index" == "" ] || ditems=`for i in $(echo $index | tr -d "\"") ; do let i-- ; echo ${Items[$i]} | tr "~" " " ; done` ;;
     ZENITY)
         sizebox choose  $(echo $* | tr "," "
 " | sed 's|^ *||;s|^\*||' | wc -L) $(echo $* | sed 's|[^,]||g' | wc -L)
@@ -330,7 +330,7 @@ case $DIALOG in
 esac
     echo $ditems | tr " " "
 " | sed '/~/s/.*/"&"/;s/~/ /g;s/\*//g' | tr "
-" " " 
+" " "
 }
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
