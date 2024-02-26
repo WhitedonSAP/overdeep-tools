@@ -133,13 +133,23 @@ NORMAL_USER=''
 # default Overdeep OS repository URL
 ARCHLINUX_REPO_URL=''
 
-# load dialogs (dialog/kdialog/zenity)
-source dialbox
+## load dialogs (dialog/kdialog/zenity)
+#source dialbox
+
+##!/bin/sh
+#tempfile="$(mktemp)"
+#while true; do
+#    dialog --menu 'Please select from the server list' 18 70 15 $(nl server.list) 2>"$tempfile" && break
+#done
+#n="$(cat "$tempfile")"
+#value="$(sed -n "${n}p" server.list)"
+#rm "$tempfile"
+#echo "The user selected option number $n: '$value'"
 
 # exit on ctrl + c
 ctrl_c()
 {
-    winbox 'error' "Keyboard Interrupt detected, leaving..."
+    winbox error "Keyboard Interrupt detected, leaving..."
     exit $FAILURE
 }
 trap ctrl_c 2
