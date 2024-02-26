@@ -1,28 +1,52 @@
 #!/usr/bin/env bash
-######################################################################################
-#                                                                                    #
-#  overdeep-installer - Official installer for Overdeep OS and others Distros Linux  #
-#                                                                                    #
-#  By                                                                                #
-#  WhitedonSAP                                                                       #
-#                                                                                    #
-#  E-mail - ayrtonarantes0987654321ayrt008@gmail.com                                 #
-#  Telegram - https://t.me/WhitedonSAP                                               #
-#                                                                                    #
-######################################################################################
+###################################################################################################
+# |---------------------------------------------------------------------------------------------| #
+# |    <Title>    | overdeep-installer                                                          | #
+# |   <Created>   | Sun Feb 25 18:42:00 PST 2024                                                | #
+# |  <Last Edit>  | Sun Feb 25 00:00:00 PDT 2024                                                | #
+# |    <Author>   | WhitedonSAP | https://t.me/WhitedonSAP                                      | #
+# |   <Version>   | 1.0                                                                         | #
+# | <Description> | Official installer for Overdeep OS and others Distros Linux                 | #
+# |---------------------------------------------------------------------------------------------| #
+# |               | Usable in other scripts                                                     | #
+# |    <Usage>    | source /usr/local/bin/dialbox                                               | #
+# |               | Type dialhelp for a full description                                        | #
+# |---------------------------------------------------------------------------------------------| #
+# |                                                                                             | #
+# | Copy and paste this text into a text file and save it in /usr/local/bin as the file dialbox.| #
+# | Import in other scripts or on the command line with: source /usr/local/bin/dialbox          | #
+# |---------------------------------------------------------------------------------------------| #
+###################################################################################################
 
-# overdeep-installer version
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
+#                     #                     #                     #
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
+## Program info
+# name
+PROGNAME='overdeep-installer'
+# version
 VERSION='0.0.1 (alpha)'
-
-# program name for backtitle in dialog
-BKTITLE="$(basename "$0") v$VERSION"
-
+# program path
+#OVERDEEP_PATH="$BASEDIR"
 # actual path
 BASEDIR="$(dirname "$0")"
-
-# path to overdeep-installer
-#OVERDEEP_PATH="$BASEDIR"
-
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
+#                     #                     #                     #
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
+## Dialog Options
+# backtitle (dialog)
+BKTITLE="$PROGNAME v$VERSION"
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
+#                     #                     #                     #
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
+## Current System Options
+#
+CUR_INIT_SYSTEM=''
+# current running system
+CUR_SYSTEM_BASED=''
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
+#                     #                     #                     #
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
 # directory of /mnt to work
 CHROOT='/mnt/overdeep'
 
@@ -36,8 +60,10 @@ FAILURE=1
 
 # check boot mode
 BOOT_MODE=''
-
-# installer opts
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
+#                     #                     #                     #
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
+## Installer Options
 # installation mode
 INSTALL_MODE=''
 # init system for install
@@ -58,8 +84,10 @@ HOST_NAME=''
 DUALBOOT=''
 # luks flag
 LUKS=''
-
-# network opts
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
+#                     #                     #                     #
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
+# Network Options
 # network interfaces
 NET_IFS=''
 # chosen network interface
@@ -85,8 +113,10 @@ NAMESERVER=''
 WLAN_SSID=''
 # wlan passphrase
 WLAN_PASSPHRASE=''
-
-# disks and bios
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
+#                     #                     #                     #
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
+# Disks and Bios Options
 # available hard drive
 HD_DEVS=''
 # chosen hard drive device
@@ -111,27 +141,29 @@ BOOT_FS_TYPE=''
 ROOT_FS_TYPE=''
 # create subvol on btrfs
 BTRFS_SUBVOL=$TRUE
-
-# current system opts
-CUR_INIT_SYSTEM=''
-# current running system
-CUR_SYSTEM_BASED=''
-
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
+#                     #                     #                     #
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
+## Display Server Options
 # xorg/wayland (display + de/wm ) setup - default: false
 DISPLAY_SERVER_SETUP=$FALSE
-
-# vms opts
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
+#                     #                     #                     #
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
+# VMs Options
 # virtualBox setup - default: false
 VBOX_SETUP=$FALSE
 # vmware setup - default: false
 VMWARE_SETUP=$FALSE
-
-# post install
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
+#                     #                     #                     #
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
+# Post Install Options
 # normal system user
 NORMAL_USER=''
-
-# default Overdeep OS repository URL
-ARCHLINUX_REPO_URL=''
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
+#                     #                     #                     #
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
 
 ## load dialogs (dialog/kdialog/zenity)
 #source dialbox
