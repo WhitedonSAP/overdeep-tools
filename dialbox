@@ -66,8 +66,8 @@ version='1.0'
 function dialhelp {
 cat << EOFHELP
 ${BOLD}NAME${RESET}
-$progname - create ncurses, QT or GTK dialog boxes. 
-
+    $progname - create ncurses, QT or GTK dialog boxes. 
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 ${BOLD}SYNOPSIS
     ask ${RESET}${WHITE}"text"${RESET}
     ${BOLD}entry ${RESET}${WHITE}"prompt:text"${RESET}
@@ -79,7 +79,7 @@ ${BOLD}SYNOPSIS
     ${BOLD}fileedit ${RESET}${WHITE}<file>${RESET}
     ${BOLD}choose radio | check ${RESET}${WHITE}item1, item2,*item3, ...${RESET}
     ${BOLD}dialhelp ${RESET} show this help.
-
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 ${BOLD}DESCRIPTION
 dialbox${RESET} uses the programs dialog, kdialog or zenity to create ncurses, QT or GTK
 message and input boxes, according to the environment or user preferences,  so
@@ -90,12 +90,12 @@ of ncurses, QT or GTK dialogs by setting the environment variable DIALOG:
     ${BOLD}export DIALOG=DIALOG  ${RESET}(ncurses)
     ${BOLD}export DIALOG=KDIALOG ${RESET}(QT)
     ${BOLD}export DIALOG=ZENITY  ${RESET}(GTK)
-
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 ${BOLD}USAGE${RESET}
 Either paste dialbox at top of your scripts or include (source) this file from
 inside your scripts - or in a bash terminal - to use its functions: 
 ${BOLD}source /usr/local/bin/dialbox${RESET}
-
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 ${BOLD}FUNCTIONS
 ask ${RESET}${WHITE}"test" ${RESET}return 0 (yes) or 1 (no)
 example: ${GREEN}ask "question?" && do something${RESET}    
@@ -115,7 +115,7 @@ ${RESET}display list of radio buttons or check options. Items should be separate
 commas.  Spaces will be replaced by "~" in list boxes.  To preselet an item,
 preceed its name with "*" without space. 
 example: ${GREEN}options=\$(choose check item1 item2 *item3)${RESET}
-
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 ${BOLD}CAVEATS${RESET}
 - cursor keys in textmode (like in other ncurses programs) don't work in aterm,
   wterm terminals. 
