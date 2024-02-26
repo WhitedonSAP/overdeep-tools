@@ -21,24 +21,24 @@
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # Tput options
 # reset
-reset="$(tput sgr0)"
+RESET="$(tput sgr0)"
 # columns
-cols="$(tput cols)"
+COLS="$(tput cols)"
 # lines
-lines="$(tput lines)"
+LINES="$(tput lines)"
 # bold
-bold="$(tput bold)"
+BOLD="$(tput bold)"
 # blink text
-blink="$(tput blink)"
-# colors (use ${BD}${any_color} to bold text)
-black="$(tput setaf 0)"
-red="$(tput setaf 1)"
-green="$(tput setaf 2)"
-yellow="$(tput setaf 3)"
-blue="$(tput setaf 4)"
-magenta="$(tput setaf 5)"
-cyan="$(tput setaf 6)"
-white="$(tput setaf 7)"
+BLINK="$(tput blink)"
+# colors (use ${BOLD}${any_color} to bold text)
+BLACK="$(tput setaf 0)"
+RED="$(tput setaf 1)"
+GREEN="$(tput setaf 2)"
+YELLOW="$(tput setaf 3)"
+BLUE="$(tput setaf 4)"
+MAGENTA="$(tput setaf 5)"
+CYAN="$(tput setaf 6)"
+WHITE="$(tput setaf 7)"
 
 # You might customize the functions by changing the variables below
 
@@ -64,60 +64,60 @@ prg='dialbox'
 
 function dialhelp {
 cat << EOFHELP
-$bold
+$BOLD
 NAME
-$reset    $prg - create ncurses, QT or GTK dialog boxes. 
+$RESET    $prg - create ncurses, QT or GTK dialog boxes. 
 
-${bold}SYNOPSIS
-    ask $reset$white"text"$reset
-    ${bold}entry $reset$white"prompt:text"$reset
-    ${bold}warn $reset$white"text"$reset
-    ${bold}notice $reset$white"text"$reset
-    ${bold}error $reset$white"text"$reset
-    ${bold}fileopen $reset$white<directory>$reset
-    ${bold}fileshow $reset$white<file>$reset
-    ${bold}fileedit $reset$white<file>$reset
-    ${bold}choose radio | check $reset;${white}item1,item2,*item3 ...$reset
-    ${bold}dialhelp $reset show this help.
+${BOLD}SYNOPSIS
+    ask $RESET$WHITE"text"$RESET
+    ${BOLD}entry $RESET$WHITE"prompt:text"$RESET
+    ${BOLD}warn $RESET$WHITE"text"$RESET
+    ${BOLD}notice $RESET$WHITE"text"$RESET
+    ${BOLD}error $RESET$WHITE"text"$RESET
+    ${BOLD}fileopen $RESET$WHITE<directory>$RESET
+    ${BOLD}fileshow $RESET$WHITE<file>$RESET
+    ${BOLD}fileedit $RESET$WHITE<file>$RESET
+    ${BOLD}choose radio | check $RESET;${WHITE}item1,item2,*item3 ...$RESET
+    ${BOLD}dialhelp $RESET show this help.
 
-${bold}DESCRIPTION${reset}
-${bold}dialbox${reset} uses the programs dialog, kdialog or zenity to create ncurses, QT or GTK
+${BOLD}DESCRIPTION${RESET}
+${BOLD}dialbox${RESET} uses the programs dialog, kdialog or zenity to create ncurses, QT or GTK
 message and input boxes, according to the environment or user preferences,  so
 that Bash scripts  dialogs will have a different look & feel whether there are
 executed under KDE, Gnome, other wms or console.  You can also enforce the use
 of ncurses, QT or GTK dialogs by setting the environment variable DIALOG:
 
-    ${bold}export DIALOG=DIALOG  $reset(ncurses)
-    ${bold}export DIALOG=KDIALOG $reset(QT)
-    ${bold}export DIALOG=ZENITY  $reset(GTK)
+    ${BOLD}export DIALOG=DIALOG  $RESET(ncurses)
+    ${BOLD}export DIALOG=KDIALOG $RESET(QT)
+    ${BOLD}export DIALOG=ZENITY  $RESET(GTK)
 
-${bold}USAGE${reset}
+${BOLD}USAGE${RESET}
 Either paste dialbox at top of your scripts or include (source) this file from
 inside your scripts - or in a bash terminal - to use its functions: 
-${bold}source /usr/local/bin/dialbox${reset}
+${BOLD}source /usr/local/bin/dialbox${RESET}
 
-${bold}FUNCTIONS${reset}
-${bold}ask ${reset};${white}"test" ${reset}return 0 (yes) or 1 (no)
-example: ${green}ask "question?" && do something${reset}    
-${bold}entry ${reset};${white}"prompt:string" ${reset}return the modified string:
-example: ${green}newstring=\$(prompt:string)${reset}
-${bold}warning ${reset};${white}"text"        ${reset}display warning message    
-${bold}notice ${reset};${white}"text"         ${reset}display info message    
-${bold}error ${reset};${white}"text"          ${reset}display message and abort script   
-${bold}fileopen ${reset};${white}<directory>  ${reset}select file to open   
+${BOLD}FUNCTIONS${RESET}
+${BOLD}ask ${RESET};${WHITE}"test" ${RESET}return 0 (yes) or 1 (no)
+example: ${GREEN}ask "question?" && do something${RESET}    
+${BOLD}entry ${RESET};${WHITE}"prompt:string" ${RESET}return the modified string:
+example: ${GREEN}newstring=\$(prompt:string)${RESET}
+${BOLD}warning ${RESET};${WHITE}"text"        ${RESET}display warning message    
+${BOLD}notice ${RESET};${WHITE}"text"         ${RESET}display info message    
+${BOLD}error ${RESET};${WHITE}"text"          ${RESET}display message and abort script   
+${BOLD}fileopen ${RESET};${WHITE}<directory>  ${RESET}select file to open   
 Be careful in console mode! Pressing <Enter> immediately exits the dialog.
 Use space bar to select files and directories!
-${bold}fileshow ${reset};${white}<file>       ${reset}display file   
-example: ${green}fileshow \$(fileopen /etc)${reset}
-${bold}fileedit ${reset};${white}<file>       ${reset}edit file   
-${bold}choose radio | check ${reset};${white}item1,item2,*item3 ...    
-${reset}display list of radio buttons or check options. Items should be separated by
+${BOLD}fileshow ${RESET};${WHITE}<file>       ${RESET}display file   
+example: ${GREEN}fileshow \$(fileopen /etc)${RESET}
+${BOLD}fileedit ${RESET};${WHITE}<file>       ${RESET}edit file   
+${BOLD}choose radio | check ${RESET};${WHITE}item1,item2,*item3 ...    
+${RESET}display list of radio buttons or check options. Items should be separated by
 commas.  Spaces will be replaced by "~" in list boxes.  To preselet an item,
 preceed its name with "*" without space. 
-example: ${green}options=\$(choose check item1 item2 *item3)$reset
+example: ${GREEN}options=\$(choose check item1 item2 *item3)$RESET
 
-${bold}CAVEATS
-${reset}- cursor keys in textmode (like in other ncurses programs) don't work in aterm,
+${BOLD}CAVEATS
+${RESET}- cursor keys in textmode (like in other ncurses programs) don't work in aterm,
   wterm terminals . 
 - fileedit dialogs width and height are ignored in kdialog.
 - fileedit dialogs lose content in dialog, so we use the default editor instead.
@@ -150,7 +150,7 @@ DIALOG=${DIALOG:-${DIALOGS[$flag]}}
 if [ $flag -eq 0 -o "$DIALOG" == "DIALOG" ] ; then
     which dialog &>/dev/null || exec echo "dialog not found. Install this package first."
     [ -f ~/.dialogrc ] || dialog --create-rc ~/.dialogrc
-    W=$cols ; H=$lines
+    W=$COLS ; H=$LINES
 fi  
 
 [ "$DISPLAY" ] && eval $(xdpyinfo | sed -n 's|.*dimensions:[ ]*\([0-9]*\)x\([0-9]*\) .*|XW=$((\1*50/100));XH=$((\2*50/100))|p')
@@ -160,7 +160,7 @@ function sizebox {
     # box width  = take 60% of terminal width or string length + 6
      # box height = number of lines in string + 8
     type=$1 ; shift
-    W=$cols ; H=$lines
+    W=$COLS ; H=$LINES
 
     case $type in
         fileshow)  return ;;
