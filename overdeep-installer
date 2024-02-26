@@ -198,22 +198,22 @@ winbox()
     if [ "$func" = 'msgbox' ]
     then
         shift
-        dialog --colors --backtitle "$BKTITLE" --title "${CYAN}$ttl${NC}" --msgbox "${BLACK}[] ${BLACK}$msg${NC}" $wdhg
+        dialog --colors --backtitle "$BKTITLE" --title "${CYAN}$ttl${RESET}" --msgbox "${BLACK}[] ${BLACK}$msg${RESET}" $wdhg
     elif [ "$func" = 'infobox' ]
     then
-        dialog --colors --backtitle "$BKTITLE" --title "${CYAN}$ttl${NC}" --infobox "${BLACK}[info] ${BLACK}$msg${NC}" $wdhg
+        dialog --colors --backtitle "$BKTITLE" --title "${CYAN}$ttl${RESET}" --infobox "${BLACK}[info] ${BLACK}$msg${RESET}" $wdhg
     elif [ "$func" = 'yesno' ]
     then
-        dialog --colors --backtitle "$BKTITLE" --title "${CYAN}$ttl${NC}" --yesno "${BLACK}[] $msg${NC}" $wdhg
+        dialog --colors --backtitle "$BKTITLE" --title "${CYAN}$ttl${RESET}" --yesno "${BLACK}[] $msg${RESET}" $wdhg
     elif [ "$func" = 'okay' ]
     then
-        dialog --colors --backtitle "$BKTITLE" --title "${CYAN}$ttl${NC}" --msgbox "${GREEN}[ok]\n\n${BLACK}$msg${NC}" $wdhg
+        dialog --colors --backtitle "$BKTITLE" --title "${CYAN}$ttl${RESET}" --msgbox "${GREEN}[ok]\n\n${BLACK}$msg${RESET}" $wdhg
     elif [ "$func" = 'warn' ]
     then
-        dialog --colors --backtitle "$BKTITLE" --title "${CYAN}$ttl${NC}" --msgbox "${YELLOW}[warn]\n\n${BLACK}$msg${NC}" $wdhg
+        dialog --colors --backtitle "$BKTITLE" --title "${CYAN}$ttl${RESET}" --msgbox "${YELLOW}[warn]\n\n${BLACK}$msg${RESET}" $wdhg
     elif [ "$func" = 'error' ]
     then
-        dialog --colors --backtitle "$BKTITLE" --title "${CYAN}$ttl${NC}" --msgbox "${RED}[error]\n\n${BLACK}$msg${NC}" $wdhg
+        dialog --colors --backtitle "$BKTITLE" --title "${CYAN}$ttl${RESET}" --msgbox "${RED}[error]\n\n${BLACK}$msg${RESET}" $wdhg
         return $FAILURE
     fi
 
@@ -2564,7 +2564,7 @@ easter_backdoor()
         sleep 1
         bar=$((bar + 1))
     done
-    printf "%s" " >> ${BLINK}${BLUE}HACK THE PLANET! D00R THE PLANET!${NC} <<"
+    printf "%s" " >> ${BLINK}${BLUE}HACK THE PLANET! D00R THE PLANET!${RESET} <<"
     printf "\n\n"
 
     return $SUCCESS
