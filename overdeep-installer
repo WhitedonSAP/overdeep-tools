@@ -284,6 +284,9 @@ check_system()
     elif [ "$(cat /etc/os-release | grep -w 'ID' | awk -F '=' '{print $2}')" = 'gentoo' ]
     then
         SYSTEM_BASED='gentoo'
+    elif [ "$(cat /etc/os-release | grep -w 'ID' | awk -F '=' '{print $2}')" = 'slackware' ]
+    then
+        SYSTEM_BASED='slackware'
     elif [ "$(cat /etc/os-release | grep -w 'ID' | awk -F '=' '{print $2}')" = 'void' ]
     then
         SYSTEM_BASED='void'
