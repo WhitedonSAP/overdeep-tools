@@ -20,24 +20,24 @@
 
 # Tput options
 # reset
-NC="$(tput sgr0)"
+nc="$(tput sgr0)"
 # columns
-COLS="$(tput cols)"
+cols="$(tput cols)"
 # lines
-LINES="$(tput lines)"
+lines="$(tput lines)"
 # bold
-BOLD="$(tput bold)"
+bold="$(tput bold)"
 # blink text
-BLINK="$(tput blink)"
+blink="$(tput blink)"
 # colors (use ${BD};${any_color} to bold text)
-BLACK="$(tput setaf 0)"
-RED="$(tput setaf 1)"
-GREEN="$(tput setaf 2)"
-YELLOW="$(tput setaf 3)"
-BLUE="$(tput setaf 4)"
-MAGENTA="$(tput setaf 5)"
-CYAN="$(tput setaf 6)"
-WHITE="$(tput setaf 7)"
+black="$(tput setaf 0)"
+red="$(tput setaf 1)"
+green="$(tput setaf 2)"
+yellow="$(tput setaf 3)"
+blue="$(tput setaf 4)"
+magenta="$(tput setaf 5)"
+cyan="$(tput setaf 6)"
+white="$(tput setaf 7)"
 
 # You might customize the functions by changing the variables below
 
@@ -63,60 +63,60 @@ prg='dialbox'
 
 function dialhelp {
 cat << EOFHELP
-$BOLD
+$bold
 NAME
-$NC    $prg - create ncurses, QT or GTK dialog boxes. 
+$nc    $prg - create ncurses, QT or GTK dialog boxes. 
 
-${BOLD}SYNOPSIS
-    ask $NC;$WHITE"text"$NC
-    ${BOLD}entry $NC;$WHITE"prompt:text"$NC
-    ${BOLD}warn $NC;$WHITE"text"$NC
-    ${BOLD}notice $NC;$WHITE"text"$NC
-    ${BOLD}error $NC;$WHITE"text"$NC
-    ${BOLD}fileopen $NC;$WHITE<directory>$NC
-    ${BOLD}fileshow $NC;$WHITE<file>$NC
-    ${BOLD}fileedit $NC;$WHITE<file>$NC
-    ${BOLD}choose radio | check $NC;${WHITE}item1,item2,*item3 ...$NC
-    ${BOLD}dialhelp $NC show this help.
+${bold}SYNOPSIS
+    ask $nc;$white"text"$nc
+    ${bold}entry $nc;$white"prompt:text"$nc
+    ${bold}warn $nc;$white"text"$nc
+    ${bold}notice $nc;$white"text"$nc
+    ${bold}error $nc;$white"text"$nc
+    ${bold}fileopen $nc;$white<directory>$nc
+    ${bold}fileshow $nc;$white<file>$nc
+    ${bold}fileedit $nc;$white<file>$nc
+    ${bold}choose radio | check $nc;${white}item1,item2,*item3 ...$nc
+    ${bold}dialhelp $nc show this help.
 
-${BOLD}DESCRIPTION${NC}
-${BOLD}dialbox${NC} uses the programs dialog, kdialog or zenity to create ncurses, QT or GTK
+${bold}DESCRIPTION${nc}
+${bold}dialbox${nc} uses the programs dialog, kdialog or zenity to create ncurses, QT or GTK
 message and input boxes, according to the environment or user preferences,  so
 that Bash scripts  dialogs will have a different look & feel whether there are
 executed under KDE, Gnome, other wms or console.  You can also enforce the use
 of ncurses, QT or GTK dialogs by setting the environment variable DIALOG:
 
-    ${BOLD}export DIALOG=DIALOG  $NC(ncurses)
-    ${BOLD}export DIALOG=KDIALOG $NC(QT)
-    ${BOLD}export DIALOG=ZENITY  $NC(GTK)
+    ${bold}export DIALOG=DIALOG  $nc(ncurses)
+    ${bold}export DIALOG=KDIALOG $nc(QT)
+    ${bold}export DIALOG=ZENITY  $nc(GTK)
 
-${BOLD}USAGE${NC}
+${bold}USAGE${nc}
 Either paste dialbox at top of your scripts or include (source) this file from
 inside your scripts - or in a bash terminal - to use its functions: 
-${BOLD}source /usr/local/bin/dialbox${NC}
+${bold}source /usr/local/bin/dialbox${nc}
 
-${BOLD}FUNCTIONS${NC}
-${BOLD}ask ${NC};${WHITE}"test" ${NC}return 0 (yes) or 1 (no)
-example: ${GREEN}ask "question?" && do something${NC}    
-${BOLD}entry ${NC};${WHITE}"prompt:string" ${NC}return the modified string:
-example: ${GREEN}newstring=\$(prompt:string)${NC}
-${BOLD}warning ${NC};${WHITE}"text"        ${NC}display warning message    
-${BOLD}notice ${NC};${WHITE}"text"         ${NC}display info message    
-${BOLD}error ${NC};${WHITE}"text"          ${NC}display message and abort script   
-${BOLD}fileopen ${NC};${WHITE}<directory>  ${NC}select file to open   
+${bold}FUNCTIONS${nc}
+${bold}ask ${nc};${white}"test" ${nc}return 0 (yes) or 1 (no)
+example: ${green}ask "question?" && do something${nc}    
+${bold}entry ${nc};${white}"prompt:string" ${nc}return the modified string:
+example: ${green}newstring=\$(prompt:string)${nc}
+${bold}warning ${nc};${white}"text"        ${nc}display warning message    
+${bold}notice ${nc};${white}"text"         ${nc}display info message    
+${bold}error ${nc};${white}"text"          ${nc}display message and abort script   
+${bold}fileopen ${nc};${white}<directory>  ${nc}select file to open   
 Be careful in console mode! Pressing <Enter> immediately exits the dialog.
 Use space bar to select files and directories!
-${BOLD}fileshow ${NC};${WHITE}<file>       ${NC}display file   
-example: ${GREEN}fileshow \$(fileopen /etc)${NC}
-${BOLD}fileedit ${NC};${WHITE}<file>       ${NC}edit file   
-${BOLD}choose radio | check ${NC};${WHITE}item1,item2,*item3 ...    
-${NC}display list of radio buttons or check options. Items should be separated by
+${bold}fileshow ${nc};${white}<file>       ${nc}display file   
+example: ${green}fileshow \$(fileopen /etc)${nc}
+${bold}fileedit ${nc};${white}<file>       ${nc}edit file   
+${bold}choose radio | check ${nc};${white}item1,item2,*item3 ...    
+${nc}display list of radio buttons or check options. Items should be separated by
 commas.  Spaces will be replaced by "~" in list boxes.  To preselet an item,
 preceed its name with "*" without space. 
-example: ${GREEN}options=\$(choose check item1 item2 *item3)$NC
+example: ${green}options=\$(choose check item1 item2 *item3)$nc
 
-${BOLD}CAVEATS
-${NC}- cursor keys in textmode (like in other ncurses programs) don't work in aterm,
+${bold}CAVEATS
+${nc}- cursor keys in textmode (like in other ncurses programs) don't work in aterm,
   wterm terminals . 
 - fileedit dialogs width and height are ignored in kdialog.
 - fileedit dialogs lose content in dialog, so we use the default editor instead.
@@ -149,7 +149,7 @@ DIALOG=${DIALOG:-${DIALOGS[$flag]}}
 if [ $flag -eq 0 -o "$DIALOG" == "DIALOG" ] ; then
     which dialog &>/dev/null || exec echo "dialog not found. Install this package first."
     [ -f ~/.dialogrc ] || dialog --create-rc ~/.dialogrc
-    W=$COLS ; H=$LINES
+    W=$cols ; H=$lines
 fi  
 
 [ "$DISPLAY" ] && eval $(xdpyinfo | sed -n 's|.*dimensions:[ ]*\([0-9]*\)x\([0-9]*\) .*|XW=$((\1*50/100));XH=$((\2*50/100))|p')
@@ -159,7 +159,7 @@ function sizebox {
     # box width  = take 60% of terminal width or string length + 6
      # box height = number of lines in string + 8
     type=$1 ; shift
-    W=$COLS ; H=$LINES
+    W=$cols ; H=$lines
 
     case $type in
         fileshow)  return ;;
