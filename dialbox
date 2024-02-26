@@ -78,7 +78,7 @@ cat << EOFHELP
 #     ${BOLD}fileshow ${RESET}${WHITE}<file>${RESET}
 #     ${BOLD}fileedit ${RESET}${WHITE}<file>${RESET}
 #     ${BOLD}choose radio | check ${RESET}${WHITE}item1, item2,*item3, ...${RESET}
-#     ${BOLD}dialhelp ${RESET} show this help.
+#     ${BOLD}dialhelp ${RESET} (show this help).
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # ${BOLD}DESCRIPTION
 # dialbox${RESET} uses the programs dialog, kdialog or zenity to create ncurses,
