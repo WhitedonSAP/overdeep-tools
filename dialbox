@@ -98,20 +98,20 @@ inside your scripts - or in a bash terminal - to use its functions:
 ${BOLD}source /usr/local/bin/dialbox${RESET}
 
 ${BOLD}FUNCTIONS${RESET}
-${BOLD}ask ${RESET};${WHITE}"test" ${RESET}return 0 (yes) or 1 (no)
+${BOLD}ask ${RESET}${WHITE}"test" ${RESET}return 0 (yes) or 1 (no)
 example: ${GREEN}ask "question?" && do something${RESET}    
-${BOLD}entry ${RESET};${WHITE}"prompt:string" ${RESET}return the modified string:
+${BOLD}entry ${RESET}${WHITE}"prompt:string" ${RESET}return the modified string:
 example: ${GREEN}newstring=\$(prompt:string)${RESET}
-${BOLD}warning ${RESET};${WHITE}"text"        ${RESET}display warning message    
-${BOLD}notice ${RESET};${WHITE}"text"         ${RESET}display info message    
-${BOLD}error ${RESET};${WHITE}"text"          ${RESET}display message and abort script   
-${BOLD}fileopen ${RESET};${WHITE}<directory>  ${RESET}select file to open   
+${BOLD}warning ${RESET}${WHITE}"text"        ${RESET}display warning message    
+${BOLD}notice ${RESET}${WHITE}"text"         ${RESET}display info message    
+${BOLD}error ${RESET}${WHITE}"text"          ${RESET}display message and abort script   
+${BOLD}fileopen ${RESET}${WHITE}<directory>  ${RESET}select file to open   
 Be careful in console mode! Pressing <Enter> immediately exits the dialog.
 Use space bar to select files and directories!
-${BOLD}fileshow ${RESET};${WHITE}<file>       ${RESET}display file   
+${BOLD}fileshow ${RESET}${WHITE}<file>       ${RESET}display file   
 example: ${GREEN}fileshow \$(fileopen /etc)${RESET}
-${BOLD}fileedit ${RESET};${WHITE}<file>       ${RESET}edit file   
-${BOLD}choose radio | check ${RESET};${WHITE}item1,item2,*item3 ...    
+${BOLD}fileedit ${RESET}${WHITE}<file>       ${RESET}edit file   
+${BOLD}choose radio | check ${RESET}${WHITE}item1,item2,*item3 ...    
 ${RESET}display list of radio buttons or check options. Items should be separated by
 commas.  Spaces will be replaced by "~" in list boxes.  To preselet an item,
 preceed its name with "*" without space. 
