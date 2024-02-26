@@ -65,8 +65,8 @@ version='1.0'
 function dialhelp {
 cat << EOFHELP
 #########################################################################################
-# ${BOLD}NAME${RESET}
-#     $progname - create ncurses, QT or GTK dialog boxes.
+# ${BOLD}NAME
+#     $progname${RESET} - create ncurses, QT or GTK dialog boxes.
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # ${BOLD}SYNOPSIS
 #     ask ${RESET}${WHITE}"text"${RESET}
