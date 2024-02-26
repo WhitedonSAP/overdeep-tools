@@ -21,7 +21,7 @@
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # Tput options
 # reset
-nc="$(tput sgr0)"
+reset="$(tput sgr0)"
 # columns
 cols="$(tput cols)"
 # lines
@@ -66,58 +66,58 @@ function dialhelp {
 cat << EOFHELP
 $bold
 NAME
-$nc    $prg - create ncurses, QT or GTK dialog boxes. 
+$reset    $prg - create ncurses, QT or GTK dialog boxes. 
 
 ${bold}SYNOPSIS
-    ask $nc;$white"text"$nc
-    ${bold}entry $nc;$white"prompt:text"$nc
-    ${bold}warn $nc;$white"text"$nc
-    ${bold}notice $nc;$white"text"$nc
-    ${bold}error $nc;$white"text"$nc
-    ${bold}fileopen $nc;$white<directory>$nc
-    ${bold}fileshow $nc;$white<file>$nc
-    ${bold}fileedit $nc;$white<file>$nc
-    ${bold}choose radio | check $nc;${white}item1,item2,*item3 ...$nc
-    ${bold}dialhelp $nc show this help.
+    ask $reset$white"text"$reset
+    ${bold}entry $reset$white"prompt:text"$reset
+    ${bold}warn $reset$white"text"$reset
+    ${bold}notice $reset$white"text"$reset
+    ${bold}error $reset$white"text"$reset
+    ${bold}fileopen $reset$white<directory>$reset
+    ${bold}fileshow $reset$white<file>$reset
+    ${bold}fileedit $reset$white<file>$reset
+    ${bold}choose radio | check $reset;${white}item1,item2,*item3 ...$reset
+    ${bold}dialhelp $reset show this help.
 
-${bold}DESCRIPTION${nc}
-${bold}dialbox${nc} uses the programs dialog, kdialog or zenity to create ncurses, QT or GTK
+${bold}DESCRIPTION${reset}
+${bold}dialbox${reset} uses the programs dialog, kdialog or zenity to create ncurses, QT or GTK
 message and input boxes, according to the environment or user preferences,  so
 that Bash scripts  dialogs will have a different look & feel whether there are
 executed under KDE, Gnome, other wms or console.  You can also enforce the use
 of ncurses, QT or GTK dialogs by setting the environment variable DIALOG:
 
-    ${bold}export DIALOG=DIALOG  $nc(ncurses)
-    ${bold}export DIALOG=KDIALOG $nc(QT)
-    ${bold}export DIALOG=ZENITY  $nc(GTK)
+    ${bold}export DIALOG=DIALOG  $reset(ncurses)
+    ${bold}export DIALOG=KDIALOG $reset(QT)
+    ${bold}export DIALOG=ZENITY  $reset(GTK)
 
-${bold}USAGE${nc}
+${bold}USAGE${reset}
 Either paste dialbox at top of your scripts or include (source) this file from
 inside your scripts - or in a bash terminal - to use its functions: 
-${bold}source /usr/local/bin/dialbox${nc}
+${bold}source /usr/local/bin/dialbox${reset}
 
-${bold}FUNCTIONS${nc}
-${bold}ask ${nc};${white}"test" ${nc}return 0 (yes) or 1 (no)
-example: ${green}ask "question?" && do something${nc}    
-${bold}entry ${nc};${white}"prompt:string" ${nc}return the modified string:
-example: ${green}newstring=\$(prompt:string)${nc}
-${bold}warning ${nc};${white}"text"        ${nc}display warning message    
-${bold}notice ${nc};${white}"text"         ${nc}display info message    
-${bold}error ${nc};${white}"text"          ${nc}display message and abort script   
-${bold}fileopen ${nc};${white}<directory>  ${nc}select file to open   
+${bold}FUNCTIONS${reset}
+${bold}ask ${reset};${white}"test" ${reset}return 0 (yes) or 1 (no)
+example: ${green}ask "question?" && do something${reset}    
+${bold}entry ${reset};${white}"prompt:string" ${reset}return the modified string:
+example: ${green}newstring=\$(prompt:string)${reset}
+${bold}warning ${reset};${white}"text"        ${reset}display warning message    
+${bold}notice ${reset};${white}"text"         ${reset}display info message    
+${bold}error ${reset};${white}"text"          ${reset}display message and abort script   
+${bold}fileopen ${reset};${white}<directory>  ${reset}select file to open   
 Be careful in console mode! Pressing <Enter> immediately exits the dialog.
 Use space bar to select files and directories!
-${bold}fileshow ${nc};${white}<file>       ${nc}display file   
-example: ${green}fileshow \$(fileopen /etc)${nc}
-${bold}fileedit ${nc};${white}<file>       ${nc}edit file   
-${bold}choose radio | check ${nc};${white}item1,item2,*item3 ...    
-${nc}display list of radio buttons or check options. Items should be separated by
+${bold}fileshow ${reset};${white}<file>       ${reset}display file   
+example: ${green}fileshow \$(fileopen /etc)${reset}
+${bold}fileedit ${reset};${white}<file>       ${reset}edit file   
+${bold}choose radio | check ${reset};${white}item1,item2,*item3 ...    
+${reset}display list of radio buttons or check options. Items should be separated by
 commas.  Spaces will be replaced by "~" in list boxes.  To preselet an item,
 preceed its name with "*" without space. 
-example: ${green}options=\$(choose check item1 item2 *item3)$nc
+example: ${green}options=\$(choose check item1 item2 *item3)$reset
 
 ${bold}CAVEATS
-${nc}- cursor keys in textmode (like in other ncurses programs) don't work in aterm,
+${reset}- cursor keys in textmode (like in other ncurses programs) don't work in aterm,
   wterm terminals . 
 - fileedit dialogs width and height are ignored in kdialog.
 - fileedit dialogs lose content in dialog, so we use the default editor instead.
