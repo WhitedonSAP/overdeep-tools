@@ -8,13 +8,13 @@
 # |   <Version>   | 1.0                                                                         | #
 # | <Description> | Official installer for Overdeep OS and others Distros Linux                 | #
 # |---------------------------------------------------------------------------------------------| #
-# |               | Usable in other scripts                                                     | #
-# |    <Usage>    | source /usr/local/bin/dialbox                                               | #
-# |               | Type dialhelp for a full description                                        | #
+# |               |                                                                             | #
+# |    <Usage>    |                                 <Use Infos>                                 | #
+# |               |                                                                             | #
 # |---------------------------------------------------------------------------------------------| #
 # |                                                                                             | #
-# | Copy and paste this text into a text file and save it in /usr/local/bin as the file dialbox.| #
-# | Import in other scripts or on the command line with: source /usr/local/bin/dialbox          | #
+# |                                  <Basic Informations>                                       | #
+# |                                                                                             | #
 # |---------------------------------------------------------------------------------------------| #
 ###################################################################################################
 
