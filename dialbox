@@ -18,9 +18,9 @@
 # |---------------------------------------------------------------------------------------------| #
 ###################################################################################################
 
-# Tput options
-# reset
-RESET="$(tput sgr0)"
+# Tput Options
+# nocolor and reset
+NCR="$(tput sgr0)"
 # columns
 COLS="$(tput cols)"
 # lines
@@ -66,57 +66,57 @@ function dialhelp {
 cat << EOFHELP
 #########################################################################################
 # ${BOLD}NAME
-#     $progname${RESET} - create ncurses, QT or GTK dialog boxes.
+#     $progname${NCR} - create ncurses, QT or GTK dialog boxes.
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # ${BOLD}SYNOPSIS
-#     ask${RESET} ${WHITE}"text"${RESET}
-#     ${BOLD}entry${RESET} ${WHITE}"prompt:text"${RESET}
-#     ${BOLD}warn${RESET} ${WHITE}"text"${RESET}
-#     ${BOLD}notice${RESET} ${WHITE}"text"${RESET}
-#     ${BOLD}error${RESET} ${WHITE}"text"${RESET}
-#     ${BOLD}fileopen${RESET} ${WHITE}<directory>${RESET}
-#     ${BOLD}fileshow${RESET} ${WHITE}<file>${RESET}
-#     ${BOLD}fileedit${RESET} ${WHITE}<file>${RESET}
-#     ${BOLD}choose radio | check${RESET} ${WHITE}item1, item2,*item3, ...${RESET}
-#     ${BOLD}dialhelp${RESET} (show this help).
+#     ask${NCR} ${WHITE}"text"${NCR}
+#     ${BOLD}entry${NCR} ${WHITE}"prompt:text"${NCR}
+#     ${BOLD}warn${NCR} ${WHITE}"text"${NCR}
+#     ${BOLD}notice${NCR} ${WHITE}"text"${NCR}
+#     ${BOLD}error${NCR} ${WHITE}"text"${NCR}
+#     ${BOLD}fileopen${NCR} ${WHITE}<directory>${NCR}
+#     ${BOLD}fileshow${NCR} ${WHITE}<file>${NCR}
+#     ${BOLD}fileedit${NCR} ${WHITE}<file>${NCR}
+#     ${BOLD}choose radio | check${NCR} ${WHITE}item1, item2,*item3, ...${NCR}
+#     ${BOLD}dialhelp${NCR} (show this help).
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # ${BOLD}DESCRIPTION
-# dialbox${RESET} uses the programs dialog, kdialog or zenity to create ncurses,
+# dialbox${NCR} uses the programs dialog, kdialog or zenity to create ncurses,
 # QT or GTK message and input boxes, according to the environment or user preferences,
 # so that Bash scripts  dialogs will have a different look & feel whether there are
 # executed under KDE, Gnome, other wms or console.  You can also enforce the use
 # of ncurses, QT or GTK dialogs by setting the environment variable DIALOG:
 #
-#     ${BOLD}export DIALOG=DIALOG${RESET}  (ncurses)
-#     ${BOLD}export DIALOG=KDIALOG${RESET} (QT)
-#     ${BOLD}export DIALOG=ZENITY${RESET}  (GTK)
+#     ${BOLD}export DIALOG=DIALOG${NCR}  (ncurses)
+#     ${BOLD}export DIALOG=KDIALOG${NCR} (QT)
+#     ${BOLD}export DIALOG=ZENITY${NCR}  (GTK)
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-# ${BOLD}USAGE${RESET}
+# ${BOLD}USAGE${NCR}
 # Either paste dialbox at top of your scripts or include (source) this file from
 # inside your scripts - or in a bash terminal - to use its functions:
-# ${BOLD}source /usr/local/bin/dialbox${RESET}
+# ${BOLD}source /usr/local/bin/dialbox${NCR}
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # ${BOLD}FUNCTIONS
-# ask${RESET} ${WHITE}"test"${RESET} return 0 (yes) or 1 (no)
-# example: ${GREEN}ask "question?" && do something${RESET}
-# ${BOLD}entry${RESET} ${WHITE}"prompt:string"${RESET} return the modified string:
-# example: ${GREEN}newstring=\$(prompt:string)${RESET}
-# ${BOLD}warning${RESET} ${WHITE}"text"${RESET}        display warning message
-# ${BOLD}notice${RESET} ${WHITE}"text"${RESET}         display info message
-# ${BOLD}error${RESET} ${WHITE}"text"${RESET}          display message and abort script
-# ${BOLD}fileopen${RESET} ${WHITE}<directory>${RESET}  select file to open
+# ask${NCR} ${WHITE}"test"${NCR} return 0 (yes) or 1 (no)
+# example: ${GREEN}ask "question?" && do something${NCR}
+# ${BOLD}entry${NCR} ${WHITE}"prompt:string"${NCR} return the modified string:
+# example: ${GREEN}newstring=\$(prompt:string)${NCR}
+# ${BOLD}warning${NCR} ${WHITE}"text"${NCR}        display warning message
+# ${BOLD}notice${NCR} ${WHITE}"text"${NCR}         display info message
+# ${BOLD}error${NCR} ${WHITE}"text"${NCR}          display message and abort script
+# ${BOLD}fileopen${NCR} ${WHITE}<directory>${NCR}  select file to open
 # Be careful in console mode! Pressing <Enter> immediately exits the dialog.
 # Use space bar to select files and directories!
-# ${BOLD}fileshow${RESET} ${WHITE}<file>${RESET}       display file
-# example: ${GREEN}fileshow \$(fileopen /etc)${RESET}
-# ${BOLD}fileedit${RESET} ${WHITE}<file>${RESET}       edit file
-# ${BOLD}choose radio | check${RESET} ${WHITE}item1,item2,*item3 ...
-# ${RESET}display list of radio buttons or check options. Items should be separated by
+# ${BOLD}fileshow${NCR} ${WHITE}<file>${NCR}       display file
+# example: ${GREEN}fileshow \$(fileopen /etc)${NCR}
+# ${BOLD}fileedit${NCR} ${WHITE}<file>${NCR}       edit file
+# ${BOLD}choose radio | check${NCR} ${WHITE}item1,item2,*item3 ...
+# ${NCR}display list of radio buttons or check options. Items should be separated by
 # commas.  Spaces will be replaced by "~" in list boxes.  To preselet an item,
 # preceed its name with "*" without space.
-# example: ${GREEN}options=\$(choose check item1 item2 *item3)${RESET}
+# example: ${GREEN}options=\$(choose check item1 item2 *item3)${NCR}
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-# ${BOLD}CAVEATS${RESET}
+# ${BOLD}CAVEATS${NCR}
 # - cursor keys in textmode (like in other ncurses programs) don't work in aterm,
 # wterm terminals.
 # - fileedit dialogs width and height are ignored in kdialog.
