@@ -21,7 +21,7 @@
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
 #                     #                     #                     #
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
-## Program info
+### Program Info
 # name
 PROGNAME='overdeep-installer'
 # version
@@ -33,37 +33,31 @@ BASEDIR="$(dirname "$0")"
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
 #                     #                     #                     #
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
-## Dialog Options
+### Dialog Options
 # backtitle (dialog)
 BKTITLE="$PROGNAME v$VERSION"
+# true / false
+TRUE=0
+FALSE=1
+# return codes
+SUCCESS=0
+FAILURE=1
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
 #                     #                     #                     #
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
-## Current System Options
-#
+### Current System Options
+# check bios mode (uefi/legacy)
+BIOS_MODE=''
+# current running init (e.g: openrc, systemd, systemv, ...)
 CUR_INIT_SYSTEM=''
-# current running system
+# current running system (e.g: ubuntu, arch, gentoo, ...)
 CUR_SYSTEM_BASED=''
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
 #                     #                     #                     #
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
+### Installer Options
 # directory of /mnt to work
 CHROOT='/mnt/overdeep'
-
-# true / false
-TRUE=0
-FALSE=1
-
-# return codes
-SUCCESS=0
-FAILURE=1
-
-# check boot mode
-BOOT_MODE=''
-#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
-#                     #                     #                     #
-#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
-## Installer Options
 # installation mode
 INSTALL_MODE=''
 # init system for install
@@ -87,7 +81,7 @@ LUKS=''
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
 #                     #                     #                     #
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
-# Network Options
+### Network Options
 # network interfaces
 NET_IFS=''
 # chosen network interface
@@ -116,7 +110,7 @@ WLAN_PASSPHRASE=''
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
 #                     #                     #                     #
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
-# Disks and Bios Options
+### Disks Options
 # available hard drive
 HD_DEVS=''
 # chosen hard drive device
@@ -144,13 +138,13 @@ BTRFS_SUBVOL=$TRUE
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
 #                     #                     #                     #
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
-## Display Server Options
+### Display Server Options
 # xorg/wayland (display + de/wm ) setup - default: false
 DISPLAY_SERVER_SETUP=$FALSE
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
 #                     #                     #                     #
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
-# VMs Options
+### VMs Options
 # virtualBox setup - default: false
 VBOX_SETUP=$FALSE
 # vmware setup - default: false
@@ -158,7 +152,7 @@ VMWARE_SETUP=$FALSE
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
 #                     #                     #                     #
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
-# Post Install Options
+### Post Install Options
 # normal system user
 NORMAL_USER=''
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
@@ -268,16 +262,16 @@ check_uid()
 }
 
 
-# check boot mode
-check_boot_mode()
+# check bios mode
+check_bios_mode()
 {
     efivars=$(ls /sys/firmware/efi/efivars > /dev/null 2>&1; echo $?)
 
     if [ "$efivars" -eq "0" ]
     then
-        BOOT_MODE="uefi"
+        BIOS_MODE="uefi"
     else
-        BOOT_MODE="legacy"
+        BIOS_MODE="legacy"
     fi
 
     return $SUCCESS
@@ -992,14 +986,14 @@ ask_cfdisk()
     '[?] Create partitions with cfdisk (root and boot, optional swap) [y/n]: '
     then
         winbox '[+] Cfdisk Default scheme:'
-        if [ "$BOOT_MODE" = 'uefi' ]
+        if [ "$BIOS_MODE" = 'uefi' ]
         then
             printf "\n\n
           Bios UEFI detected!\n\n
           EFI partition (if it doesn't exist) ------> EF00 256M
           Swap partition ---------------------------> 8200 (Your ram memory/2)
           System Root partition --------------------> 8300 +5G\n\n"
-        elif [ "$BOOT_MODE" = 'legacy' ]
+        elif [ "$BIOS_MODE" = 'legacy' ]
         then
             printf "\n\n
           Bios Legacy detected!\n\n
@@ -1047,7 +1041,7 @@ zero_part()
         make sure to write your changes before quiting cfdisk. Trying again...'
         zero_part
     fi
-    if [ "$BOOT_MODE" = 'uefi' ] && ! fdisk -l "$HD_DEV" -o type | grep -i 'EFI' > /dev/null 2>&1
+    if [ "$BIOS_MODE" = 'uefi' ] && ! fdisk -l "$HD_DEV" -o type | grep -i 'EFI' > /dev/null 2>&1
     then
         err 'You are booting in UEFI mode but not EFI partition was created, \
         make sure you select the "EFI System" type for your EFI partition.'
@@ -1079,7 +1073,7 @@ ask_partitions()
     echo
 
     # boot partition
-    if [ "$BOOT_MODE" = 'legacy' ]
+    if [ "$BIOS_MODE" = 'legacy' ]
     then
         while [ -z "$BOOT_PART" ]
         do
@@ -1209,7 +1203,7 @@ confirm_all()
             printf "Luks: No"
         fi
         echo
-        if [ "$BOOT_MODE" = 'uefi' ] && [ $BTRFS_SUBVOL = $TRUE ]
+        if [ "$BIOS_MODE" = 'uefi' ] && [ $BTRFS_SUBVOL = $TRUE ]
         then
             EFI_PART="$(fdisk -l "$HD_DEV" | grep -i 'EFI' | awk '{print $1}')"
             winbox '[+] Partition table:'
@@ -1220,7 +1214,7 @@ confirm_all()
                     "$EFI_PART" \
                     "$ROOT_PART" "$ROOT_FS_TYPE" \
                     "$SWAP_PART"
-        elif [ "$BOOT_MODE" = 'legacy' ] && [ $BTRFS_SUBVOL = $TRUE ]
+        elif [ "$BIOS_MODE" = 'legacy' ] && [ $BTRFS_SUBVOL = $TRUE ]
         then
             winbox '[+] Partition table:'
             printf "\n
@@ -1230,7 +1224,7 @@ confirm_all()
                 "$BOOT_PART" "$BOOT_FS_TYPE" \
                 "$ROOT_PART" "$ROOT_FS_TYPE" \
                 "$SWAP_PART"
-        elif [ "$BOOT_MODE" = 'uefi' ] && [ $BTRFS_SUBVOL = $FALSE ]
+        elif [ "$BIOS_MODE" = 'uefi' ] && [ $BTRFS_SUBVOL = $FALSE ]
         then
             EFI_PART="$(fdisk -l "$HD_DEV" | grep -i 'EFI' | awk '{print $1}')"
             winbox '[+] Partition table:'
@@ -1241,7 +1235,7 @@ confirm_all()
                     "$EFI_PART" \
                     "$ROOT_PART" "$ROOT_FS_TYPE" \
                     "$SWAP_PART"
-        elif [ "$BOOT_MODE" = 'legacy' ] && [ $BTRFS_SUBVOL = $FALSE ]
+        elif [ "$BIOS_MODE" = 'legacy' ] && [ $BTRFS_SUBVOL = $FALSE ]
         then
             winbox '[+] Partition table:'
             printf "\n
@@ -1268,10 +1262,10 @@ confirm_all()
             if yesno '[?] Setup the hard drive again [y/n]: '
             then
                 clear
-                if [ "$BOOT_MODE" = 'uefi' ]
+                if [ "$BIOS_MODE" = 'uefi' ]
                 then
                     EFI_PART=''
-                elif [ "$BOOT_MODE" = 'legacy' ]
+                elif [ "$BIOS_MODE" = 'legacy' ]
                 then
                     BOOT_PART=''
                     BOOT_FS_TYPE=''
@@ -1437,13 +1431,13 @@ make_root_partition()
 # make and format partitions
 make_partitions()
 {
-    if [ "$BOOT_MODE" = 'uefi' ]
+    if [ "$BIOS_MODE" = 'uefi' ]
     then
         make_efi_partition
         sleep_clear 1
     fi
 
-    if [ "$BOOT_MODE" = 'legacy' ]
+    if [ "$BIOS_MODE" = 'legacy' ]
     then
         make_boot_partition
         sleep_clear 1
@@ -1559,8 +1553,8 @@ mount_filesystems()
         fi
     fi
 
-    # EFI (if BOOT_MODE='uefi')
-    if [ "$BOOT_MODE" = 'uefi' ]
+    # EFI (if BIOS_MODE='uefi')
+    if [ "$BIOS_MODE" = 'uefi' ]
     then
         mkdir -p "$CHROOT/boot/efi"
         if ! mount "$EFI_PART" "$CHROOT/boot/efi"
@@ -1570,8 +1564,8 @@ mount_filesystems()
         fi
     fi
 
-    # BOOT (if BOOT_MODE='legacy')
-    if [ "$BOOT_MODE" = 'legacy' ]
+    # BOOT (if BIOS_MODE='legacy')
+    if [ "$BIOS_MODE" = 'legacy' ]
     then
         mkdir -p "$CHROOT/boot"
         if ! mount -t btrfs -o defaults,noatime,compress=zstd "$BOOT_PART" "$CHROOT/boot"
@@ -1810,7 +1804,7 @@ setup_bootloader()
 
     sed -i 's/#GRUB_CMDLINE_LINUX_DEFAULT=""/GRUB_CMDLINE_LINUX_DEFAULT="loglevel=3"/' "$CHROOT/etc/default/grub"
 
-    if [ "$BOOT_MODE" = 'uefi' ] && [ $DUALBOOT = $TRUE ]
+    if [ "$BIOS_MODE" = 'uefi' ] && [ $DUALBOOT = $TRUE ]
     then
         winbox '[?] Are you installing the system on a USB flash drive [y/n]: '
         read -r usbgrub
@@ -1822,7 +1816,7 @@ setup_bootloader()
         then
             chroot $CHROOT grub-install --target=x86_64-efi --efi-directory=/boot/efi --bootloader-id="Overdeep OS"
         fi
-    elif [ "$BOOT_MODE" = 'uefi' ] && [ $DUALBOOT = $FALSE ]
+    elif [ "$BIOS_MODE" = 'uefi' ] && [ $DUALBOOT = $FALSE ]
     then
         winbox '[?] Are you installing the system on a USB flash drive [y/n]: '
         read -r usbgrub
@@ -1834,11 +1828,11 @@ setup_bootloader()
         then
             chroot $CHROOT grub-install --target=x86_64-efi --efi-directory=/boot/efi --bootloader-id="Overdeep OS" --recheck
         fi
-    elif [ "$BOOT_MODE" = 'legacy' ] && [ $DUALBOOT = $TRUE ]
+    elif [ "$BIOS_MODE" = 'legacy' ] && [ $DUALBOOT = $TRUE ]
     then
         warn 'Installing grub on MBR of disk...'
         chroot $CHROOT grub-install "$HD_DEV"
-    elif [ "$BOOT_MODE" = 'legacy' ] && [ $DUALBOOT = $FALSE ]
+    elif [ "$BIOS_MODE" = 'legacy' ] && [ $DUALBOOT = $FALSE ]
     then
         warn 'Installing grub on MBR of disk...'
         chroot $CHROOT grub-install "$HD_DEV" --recheck
@@ -2629,7 +2623,7 @@ main()
     # do some ENV checks
     sleep_clear 0
     check_uid
-    check_boot_mode
+    check_bios_mode
     check_init_system
 
     # check for net connection
