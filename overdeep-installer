@@ -256,7 +256,7 @@ winbox()
         dialog --colors --backtitle "$BKTITLE" --title "${CYAN}$ttl${NCL}" --msgbox "${BLACK}[+] $msg${NCL}" $wdhg
     elif [ "$func" = 'infobox' ]
     then
-        dialog --colors --backtitle "$BKTITLE" --title "${CYAN}$ttl${NCL}" --infobox "${BLACK}[info] $msg${NCL}" $wdhg
+        dialog --colors --backtitle "$BKTITLE" --title "${CYAN}$ttl${NCL}" --infobox "${BLACK}[info] $msg${NCL}" $wdhg ; sleep 3
     elif [ "$func" = 'yesno' ]
     then
         dialog --colors --backtitle "$BKTITLE" --title "${CYAN}$ttl${NCL}" --yesno "${BLACK}[?] $msg${NCL}" $wdhg
@@ -373,7 +373,7 @@ check_internet()
         winbox yesno "$title" 'Continue on offline mode'
         if [ $? = 0 ]
         then
-            winbox warn "$title" 'Continuing...'
+            winbox infobox "$title" 'Continuing...'
         else
             winbox error "$title" 'Quitting...'
             exit $FAILURE
