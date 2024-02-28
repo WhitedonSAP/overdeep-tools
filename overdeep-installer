@@ -368,22 +368,21 @@ check_internet()
 {
     title='Check Internet'
 
-    winbox msgbox $title 'Checking for Internet connection...'
+    winbox msgbox "$title" 'Checking for Internet connection...'
 
     if ! curl -s http://www.yahoo.com/ > /dev/null
     then
-        winbox warn $title 'No internet connection detected!'
-        winbox yesno $title '[?] Continue on offline mode'
+        winbox warn "$title" 'No internet connection detected!'
+        winbox yesno "$title" 'Continue on offline mode'
         if [ $? = 0 ]
         then
-            winbox warn $title 'Continuing on offline mode...'
+            winbox warn "$title" 'Continuing...'
         else
-            winbox error $title 'Quitting...'
-            sleep_clear 0
+            winbox error "$title" 'Quitting...'
             exit $FAILURE
         fi
     else
-        winbox okay $title "Internet Connection Working!\nContinuing..."
+        winbox okay "$title" "Internet Connection Working!\nContinuing..."
         return $SUCCESS
     fi
 }
