@@ -210,57 +210,57 @@ check()
 }
 
 
-## display message with dialog windows
-#winbox()
-#{
-#    # function (msgbox/infobox/yesno/okay/warn/error)
-#    func=$1
-#    # title for box
-#    ttl="$2"
-#    # message
-#    msg="$3"
-#    # width and height
-#    wdhg="$4"
-#
-#    if [ -z "$wdhg" ]
-#    then
-#        wdhg='0 0'
-#    fi
-#
-#    if [ "$func" = 'msgbox' ]
-#    then
-#        shift
-#        dialog --colors --backtitle "$BKTITLE" --title "${CYAN}$ttl${RESET}" --msgbox "${BLACK}[] ${BLACK}$msg${RESET}" $wdhg
-#    elif [ "$func" = 'infobox' ]
-#    then
-#        dialog --colors --backtitle "$BKTITLE" --title "${CYAN}$ttl${RESET}" --infobox "${BLACK}[info] ${BLACK}$msg${RESET}" $wdhg
-#    elif [ "$func" = 'yesno' ]
-#    then
-#        dialog --colors --backtitle "$BKTITLE" --title "${CYAN}$ttl${RESET}" --yesno "${BLACK}[] $msg${RESET}" $wdhg
-#    elif [ "$func" = 'okay' ]
-#    then
-#        dialog --colors --backtitle "$BKTITLE" --title "${CYAN}$ttl${RESET}" --msgbox "${GREEN}[ok]\n\n${BLACK}$msg${RESET}" $wdhg
-#    elif [ "$func" = 'warn' ]
-#    then
-#        dialog --colors --backtitle "$BKTITLE" --title "${CYAN}$ttl${RESET}" --msgbox "${YELLOW}[warn]\n\n${BLACK}$msg${RESET}" $wdhg
-#    elif [ "$func" = 'error' ]
-#    then
-#        dialog --colors --backtitle "$BKTITLE" --title "${CYAN}$ttl${RESET}" --msgbox "${RED}[error]\n\n${BLACK}$msg${RESET}" $wdhg
-#        return $FAILURE
-#    fi
-#
-#    return $SUCCESS
-#}
+# display message with dialog windows
+winbox()
+{
+    # function (msgbox/infobox/yesno/okay/warn/error)
+    func=$1
+    # title for box
+    ttl="$2"
+    # message
+    msg="$3"
+    # width and height
+    wdhg="$4"
+
+    if [ -z "$wdhg" ]
+    then
+        wdhg='0 0'
+    fi
+
+    if [ "$func" = 'msgbox' ]
+    then
+        shift
+        dialog --colors --backtitle "$BKTITLE" --title "${CYAN}$ttl${RESET}" --msgbox "${BLACK}[] ${BLACK}$msg${RESET}" $wdhg
+    elif [ "$func" = 'infobox' ]
+    then
+        dialog --colors --backtitle "$BKTITLE" --title "${CYAN}$ttl${RESET}" --infobox "${BLACK}[info] ${BLACK}$msg${RESET}" $wdhg
+    elif [ "$func" = 'yesno' ]
+    then
+        dialog --colors --backtitle "$BKTITLE" --title "${CYAN}$ttl${RESET}" --yesno "${BLACK}[] $msg${RESET}" $wdhg
+    elif [ "$func" = 'okay' ]
+    then
+        dialog --colors --backtitle "$BKTITLE" --title "${CYAN}$ttl${RESET}" --msgbox "${GREEN}[ok]\n\n${BLACK}$msg${RESET}" $wdhg
+    elif [ "$func" = 'warn' ]
+    then
+        dialog --colors --backtitle "$BKTITLE" --title "${CYAN}$ttl${RESET}" --msgbox "${YELLOW}[warn]\n\n${BLACK}$msg${RESET}" $wdhg
+    elif [ "$func" = 'error' ]
+    then
+        dialog --colors --backtitle "$BKTITLE" --title "${CYAN}$ttl${RESET}" --msgbox "${RED}[error]\n\n${BLACK}$msg${RESET}" $wdhg
+        return $FAILURE
+    fi
+
+    return $SUCCESS
+}
 
 
-## sleep and clear
-#sleep_clear()
-#{
-#    sleep "$1"
-#    clear
-#
-#    return $SUCCESS
-#}
+# sleep and clear
+sleep_clear()
+{
+    sleep "$1"
+    clear
+
+    return $SUCCESS
+}
 
 
 # check user id
