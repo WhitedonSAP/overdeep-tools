@@ -318,7 +318,7 @@ check_init_system()
 }
 
 
-# check the current running system name
+# check the current running system based
 check_system_based()
 {
     if [ "$(cat /etc/os-release | grep -w 'ID' | awk -F '=' '{print $2}')" = 'arch' ]
