@@ -381,17 +381,17 @@ check_internet()
 
     if ! curl -s http://www.yahoo.com/ > /dev/null
     then
-        winbox warn "$title" 'No internet connection detected!'
+        winbox info_warn "$title" 'No internet connection detected!'
         winbox yesno "$title" 'Continue on offline mode'
         if [ $? = 0 ]
         then
-            winbox infobox "$title" 'Continuing...'
+            winbox infobox "$title" 'Continuing in offline mode...'
         else
-            winbox error "$title" 'Quitting...'
+            winbox info_error "$title" 'Quitting...'
             exit $FAILURE
         fi
     else
-        winbox okay "$title" "Internet Connection Working!\nContinuing..."
+        winbox info_okay "$title" "Internet Connection Working!\nContinuing..."
         return $SUCCESS
     fi
 }
