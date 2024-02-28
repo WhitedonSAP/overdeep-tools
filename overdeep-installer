@@ -41,7 +41,7 @@ FALSE=1
 SUCCESS=0
 FAILURE=1
 # no color and reset
-NCR='\Zn'
+NCL='\Zn'
 # bold
 BOLD='\Zb'
 # nobold
@@ -259,16 +259,16 @@ winbox()
         dialog --colors --backtitle "$BKTITLE" --title "${CYAN}$ttl${RESET}" --infobox "${BLACK}[info] ${BLACK}$msg${RESET}" $wdhg
     elif [ "$func" = 'yesno' ]
     then
-        dialog --colors --backtitle "$BKTITLE" --title "${CYAN}$ttl${RESET}" --yesno "${BLACK}[] $msg${RESET}" $wdhg
+        dialog --colors --backtitle "$BKTITLE" --title "${CYAN}$ttl${RESET}" --yesno "${BLACK}[] $msg" $wdhg
     elif [ "$func" = 'okay' ]
     then
-        dialog --colors --backtitle "$BKTITLE" --title "${CYAN}$ttl${RESET}" --msgbox "${GREEN}[ok]\n\n${BLACK}$msg${RESET}" $wdhg
+        dialog --colors --backtitle "$BKTITLE" --title "${CYAN}$ttl${RESET}" --msgbox "${GREEN}[ok]${NCL\n\n$msg" $wdhg
     elif [ "$func" = 'warn' ]
     then
-        dialog --colors --backtitle "$BKTITLE" --title "${CYAN}$ttl${RESET}" --msgbox "${YELLOW}[warn]\n\n${BLACK}$msg${RESET}" $wdhg
+        dialog --colors --backtitle "$BKTITLE" --title "${CYAN}$ttl${RESET}" --msgbox "${YELLOW}[warn]\n\n$msg" $wdhg
     elif [ "$func" = 'error' ]
     then
-        dialog --colors --backtitle "$BKTITLE" --title "${CYAN}$ttl${RESET}" --msgbox "${RED}[error]\n\n${BLACK}$msg${RESET}" $wdhg
+        dialog --colors --backtitle "$BKTITLE" --title "${CYAN}$ttl${RESET}" --msgbox "${RED}[error]\n\n$msg" $wdhg
         return $FAILURE
     fi
 
