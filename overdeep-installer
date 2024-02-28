@@ -227,7 +227,7 @@ check()
 
     if [ "$es" -ne 0 ]
     then
-        warn "Something went wrong with $func. $info."
+        winbox warn "Something went wrong with $func. $info."
         sleep 5
     fi
 }
