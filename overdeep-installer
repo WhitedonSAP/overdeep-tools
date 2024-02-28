@@ -40,28 +40,51 @@ FALSE=1
 # return codes
 SUCCESS=0
 FAILURE=1
+# no color and reset
+NCR='\Zn'
+# bold
+BOLD='\Zb'
+# nobold
+NBOLD='\ZB'
+# reverse
+REVS='\Zr'
+# noreverse
+NREVS='\ZR'
+# underline
+UNDL='\u'
+# no underline
+NUNDL='\U'
+# colors (use ${BOLD}${any_color} to bold text)
+BLACK='\Z0'
+RED='\Z1'
+GREEN='\Z2'
+YELLOW='\Z3'
+BLUE='\Z4'
+#MAGENTA='\Z5'
+CYAN='\Z6'
+WHITE='\Z7'
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
 # ~~~~~~~~~~~~~ ### \\\        Tput         /// ### ~~~~~~~~~~~~~ #
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
 # nocolor and reset
-NCR="$(tput sgr0)"
+#TNCR="$(tput sgr0)"
 # columns
-COLS="$(tput cols)"
+#TCOLS="$(tput cols)"
 # lines
-LINES="$(tput lines)"
+#TLINES="$(tput lines)"
 # bold
-BOLD="$(tput bold)"
+#TBOLD="$(tput bold)"
 # blink text
-#BLINK="$(tput blink)"
+#TBLINK="$(tput blink)"
 # colors (use ${BOLD}${any_color} to bold text)
-#BLACK="$(tput setaf 0)"
-#RED="$(tput setaf 1)"
-GREEN="$(tput setaf 2)"
-#YELLOW="$(tput setaf 3)"
-#BLUE="$(tput setaf 4)"
-#MAGENTA="$(tput setaf 5)"
-#CYAN="$(tput setaf 6)"
-WHITE="$(tput setaf 7)"
+#TBLACK="$(tput setaf 0)"
+#TRED="$(tput setaf 1)"
+#TGREEN="$(tput setaf 2)"
+#TYELLOW="$(tput setaf 3)"
+#TBLUE="$(tput setaf 4)"
+#TMAGENTA="$(tput setaf 5)"
+#TCYAN="$(tput setaf 6)"
+#TWHITE="$(tput setaf 7)"
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
 # ~~~~~~~~~~~~~ ### \\\   Current System    /// ### ~~~~~~~~~~~~~ #
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
@@ -343,22 +366,24 @@ check_system_based()
 # check for internet connection
 check_internet()
 {
-    winbox msgbox 'Check internet' 'Checking for Internet connection...'
-    printf "\n\n"
+    title='Check Internet'
+
+    winbox msgbox $title 'Checking for Internet connection...'
 
     if ! curl -s http://www.yahoo.com/ > /dev/null
     then
-        warn 'No internet connection detected!'
-        if yesno '[?] Continue on offline mode [y/n]: '
+        winbox warn $title 'No internet connection detected!'
+        winbox yesno $title '[?] Continue on offline mode'
+        if [ $? = 0 ]
         then
-            warn 'Continuing on offline mode...'
+            winbox warn $title 'Continuing on offline mode...'
         else
-            err 'Quitting...'
+            winbox error $title 'Quitting...'
             sleep_clear 0
             exit $FAILURE
         fi
     else
-        okay "Internet Connection Working!\nContinuing..."
+        winbox okay $title "Internet Connection Working!\nContinuing..."
         return $SUCCESS
     fi
 }
