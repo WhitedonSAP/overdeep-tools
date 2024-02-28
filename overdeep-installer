@@ -254,21 +254,33 @@ winbox()
     then
         shift
         dialog --colors --backtitle "$BKTITLE" --title "${CYAN}$ttl${NCL}" --msgbox "${BLACK}[+] $msg${NCL}" $wdhg
+    elif [ "$func" = 'msg_okay' ]
+    then
+        shift
+        dialog --colors --backtitle "$BKTITLE" --title "${CYAN}$ttl${NCL}" --msgbox "${GREEN}[ok]${NCL}\n\n$msg" $wdhg
+    elif [ "$func" = 'msg_warn' ]
+    then
+        shift
+        dialog --colors --backtitle "$BKTITLE" --title "${CYAN}$ttl${NCL}" --msgbox "${YELLOW}[warn]${NCL}\n\n$msg" $wdhg
+    elif [ "$func" = 'msg_error' ]
+    then
+        shift
+        dialog --colors --backtitle "$BKTITLE" --title "${CYAN}$ttl${NCL}" --msgbox "${RED}[error]${NCL}\n\n$msg" $wdhg
     elif [ "$func" = 'infobox' ]
     then
         dialog --colors --backtitle "$BKTITLE" --title "${CYAN}$ttl${NCL}" --infobox "${BLACK}[info] $msg${NCL}" $wdhg ; sleep 3
+    elif [ "$func" = 'info_okay' ]
+    then
+        dialog --colors --backtitle "$BKTITLE" --title "${CYAN}$ttl${NCL}" --infobox "${GREEN}[ok]${NCL}\n\n$msg" $wdhg ; sleep 3
+    elif [ "$func" = 'info_warn' ]
+    then
+        dialog --colors --backtitle "$BKTITLE" --title "${CYAN}$ttl${NCL}" --infobox "${YELLOW}[warn]${NCL}\n\n$msg" $wdhg ; sleep 3
+    elif [ "$func" = 'info_error' ]
+    then
+        dialog --colors --backtitle "$BKTITLE" --title "${CYAN}$ttl${NCL}" --infobox "${RED}[error]${NCL}\n\n$msg" $wdhg ; sleep 3
     elif [ "$func" = 'yesno' ]
     then
         dialog --colors --backtitle "$BKTITLE" --title "${CYAN}$ttl${NCL}" --yesno "${BLACK}[?] $msg${NCL}" $wdhg
-    elif [ "$func" = 'okay' ]
-    then
-        dialog --colors --backtitle "$BKTITLE" --title "${CYAN}$ttl${NCL}" --msgbox "${GREEN}[ok]${NCL}\n\n$msg" $wdhg
-    elif [ "$func" = 'warn' ]
-    then
-        dialog --colors --backtitle "$BKTITLE" --title "${CYAN}$ttl${NCL}" --msgbox "${YELLOW}[warn]${NCL}\n\n$msg" $wdhg
-    elif [ "$func" = 'error' ]
-    then
-        dialog --colors --backtitle "$BKTITLE" --title "${CYAN}$ttl${NCL}" --msgbox "${RED}[error]${NCL}\n\n$msg" $wdhg
     fi
 }
 
