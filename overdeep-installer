@@ -365,7 +365,7 @@ check_internet()
 {
     title='Check Internet'
 
-    winbox msgbox "$title" 'Checking for Internet connection...'
+    winbox infobox "$title" 'Checking for Internet connection...'
 
     if ! curl -s http://www.yahoo.com/ > /dev/null
     then
