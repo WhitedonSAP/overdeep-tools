@@ -304,6 +304,12 @@ check_init_system()
     elif [ "$(stat /sbin/init | grep -o runit) > /dev/null 2>&1" != '' ]
     then
         CUR_INIT_SYSTEM='runit'
+    elif [ "$(stat /sbin/init | grep -o s6) > /dev/null 2>&1" != '' ]
+    then
+        CUR_INIT_SYSTEM='s6'
+    elif [ "$(stat /sbin/init | grep -o dinit) > /dev/null 2>&1" != '' ]
+    then
+        CUR_INIT_SYSTEM='dinit'
     else
         CUR_INIT_SYSTEM='sysvinit'
     fi
