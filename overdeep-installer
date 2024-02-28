@@ -269,10 +269,7 @@ winbox()
     elif [ "$func" = 'error' ]
     then
         dialog --colors --backtitle "$BKTITLE" --title "${CYAN}$ttl${NCL}" --msgbox "${RED}[error]${NCL}\n\n$msg" $wdhg
-        return $FAILURE
     fi
-
-    return $SUCCESS
 }
 
 
