@@ -145,14 +145,24 @@ HIBG_WHITE='\033[0;107m'
 # blink text
 #TBLINK="$(tput blink)"
 # colors (use ${BOLD}${any_color} to bold text)
-#TBLACK="$(tput setaf 0)"
-#TRED="$(tput setaf 1)"
-#TGREEN="$(tput setaf 2)"
-#TYELLOW="$(tput setaf 3)"
-#TBLUE="$(tput setaf 4)"
-#TMAGENTA="$(tput setaf 5)"
-#TCYAN="$(tput setaf 6)"
-#TWHITE="$(tput setaf 7)"
+# foreground
+#TFBLACK="$(tput setaf 0)"
+#TFRED="$(tput setaf 1)"
+#TFGREEN="$(tput setaf 2)"
+#TFYELLOW="$(tput setaf 3)"
+#TFBLUE="$(tput setaf 4)"
+#TFMAGENTA="$(tput setaf 5)"
+#TFCYAN="$(tput setaf 6)"
+#TFWHITE="$(tput setaf 7)"
+# background
+#TBBLACK="$(tput setab 0)"
+#TBRED="$(tput setab 1)"
+#TBGREEN="$(tput setab 2)"
+#TBYELLOW="$(tput setab 3)"
+#TBBLUE="$(tput setab 4)"
+#TBMAGENTA="$(tput setab 5)"
+#TBCYAN="$(tput setab 6)"
+#TBWHITE="$(tput setab 7)"
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
 # ~~~~~~~~~~~~~ ### \\\   Current System    /// ### ~~~~~~~~~~~~~ #
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
