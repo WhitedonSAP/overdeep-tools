@@ -400,7 +400,8 @@ check_internet()
 # check if new version available. perform self-update and exit
 self_updater()
 {
-    title 'Self Updater'
+    title='Self Updater'
+
     winbox '[+] Checking for a new version of myself...'
     printf "\n\n"
 
