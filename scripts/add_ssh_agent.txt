@@ -1,0 +1,89 @@
+SSH is a very powerfull tool, for example to pull/changes to remote git repositories w/o having to authorize each time.
+
+1- Ensure you don't have SSH key generated: cat ~/.ssh/id_rsa.pub. If this prints something skip to step 4 or 5.
+2- Ensure you have openssh installed: yaourt -S openssh.
+3- ssh-keygen -t rsa -C "YOUR@EMAIL.com" will prompt for location and passphrase.
+4- Now you need to enable SSH agent as a service. I found adding it as a systemd service is the most convinient.
+5- mkdir -p ~/.config/systemd/user/
+6- nano ~/.config/systemd/user/ssh-agent.service:
+
+[Unit]
+Description=SSH key agent
+
+[Service]
+Type=forking
+Environment=SSH_AUTH_SOCK=%t/ssh-agent.socket
+ExecStart=/usr/bin/ssh-agent -a $SSH_AUTH_SOCK
+
+[Install]
+WantedBy=default.target
+
+3- Export the variable using your shell of use:
+
+#.bash_profile
+export SSH_AUTH_SOCK="$XDG_RUNTIME_DIR/ssh-agent.socket"
+# ~/.config/fish/config.fish
+set -x SSH_AUTH_SOCK $XDG_RUNTIME_DIR/ssh-agent.socket
+
+4- Reboot or reenter a shell to export new variable.
+5- systemctl --user enable --now ssh-agent
+6- To add keys use ssh-add
+7- cat ~/.ssh/id_rsa.pub will print your public SHH key. Copy it and use.
+
+° To create a systemd ssh-agent service, you need to create a file in ~/.config/systemd/user/ssh-agent.service because ssh-agent is user isolated.
+
+[Unit]
+Description=SSH key agent
+
+[Service]
+Type=simple
+Environment=SSH_AUTH_SOCK=%t/ssh-agent.socket
+ExecStart=/usr/bin/ssh-agent -D -a $SSH_AUTH_SOCK
+
+[Install]
+WantedBy=default.target
+
+° Add
+
+SSH_AUTH_SOCK="${XDG_RUNTIME_DIR}/ssh-agent.socket"
+to ~/.config/environment.d/ssh_auth_socket.conf.
+
+° Finally enable and start this service.
+
+systemctl --user enable --now ssh-agent
+
+° And, if you are using ssh version higher than 7.2.
+
+echo 'AddKeysToAgent  yes' >> ~/.ssh/config
+
+This will instruct the ssh client to always add the key to a running agent, so there's no need to ssh-add it beforehand.
+Note that when you create the ~/.ssh/config file you may need to run:
+
+chmod 600 ~/.ssh/config
+
+or
+
+chown $USER ~/.ssh/config
+
+Otherwise, you might receive the Bad owner or permissions on ~/.ssh/config error.
+
+
+Authentication
+For write access to the AUR, you need to have an SSH key pair. The content of the public key needs to be copied to your profile in My Account, and the corresponding private key configured for the aur.archlinux.org host. For example:
+
+~/.ssh/config
+
+Host aur.archlinux.org
+  IdentityFile ~/.ssh/aur
+  User aur
+
+  You should create a new key pair rather than use an existing one, so that you can selectively revoke the keys should something happen:
+
+$ ssh-keygen -f ~/.ssh/aur
+
+git clone ssh://aur@aur.archlinux.org/pkgname.git
+
+$ makepkg --printsrcinfo > .SRCINFO
+$ git add PKGBUILD .SRCINFO
+$ git commit -m "useful commit message"
+$ git push
