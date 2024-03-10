@@ -5,8 +5,8 @@ clear
 ## grub theme
 
 # create custom grub file
-sudo touch /etc/default/grub.d/90_custom.cfg
-sudo echo -e 'GRUB_TIMEOUT="10"\nGRUB_TIMEOUT_STYLE="menu"' >> /etc/default/grub.d/90_custom.cfg
+#sudo touch /etc/default/grub.d/90_custom.cfg
+#sudo echo -e 'GRUB_TIMEOUT="10"\nGRUB_TIMEOUT_STYLE="menu"' >> /etc/default/grub.d/90_custom.cfg
 
 echo
 # update grub config file
