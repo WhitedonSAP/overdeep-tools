@@ -44,7 +44,7 @@ echo
 sudo update-grub
 
 # set up grub-btrfsd.service
-sudo sed -i 's,/.snapshots,--timeshift-auto,' /etc/systemd/system/grub-btrfsd.service
+sudo sed -i 's,/.snapshots,--timeshift-auto,' /lib/systemd/system/grub-btrfsd.service
 
 # enable grub-btrfsd.service
 sudo systemctl enable grub-btrfsd
