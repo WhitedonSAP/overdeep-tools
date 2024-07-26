@@ -378,7 +378,7 @@ check_uid()
 {
     if [ "$(id -u)" = '0' ]
     then
-        winbox error 'Root detected' "Do not run $PROGNAME as root!"
+        winbox msg_error 'Root detected' "Do not run $PROGNAME as root!"
         exit $FAILURE
     fi
 
