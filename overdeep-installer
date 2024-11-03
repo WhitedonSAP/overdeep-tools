@@ -331,7 +331,7 @@ winbox()
     if [ "$func" = 'msgbox' ]
     then
         shift
-        dialog --colors --backtitle "$BKTITLE" --title "$CYAN${ttl}$NCL" --msgbox "[+] $msg" $wdhg
+        dialog --colors --backtitle "$BKTITLE" --title "${CYAN}$ttl${NCL}" --msgbox "[+] $msg" $wdhg
     elif [ "$func" = 'msg_okay' ]
     then
         shift
