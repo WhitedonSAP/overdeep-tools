@@ -597,18 +597,16 @@ select_distros()
         title 'Select Distros'
         winbox '[+] Choose an available distro:'
         printf "\n
-      1. Overdeep OS
+      1. Overdeep_OS
       2. Archlinux
       3. Blackarch
-      4. Gentoo
-      5. Funtoo\n\n"
+      4. Gentoo\n\n"
         winbox '[?] Make a choice: '
         read -r INSTALL_MODE
         if [ "$INSTALL_MODE" = 1 ] || \
             [ "$INSTALL_MODE" = 2 ] || \
             [ "$INSTALL_MODE" = 3 ] || \
-            [ "$INSTALL_MODE" = 4 ] || \
-            [ "$INSTALL_MODE" = 5 ]
+            [ "$INSTALL_MODE" = 4 ]
         then
             if [ "$INSTALL_MODE" = 1 ]
             then
@@ -622,9 +620,6 @@ select_distros()
             elif [ "$INSTALL_MODE" = 4 ]
             then
                 DISTRO_NAME='Gentoo'
-            elif [ "$INSTALL_MODE" = 5 ]
-            then
-                DISTRO_NAME='Funtoo'
             fi
             break
         else
