@@ -434,9 +434,6 @@ check_system_based()
     if [ "$(cat /etc/os-release | grep -w 'ID' | awk -F '=' '{print $2}')" = 'arch' ]
     then
         CUR_SYSTEM_BASED='arch'
-    elif [ "$(cat /etc/os-release | grep -w 'ID' | awk -F '=' '{print $2}')" = 'funtoo' ]
-    then
-        CUR_SYSTEM_BASED='funtoo'
     elif [ "$(cat /etc/os-release | grep -w 'ID' | awk -F '=' '{print $2}')" = 'gentoo' ]
     then
         CUR_SYSTEM_BASED='gentoo'
