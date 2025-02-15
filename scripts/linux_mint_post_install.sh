@@ -12,6 +12,12 @@ echo
 # update grub config file
 sudo update-grub
 
+# pre-check if efi is available
+if [[ "$(ls /sys/firmware/efi/efivars > /dev/null 2>&1; echo $?)" -eq '0' ]]
+then
+  boot_mode='uefi'
+fi
+
 echo
 # install linux mint grub theme
 read -p "This pc/notebook is using an HiDPI screen? [Y/n]" hidpiask
@@ -48,6 +54,25 @@ sudo sed -i 's,/.snapshots,--timeshift-auto,' /lib/systemd/system/grub-btrfsd.se
 
 # enable grub-btrfsd.service
 sudo systemctl enable grub-btrfsd
+
+# download timeshift-autosnap-apt
+git clone https://github.com/wmutschl/timeshift-autosnap-apt.git
+cd timeshift-autosnap-apt
+sudo make install
+# cleaning
+cd ..
+rm -rf timeshift-autosnap-apt
+# config
+read -p "This system is using a dedicated /boot partition? [Y/n]" bootpartask
+if [ "$bootpartask" = 'Y' ] || [ "$bootpartask" = 'y' ]
+then
+    sudo sed -i 's,snapshotBoot=true,snapshotBoot=false,' /etc/timeshift-autosnap-apt.conf
+fi
+echo
+if [ "$boot_mode" != 'uefi' ]
+then
+    sudo sed -i 's,snapshotEFI=true,snapshotEFI=false,' /etc/timeshift-autosnap-apt.conf
+fi
 
 echo
 echo "All Ok, Linux Mint configured with success"
