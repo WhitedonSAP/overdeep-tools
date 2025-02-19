@@ -64,7 +64,7 @@ cd ..
 rm -rf timeshift-autosnap-apt
 # config
 read -p "This system is using a dedicated /boot partition? [Y/n]" bootpartask
-if [ "$bootpartask" = 'Y' ] || [ "$bootpartask" = 'y' ]
+if [ "$bootpartask" = 'N' ] || [ "$bootpartask" = 'n' ]
 then
     sudo sed -i 's,snapshotBoot=true,snapshotBoot=false,' /etc/timeshift-autosnap-apt.conf
 fi
