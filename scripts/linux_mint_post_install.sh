@@ -11,7 +11,7 @@ fi
 clear
 
 ## Set timeout grub for 10 seconds
-su root -c 'echo -e "\nGRUB_RECORDFAIL_TIMEOUT=10" >> /etc/default/grub.d/50_linuxmint.cfg'
+su root -c 'echo -e "\n# Fix grub timeout\nGRUB_RECORDFAIL_TIMEOUT=10" >> /etc/default/grub.d/50_linuxmint.cfg'
 
 ## Install linux mint grub theme
 read -p "This pc/notebook is using an HiDPI screen? [Yes/No] " hidpiask
